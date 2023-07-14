@@ -27,3 +27,6 @@ Tier Atelier（ティア・アトリエ）は、ユーザーが自身のゲー�
 * マルチ検索・オートコンプリート機能（作成されたランキング検索）
 * レコメンド機能（類似ランキングの推奨）
 * 英語版の作成
+
+## 画面遷移図
+figma: https://www.figma.com/file/1mK6Yc0e5txhv8QiCCqfZ7/Tier%E5%B7%A5%E6%88%BF?type=design&node-id=0%3A1&mode=design&t=R3TrK2Z5FoPRtZ94-1
