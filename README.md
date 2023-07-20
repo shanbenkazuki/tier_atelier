@@ -30,3 +30,6 @@ Tier Atelier（ティア・アトリエ）は、ユーザーが自身のゲー�
 
 ## 画面遷移図
 figma: https://www.figma.com/file/1mK6Yc0e5txhv8QiCCqfZ7/Tier%E5%B7%A5%E6%88%BF?type=design&node-id=0%3A1&mode=design&t=R3TrK2Z5FoPRtZ94-1
+
+## ER図
+ER図：https://dbdiagram.io/d/649c039c02bd1c4a5e304bc7
