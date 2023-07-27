@@ -13,7 +13,9 @@ module TierAtelier
 
     config.generators do |g|
       g.test_framework :rspec
-     end
+    end
+
+    config.i18n.default_locale = :ja
 
     # Configuration for the application, engines, and railties goes here.
     #
