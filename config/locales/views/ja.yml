@@ -3,6 +3,7 @@ ja:
     template: 'テンプレート'
     tier: 'Tier'
     login: 'ログイン'
+    register: '登録'
   footer:
     terms_of_use: '利用規約'
     privacy_policy: 'プライバシーポリシー'
