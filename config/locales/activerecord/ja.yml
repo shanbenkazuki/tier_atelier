@@ -5,7 +5,7 @@ ja:
         email: 'メールアドレス'
         password: 'パスワード'
         password_confirmation: 'パスワード確認'
-        user_name: 'ユーザ名'
+        name: 'ユーザ名'
       user_session:
         email: 'メールアドレス'
         password: 'パスワード'
