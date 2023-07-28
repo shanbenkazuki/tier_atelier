@@ -1,9 +1,21 @@
 ja:
-  header:
+  defaults:
     template: 'テンプレート'
     tier: 'Tier'
     login: 'ログイン'
-  footer:
+    register: '登録'
+    create_tier: 'Tierを作成'
+    account: 'アカウント'
     terms_of_use: '利用規約'
     privacy_policy: 'プライバシーポリシー'
     contact: 'お問い合わせ'
+  users:
+    new:
+      title: 'ユーザー登録'
+      to_login_page: 'ログインページへ'
+      register: '登録'
+  user_sessions:
+    new:
+      title: 'ログイン'
+      to_register_page: '登録ページへ'
+      password_forget: 'パスワードをお忘れの方はこちら'
