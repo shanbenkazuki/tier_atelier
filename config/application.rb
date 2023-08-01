@@ -11,6 +11,10 @@ module TierAtelier
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.0
 
+    config.generators do |g|
+      g.test_framework :rspec
+    end
+
     config.i18n.default_locale = :ja
     config.i18n.load_path += Dir[Rails.root.join('config/locales/**/*.{rb,yml}').to_s]
 

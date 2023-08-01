@@ -4,9 +4,10 @@ class UserSessionsController < ApplicationController
   def create
     @user = login(params[:email], params[:password])
     if @user
-      redirect_back_or_to tiers_path
+      redirect_back_or_to tiers_path, success: t('.success')
     else
-      render :new
+      flash.now[:danger] = t('.fail')
+      render :new, status: :unprocessable_entity
     end
   end
 
