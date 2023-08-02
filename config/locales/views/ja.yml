@@ -27,3 +27,6 @@ ja:
       fail: 'ログインに失敗しました'
     destroy:
       success: 'ログアウトしました'
+  tiers:
+    search:
+      title: '検索'

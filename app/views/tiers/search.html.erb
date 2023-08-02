@@ -1,0 +1,18 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-5 d-flex flex-column align-items-center">
+      <h1 class="text-center">
+        <span class="border-bottom border-3 border-dark pb-1"><%= t '.title' %></span>
+      </h1>
+      <div class="mt-5">
+        <h3>テンプレートから作成する</h3>
+      </div>
+      <div class="mt-3 col-md-8"> 
+        <input type="text" class="form-control" id="templateName" placeholder="テンプレート名を入力">
+      </div>
+      <div class="mt-3">
+        <%= button_to "新規で作成", "#", method: :get, class: "btn btn-primary" %>
+      </div>
+    </div>
+  </div>
+</div>
