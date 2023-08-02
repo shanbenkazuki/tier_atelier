@@ -1,14 +1,6 @@
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-5">
-      <h1 class="text-center">
-        <span class="border-bottom border-3 border-dark pb-1"><%= t '.title' %></span>
-      </h1>
-
-      <%= render 'form', user: @user %>
-      <div class='text-center my-3'>
-        <%= link_to t('.to_login_page'), login_path %>
-      </div>
-    </div>
+<%= render layout: "layouts/custom_layout" do %>
+  <%= render 'form', user: @user %>
+  <div class='text-center my-3'>
+    <%= link_to t('users.new.to_login_page'), login_path %>
   </div>
-</div>
+<% end %>

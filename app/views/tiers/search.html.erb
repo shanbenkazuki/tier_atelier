@@ -1,18 +1,9 @@
-<div class="container">
-  <div class="row justify-content-center">
-    <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-5 d-flex flex-column align-items-center">
-      <h1 class="text-center">
-        <span class="border-bottom border-3 border-dark pb-1"><%= t '.title' %></span>
-      </h1>
-      <div class="mt-5">
-        <h3><%= t '.create_from_template' %></h3>
-      </div>
-      <div class="mt-3 col-md-8"> 
-        <input type="text" class="form-control" id="templateName" placeholder="<%= t '.enter_template_name' %>">
-      </div>
-      <div class="mt-3">
-        <%= button_to t('.create_new'), new_tier_path, method: :get, class: "btn btn-primary" %>
-      </div>
-    </div>
+<%= render layout: "layouts/custom_layout" do %>
+  <h3><%= t 'tiers.search.create_from_template' %></h3>
+  <div class="mt-3 col-md-8"> 
+    <input type="text" class="form-control" id="templateName" placeholder="<%= t 'tiers.search.enter_template_name' %>">
   </div>
-</div>
+  <div class="mt-3">
+    <%= button_to t('tiers.search.create_new'), new_tier_path, method: :get, class: "btn btn-primary" %>
+  </div>
+<% end %>
