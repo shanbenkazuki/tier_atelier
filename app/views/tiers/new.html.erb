@@ -1,9 +1,35 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-md-10 offset-md-1 col-lg-8 offset-lg-2 my-5 d-flex flex-column align-items-center">
-      <h1 class="text-center">
+      <h1 class="text-center mb-4">
         <span class="border-bottom border-3 border-dark pb-1"><%= t '.title' %></span>
       </h1>
+      <%= form_with url: tiers_path, method: :post, html: { multipart: true } do |f| %>
+        <div class="form-group mb-4">
+          <%= f.label :category_id, 'カテゴリを選択', class: 'control-label' %>
+          <%= f.select :category_id, @categories.collect { |c| [c.name, c.id] }, {}, { class: 'form-control' } %>
+        </div>
+        <div class="form-group mb-4">
+          <%= f.label :images, '画像をアップロード', class: 'control-label d-block' %>
+          <%= f.file_field :images, accept: 'image/png,image/jpeg', class: 'form-control-file', multiple: true %>
+        </div>
+        <div class="form-group mb-4">
+          <label class='control-label'>縦列ラベル</label>
+          <% 5.times do |i| %>
+            <%= f.text_field "vertical_label_#{i+1}", class: 'form-control mt-2' %>
+          <% end %>
+          <button id="add-vertical-field" type="button" class="btn btn-secondary mt-2">列を追加</button>
+        </div>
+        <div class="form-group mb-4">
+          <label class='control-label'>横列ラベル</label>
+          <% 5.times do |i| %>
+            <%= f.text_field "horizontal_label_#{i+1}", class: 'form-control mt-2' %>
+          <% end %>
+          <button id="add-horizontal-field" type="button" class="btn btn-secondary mt-2">列を追加</button>
+        </div>
+
+        <%= f.submit 'Submit', class: 'btn btn-primary' %>
+      <% end %>
     </div>
   </div>
 </div>
