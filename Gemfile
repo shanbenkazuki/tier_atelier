@@ -59,6 +59,7 @@ group :development, :test do
   gem "debug", platforms: %i[ mri mingw x64_mingw ]
   gem "rspec-rails"
   gem "factory_bot_rails"
+  gem 'pry-byebug'
 end
 
 group :development do
@@ -70,7 +71,6 @@ group :development do
 
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
-  gem 'pry-byebug'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false

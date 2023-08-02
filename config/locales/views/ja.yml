@@ -23,7 +23,7 @@ ja:
       to_register_page: '登録ページへ'
       password_forget: 'パスワードをお忘れの方はこちら'
     create:
-      success: 'ログインしました'
+      success: 'ログインに成功しました'
       fail: 'ログインに失敗しました'
     destroy:
       success: 'ログアウトしました'
