@@ -30,3 +30,15 @@ ja:
   tiers:
     search:
       title: '検索'
+      create_from_template: "テンプレートから作成する"
+      enter_template_name: "テンプレート名を入力"
+      create_new: "新規で作成"
+    new:
+      title: 'Tier作成'
+    form:
+      select_category: 'カテゴリを選択'
+      upload_images: '画像をアップロード'
+      vertical_label: '縦列ラベル'
+      horizontal_label: '横列ラベル'
+      add_column: '列を追加'
+      submit: '送信'

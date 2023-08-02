@@ -1,0 +1,26 @@
+<%= form_with url: make_tiers_path, method: :post, local: true, html: { multipart: true } do |f| %>
+  <div class="form-group mb-4">
+    <%= f.label :category_id, Tier.human_attribute_name(:category_id), class: 'control-label' %>
+    <%= f.select :category_id, @categories.collect { |c| [c.name, c.id] }, {}, { class: 'form-control' } %>
+  </div>
+  <div class="form-group mb-4">
+    <%= f.label :images, Tier.human_attribute_name(:images), class: 'control-label d-block' %>
+    <%= f.file_field :images, accept: 'image/png,image/jpeg', class: 'form-control-file', multiple: true %>
+  </div>
+  <div class="form-group mb-4">
+    <label class='control-label'><%= t('.vertical_label') %></label>
+    <% 5.times do |i| %>
+      <%= f.text_field "vertical_label_#{i+1}", class: 'form-control mt-2' %>
+    <% end %>
+    <button id="add-vertical-field" type="button" class="btn btn-secondary mt-2"><%= t('.add_column') %></button>
+  </div>
+  <div class="form-group mb-4">
+    <label class='control-label'><%= t('.horizontal_label') %></label>
+    <% 5.times do |i| %>
+      <%= f.text_field "horizontal_label_#{i+1}", class: 'form-control mt-2' %>
+    <% end %>
+    <button id="add-horizontal-field" type="button" class="btn btn-secondary mt-2"><%= t('.add_column') %></button>
+  </div>
+
+  <%= f.submit tier_form_button, class: 'btn btn-primary' %>
+<% end %>
