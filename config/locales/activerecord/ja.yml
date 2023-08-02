@@ -9,3 +9,6 @@ ja:
       user_session:
         email: 'メールアドレス'
         password: 'パスワード'
+      tier:
+        category_id: 'カテゴリ'
+        images: '画像'
