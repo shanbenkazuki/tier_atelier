@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   resources :users
+  get 'tiers/search', to: 'tiers#search', :as => :search
   resources :tiers
   root 'top#index'
   get 'privacy_policy', to: 'top#privacy_policy'
