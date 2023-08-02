@@ -30,3 +30,8 @@ ja:
   tiers:
     search:
       title: '検索'
+      create_from_template: "テンプレートから作成する"
+      enter_template_name: "テンプレート名を入力"
+      create_new: "新規で作成"
+    new:
+      title: 'Tier作成'
