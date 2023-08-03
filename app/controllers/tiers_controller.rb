@@ -13,7 +13,7 @@ class TiersController < ApplicationController
       1.upto(5) do |i|
         @tier_list.tiers.create!(horizontal_name: params["tier_list"]["horizontal_label_#{i}"], vertical_name: params["tier_list"]["vertical_label_#{i}"], horizontal_order: i, vertical_order: i)
       end
-      binding.pry
+      # binding.pry
       # if params[:images]
       #   params[:images].each do |image|
       #     @tier_list.items.create!(name: image.original_filename, image: image, order: 1) 
