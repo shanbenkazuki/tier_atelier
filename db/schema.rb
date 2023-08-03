@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_03_043601) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_03_140411) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -57,16 +57,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_043601) do
     t.datetime "updated_at", null: false
     t.index ["tier_list_id"], name: "index_comments_on_tier_list_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
-  end
-
-  create_table "items", force: :cascade do |t|
-    t.bigint "tier_list_id", null: false
-    t.string "name", null: false
-    t.string "image_url", null: false
-    t.integer "order"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tier_list_id"], name: "index_items_on_tier_list_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -146,7 +136,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_03_043601) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "tier_lists"
   add_foreign_key "comments", "users"
-  add_foreign_key "items", "tier_lists"
   add_foreign_key "likes", "tier_lists"
   add_foreign_key "likes", "users"
   add_foreign_key "template_items", "templates"
