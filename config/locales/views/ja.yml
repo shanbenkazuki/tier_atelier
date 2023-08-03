@@ -36,6 +36,9 @@ ja:
       create_new: "新規で作成"
     new:
       title: 'Tier作成'
+    create:
+      success: 'Tier作成に成功しました'
+      fail: 'Tier作成に失敗しました'
     form:
       select_category: 'カテゴリを選択'
       upload_images: '画像をアップロード'

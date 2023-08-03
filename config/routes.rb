@@ -3,7 +3,7 @@ Rails.application.routes.draw do
   get 'tiers/search', to: 'tiers#search', :as => :search
   resources :tiers do
     collection do
-      post :make
+      get :make
     end
   end
   root 'top#index'

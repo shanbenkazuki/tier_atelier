@@ -12,3 +12,5 @@ ja:
       tier:
         category_id: 'カテゴリ'
         images: '画像'
+        title: 'タイトル'
+        description: '説明'

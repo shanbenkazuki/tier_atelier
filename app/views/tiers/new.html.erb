@@ -1,5 +1,5 @@
 <% content_for :title, t('.title') %>
 
 <%= render layout: "layouts/custom_layout" do %>
-  <%= render 'form' %>
+  <%= render 'form', tier_list: @tier_list %>
 <% end %>
