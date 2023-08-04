@@ -20,6 +20,14 @@ class TiersController < ApplicationController
     render :new, status: :unprocessable_entity
   end
 
+  def show
+    @tier_list = TierList.find(params[:id])
+    @images = @tier_list.images.blobs.map do |blob|
+      variant = blob.variant(resize_to_limit: [50, nil]).processed
+      Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true)
+    end
+  end
+
   def search; end
 
   private
