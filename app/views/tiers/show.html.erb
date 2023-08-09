@@ -1,3 +1,29 @@
-<% @images.each do |image| %>
-  <%= image_tag image %>
-<% end %>
+<div id="dropzone" class="border border-3 border-dark rounded p-3 d-flex justify-content-center align-items-center mt-3" 
+     ondragover="event.preventDefault()" ondrop="drop(event)" style="min-height: 200px;">
+  <p>ドラッグアンドドロップで画像をここに移動</p>
+</div>
+
+<div class="container d-flex justify-content-center border border-3 border-dark rounded p-3">
+  <% @images.each_with_index do |image, index| %>
+    <%= image_tag image, class: 'draggable', draggable: 'true', id: "draggable-#{index}" %>
+  <% end %>
+</div>
+
+<script>
+  function drop(event) {
+    event.preventDefault();
+    var data = event.dataTransfer.getData("text");
+    var imageElement = document.getElementById(data);
+    
+    if (imageElement) {
+      event.target.appendChild(imageElement);
+    }
+  }
+
+  var draggables = document.querySelectorAll('.draggable');
+  draggables.forEach(draggable => {
+    draggable.addEventListener('dragstart', function(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    });
+  });
+</script>
