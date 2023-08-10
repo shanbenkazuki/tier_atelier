@@ -35,7 +35,7 @@
   </div>
 </div>
 
-<div class="container d-flex justify-content-center border border-3 border-dark rounded p-3">
+<div class="container image-area d-flex justify-content-center border border-3 border-dark rounded p-3">
   <% @images.each_with_index do |image, index| %>
     <%= image_tag image, class: 'draggable', id: "draggable-#{index}" %>
   <% end %>
