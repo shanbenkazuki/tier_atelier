@@ -1,32 +1,42 @@
-<div id="dropzone" class="border border-3 border-dark rounded p-3 d-flex justify-content-center align-items-center mt-3">
-  <p>ドラッグアンドドロップで画像をここに移動</p>
-</div>
-
-<div class="container d-flex justify-content-center border border-3 border-dark rounded p-3">
-  <% @images.each_with_index do |image, index| %>
-    <%= image_tag image, class: 'draggable', id: "draggable-#{index}" %>
-  <% end %>
-</div>
-
-
 <div id="outer-main-flex">
-  <div style="position:relative; clear: both" id="tier-wrap" class="create">
+  <div id="tier-wrap" class="create">
     <div id="tier-container">
+      <div class="category-row">
+        <div class="label-holder"></div>
+        <% categories = ['Jungle', 'Gold', 'EXP', 'Mid', 'Roam'] %>
+        <% categories.each do |category| %>
+          <div class="category-label"><%= category %></div>
+        <% end %>
+      </div>
       <% tiers = ['S', 'A', 'B', 'C', 'D'] %>
       <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)'] %>
       <% tiers.each_with_index do |tier, index| %>
         <div class="tier-row">
-          <div class="label-holder" contenteditable="true" style="background-color: <%= colors[index] %>;"><span class="label"><%= tier %></span></div>
-          <div class="tier sort"></div>
+          <div class="label-holder" style="background-color: <%= colors[index] %>;"><span class="label"><%= tier %></span></div>
+          <% categories.each do %>
+            <div class="tier cell"></div>
+          <% end %>
           <div class="settings-control">
-            <div class="settings"></div>
+            <div class="settings">
+              <i class="fas fa-cog fa-2x"></i>
+            </div>
             <div class="move-buttons">
-              <div class="move-up"></div>
-              <div class="move-down"></div>
+              <div class="move-up">
+                <i class="fas fa-arrow-up fa-2x"></i>
+              </div>
+              <div class="move-down">
+                <i class="fas fa-arrow-down fa-2x"></i>
+              </div>
             </div>
           </div>
         </div>
       <% end %>
     </div>
   </div>
+</div>
+
+<div class="container d-flex justify-content-center border border-3 border-dark rounded p-3">
+  <% @images.each_with_index do |image, index| %>
+    <%= image_tag image, class: 'draggable', id: "draggable-#{index}" %>
+  <% end %>
 </div>

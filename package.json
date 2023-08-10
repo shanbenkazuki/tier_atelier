@@ -1,6 +1,11 @@
 {
   "packageManager": "yarn@3.6.1",
   "dependencies": {
+    "@fortawesome/fontawesome-free": "^6.4.2",
+    "@fortawesome/fontawesome-svg-core": "^6.4.2",
+    "@fortawesome/free-brands-svg-icons": "^6.4.2",
+    "@fortawesome/free-regular-svg-icons": "^6.4.2",
+    "@fortawesome/free-solid-svg-icons": "^6.4.2",
     "@hotwired/stimulus": "^3.2.1",
     "@hotwired/turbo-rails": "^7.3.0",
     "@popperjs/core": "^2.11.8",

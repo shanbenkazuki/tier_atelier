@@ -2,27 +2,21 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 @import 'jquery-ui';
 
-.tier.sort{
+.tier.cell{
   padding: 0;
   margin: 0;
   font-family: arial;
   font-size: 15px;
   line-height: 19px;
-  color: #333;
   flex: 1;
+  border-right: solid 1px #000;
 }
-.tier-row{
-  padding: 0;
-  margin: 0;
-  font-family: arial;
-  font-size: 15px;
-  line-height: 19px;
-  color: #333;
+
+.tier-row {
   display: flex;
   flex-direction: row;
-  min-height: 80px;
+  min-height: 150px;
   border-top: solid 1px #000;
-  border-bottom: solid 1px #000;
 }
 
 .label-holder {
@@ -30,7 +24,6 @@
   min-height: 80px;
   border-right: solid 1px #000;
   display: flex;
-  align-items: center;
   align-items: center;
   justify-content: center;
 }
@@ -47,21 +40,22 @@
   flex-direction: column;
   border-left: solid 1px #000;
   border-right: solid 1px #000;
-  background: #1a1a17;
+  border-bottom: solid 1px #000;
+  background: #333;
 }
 
 .settings-control {
-    width: 80px;
-    display: flex;
-    flex-direction: row;
-    background: #000;
-    align-items: center;
-    justify-content: center;
+  width: 80px;
+  display: flex;
+  flex-direction: row;
+  background: #000;
+  align-items: center;
+  justify-content: center;
 }
 
 .settings {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background-position: center;
   background-size: 80%;
   cursor: pointer;
@@ -77,16 +71,7 @@
   justify-content: center;
 }
 
-.move-up {
-  height: 32px;
-  width: 64px;
-  cursor: pointer;
-  transition: all .3s;
-}
-
-.move-down {
-  height: 32px;
-  width: 64px;
+.move-up, .move-down {
   cursor: pointer;
   transition: all .3s;
 }
@@ -105,4 +90,41 @@
   margin: 20px 0;
   width: 100%;
   max-width: 1200px;
+}
+
+.settings, .move-up, .move-down {
+  color: white;
+}
+
+.category-row {
+  display: flex;
+  flex-direction: row;
+  border-top: solid 1px #000;
+}
+
+.category-label {
+  width: calc((100% - 180px) / 5); 
+  border-right: solid 1px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  background-color: #ccc;
+}
+
+.tier.cell {
+  width: calc((100% - 180px) / 5); 
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 72px;
+}
+
+.tier.cell {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: flex-start;
 }
