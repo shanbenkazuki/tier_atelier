@@ -1,6 +1,11 @@
 class Tier < ApplicationRecord
-  belongs_to :tier_list
+  belongs_to :user
+  belongs_to :category
 
-  validates :vertical_name, presence: true
-  validates :horizontal_name, presence: true
+  has_many :tier_ranks, dependent: :destroy
+  has_many :tier_categories, dependent: :destroy
+
+  has_many_attached :images
+
+  validates :title, presence: true
 end

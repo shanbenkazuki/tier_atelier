@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_10_051956) do
+ActiveRecord::Schema[7.0].define(version: 2023_08_10_063254) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -112,32 +112,32 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_051956) do
   end
 
   create_table "tier_categories", force: :cascade do |t|
-    t.bigint "tier_list_id", null: false
+    t.bigint "tier_id", null: false
     t.string "name", null: false
     t.integer "order", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["tier_list_id"], name: "index_tier_categories_on_tier_list_id"
+    t.index ["tier_id"], name: "index_tier_categories_on_tier_id"
   end
 
-  create_table "tier_lists", force: :cascade do |t|
+  create_table "tier_ranks", force: :cascade do |t|
+    t.bigint "tier_id", null: false
+    t.string "name", null: false
+    t.integer "order", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["tier_id"], name: "index_tier_ranks_on_tier_id"
+  end
+
+  create_table "tiers", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
     t.text "description"
     t.bigint "category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_tier_lists_on_category_id"
-    t.index ["user_id"], name: "index_tier_lists_on_user_id"
-  end
-
-  create_table "tier_ranks", force: :cascade do |t|
-    t.bigint "tier_list_id", null: false
-    t.string "name", null: false
-    t.integer "order", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["tier_list_id"], name: "index_tier_ranks_on_tier_list_id"
+    t.index ["category_id"], name: "index_tiers_on_category_id"
+    t.index ["user_id"], name: "index_tiers_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -152,18 +152,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_10_051956) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "comments", "tier_lists"
+  add_foreign_key "comments", "tiers", column: "tier_list_id"
   add_foreign_key "comments", "users"
   add_foreign_key "items", "tier_categories", column: "category_id"
-  add_foreign_key "items", "tier_lists"
   add_foreign_key "items", "tier_ranks", column: "rank_id"
-  add_foreign_key "likes", "tier_lists"
+  add_foreign_key "items", "tiers", column: "tier_list_id"
+  add_foreign_key "likes", "tiers", column: "tier_list_id"
   add_foreign_key "likes", "users"
   add_foreign_key "template_items", "templates"
   add_foreign_key "templates", "categories"
   add_foreign_key "templates", "users"
-  add_foreign_key "tier_categories", "tier_lists"
-  add_foreign_key "tier_lists", "categories"
-  add_foreign_key "tier_lists", "users"
-  add_foreign_key "tier_ranks", "tier_lists"
+  add_foreign_key "tier_categories", "tiers"
+  add_foreign_key "tier_ranks", "tiers"
+  add_foreign_key "tiers", "categories"
+  add_foreign_key "tiers", "users"
 end
