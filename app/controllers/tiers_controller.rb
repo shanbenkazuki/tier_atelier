@@ -14,20 +14,26 @@ class TiersController < ApplicationController
         @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
       end
     end
-    redirect_to tier_path(@tier), success: t('.success')
+    redirect_to edit_tier_path(@tier), success: t('.success')
   rescue => e
     @categories = Category.all
     flash.now[:danger] = t('.fail')
     render :new, status: :unprocessable_entity
   end
 
-  def show
+  def edit
     @tier = Tier.find(params[:id])
     @images = @tier.images.blobs.map do |blob|
       variant = blob.variant(resize_to_limit: [50, nil]).processed
       Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true)
     end
   end
+
+  def update
+    
+  end
+
+  def show; end
 
   def search; end
 
