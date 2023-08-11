@@ -23,6 +23,8 @@ class TiersController < ApplicationController
 
   def edit
     @tier = Tier.find(params[:id])
+    @tier_categories = TierCategory.where(tier_id: @tier.id).order(:order).map(&:name)
+    @tier_ranks = TierRank.where(tier_id: @tier.id).order(:order).map(&:name)
     @images = @tier.images.blobs.map do |blob|
       variant = blob.variant(resize_to_limit: [50, nil]).processed
       Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true)

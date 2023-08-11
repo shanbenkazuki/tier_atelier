@@ -3,12 +3,12 @@
     <div id="tier-container">
       <div class="category-row">
         <div class="label-holder"></div>
-        <% categories = ['Jungle', 'Gold', 'EXP', 'Mid', 'Roam'] %>
+        <% categories = @tier_categories %>
         <% categories.each do |category| %>
           <div class="category-label"><%= category %></div>
         <% end %>
       </div>
-      <% tiers = ['S', 'A', 'B', 'C', 'D'] %>
+      <% tiers = @tier_ranks %>
       <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)'] %>
       <% tiers.each_with_index do |tier, index| %>
         <div class="tier-row">
