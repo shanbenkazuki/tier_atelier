@@ -50,9 +50,10 @@ $(function() {
       var url = window.location.pathname;
       var tierId = url.split('/')[2];
       var imageUrl = $(ui.helper).attr('src');
+      var uniqueImageUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime();
 
       // URLからBlobデータを取得
-      fetch(imageUrl)
+      fetch(uniqueImageUrl)
         .then(response => response.blob())
         .then(blob => {
           var formData = new FormData();
