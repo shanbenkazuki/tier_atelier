@@ -50,6 +50,7 @@ $(function() {
       var url = window.location.pathname;
       var tierId = url.split('/')[2];
       var imageUrl = $(ui.helper).attr('src');
+      var fileName = decodeURIComponent(imageUrl.split('/').pop());
       var uniqueImageUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime();
 
       // URLからBlobデータを取得
@@ -57,7 +58,7 @@ $(function() {
         .then(response => response.blob())
         .then(blob => {
           var formData = new FormData();
-          formData.append('image', blob, 'filename.png');
+          formData.append('image', blob, fileName);
           formData.append('category', category);
           formData.append('rank', rank);
           // Ajaxリクエスト
