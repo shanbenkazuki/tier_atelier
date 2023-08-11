@@ -44,6 +44,37 @@ $(function() {
   
       // クローンをドロップ先に追加
       $(this).append(cloned);
+      var categoryIndex = $(this).index() - 1;
+      var category = $(".category-row .category-label").eq(categoryIndex).text();
+      var rank = $(this).siblings('.label-holder').find('.label').text();
+      var url = window.location.pathname;
+      var tierId = url.split('/')[2];
+      var imageUrl = $(ui.helper).attr('src');
+
+      // URLからBlobデータを取得
+      fetch(imageUrl)
+        .then(response => response.blob())
+        .then(blob => {
+          var formData = new FormData();
+          formData.append('image', blob, 'filename.png');
+          formData.append('category', category);
+          formData.append('rank', rank);
+          // Ajaxリクエスト
+          $.ajax({
+            url: '/tiers/' + tierId + '/items',
+            type: 'PUT',
+            data: formData,
+            processData: false,
+            contentType: false,
+            beforeSend: function(xhr) {
+              xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+              console.error('Error:', textStatus, errorThrown);
+              console.error('Response:', jqXHR.responseText);
+            }
+          });
+        });
     }
   });  
 

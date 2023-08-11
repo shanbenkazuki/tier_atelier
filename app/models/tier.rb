@@ -4,6 +4,7 @@ class Tier < ApplicationRecord
 
   has_many :tier_ranks, dependent: :destroy
   has_many :tier_categories, dependent: :destroy
+  has_many :items, dependent: :destroy
 
   has_many_attached :images
 
