@@ -45,6 +45,8 @@ class TiersController < ApplicationController
       variant = item.image.variant(resize_to_limit: [50, nil]).processed
       Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true)
     end
+    # 画像のidを配列で取得する
+    @image_ids = @items.map(&:id)
   end
 
   def update

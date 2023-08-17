@@ -3,8 +3,7 @@ class ItemsController < ApplicationController
 
   def update
     begin
-      # 以前の処理
-      item = Item.new
+      item = Item.find(params[:image_id])
       attach_image_to_item(item)
   
       tier_category = TierCategory.find_by(tier_id: @tier.id, name: params[:category])

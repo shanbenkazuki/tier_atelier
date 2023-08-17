@@ -50,6 +50,7 @@ $(function() {
       var url = window.location.pathname;
       var tierId = url.split('/')[2];
       var imageUrl = $(ui.helper).attr('src');
+      var imageId = $(ui.draggable).attr('id');
       var fileName = decodeURIComponent(imageUrl.split('/').pop());
       var uniqueImageUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime();
 
@@ -61,6 +62,7 @@ $(function() {
           formData.append('image', blob, fileName);
           formData.append('category', category);
           formData.append('rank', rank);
+          formData.append('image_id', imageId);
           // Ajaxリクエスト
           $.ajax({
             url: '/tiers/' + tierId + '/items',
