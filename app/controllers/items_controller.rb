@@ -6,11 +6,9 @@ class ItemsController < ApplicationController
       item = Item.find(params[:image_id])
       attach_image_to_item(item)
   
-      tier_category = TierCategory.find_by(tier_id: @tier.id, name: params[:category])
-      tier_rank = TierRank.find_by(tier_id: @tier.id, name: params[:rank])
       item.tier_id = @tier.id
-      item.rank_id = tier_rank.id
-      item.category_id = tier_category.id
+      item.rank_id = params[:rank_id]
+      item.category_id = params[:category_id]
   
       if item.save
         render json: item, status: :ok

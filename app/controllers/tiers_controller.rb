@@ -38,15 +38,47 @@ class TiersController < ApplicationController
 
   def edit
     @tier = Tier.find(params[:id])
-    @tier_categories = TierCategory.where(tier_id: @tier.id).where.not(order: 0).order(:order).map(&:name)
-    @tier_ranks = TierRank.where(tier_id: @tier.id).where.not(order: 0).order(:order).map(&:name)
+
+    # Tier表示用のデータを取得する
+    @category_name_and_ids = TierCategory.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:name, :id)
+    @rank_name_and_ids = TierRank.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:name, :id)
     @items = Item.where(tier_id: @tier.id)
-    @images = @items.map do |item|
-      variant = item.image.variant(resize_to_limit: [50, nil]).processed
-      Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true)
-    end
     # 画像のidを配列で取得する
     @image_ids = @items.map(&:id)
+    
+    @images_map = {}
+    @category_ids = TierCategory.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:id)
+    @rank_ids = TierRank.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:id)
+
+    @category_id_with_order_zero = TierCategory.where(tier_id: @tier.id, order: 0).pluck(:id).first
+    @rank_id_with_order_zero = TierRank.where(tier_id: @tier.id, order: 0).pluck(:id).first
+
+    @items.each do |item|
+      if item.rank_id == @rank_id_with_order_zero && item.category_id == @category_id_with_order_zero
+        variant = item.image.variant(resize_to_limit: [50, nil]).processed
+        image_data = {
+          url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
+          id: item.id
+        }
+        @images_map["uncategorized_unranked"] ||= []
+        @images_map["uncategorized_unranked"] << image_data
+      end
+    end
+    
+    @rank_ids.each do |rank_id|
+      @category_ids.each do |category_id|
+        items = @items.select do |i| 
+          i.rank_id == rank_id && i.category_id == category_id
+        end
+        @images_map["#{rank_id}_#{category_id}"] = items.map do |item|
+          variant = item.image.variant(resize_to_limit: [50, nil]).processed
+          {
+            url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
+            id: item.id
+          }
+        end
+      end
+    end
   end
 
   def update

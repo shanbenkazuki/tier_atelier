@@ -3,18 +3,21 @@
     <div id="tier-container">
       <div class="category-row">
         <div class="label-holder"></div>
-        <% categories = @tier_categories %>
-        <% categories.each do |category| %>
-          <div class="category-label"><%= category %></div>
+        <% @category_name_and_ids.each do |(category_name, category_id)| %>
+          <div class="category-label" data-category-id="<%= category_id %>"><%= category_name %></div>
         <% end %>
       </div>
-      <% ranks = @tier_ranks %>
       <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)'] %>
-      <% ranks.each_with_index do |tier, ranks_index| %>
+      <% @rank_name_and_ids.each_with_index do |(rank_name, rank_id), ranks_index| %>
         <div class="tier-row">
-          <div class="label-holder" style="background-color: <%= colors[ranks_index] %>;"><span class="label"><%= tier %></span></div>
-          <% categories.each_with_index do |categories, categories_index| %>
-            <%= content_tag :div, "", class: "tier cell #{ranks_index}-#{categories_index}" %>
+          <div class="label-holder" style="background-color: <%= colors[ranks_index] %>;" data-rank-id="<%= rank_id %>" ><span class="label"><%= rank_name %></span></div>
+          <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
+            <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
+              <% image_data_array = @images_map["#{rank_id}_#{category_id}"] || [] %>
+              <% image_data_array.each do |image_data| %>
+                <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
+              <% end %>
+            </div>
           <% end %>
           <div class="settings-control">
             <div class="settings">
@@ -36,7 +39,8 @@
 </div>
 
 <div class="container image-area d-flex justify-content-center border border-3 border-dark rounded p-3">
-  <% @images.each_with_index do |image, index| %>
-    <%= image_tag image, class: 'draggable', id: @image_ids[index] %>
+  <% image_data_array = @images_map["uncategorized_unranked"] || [] %>
+  <% image_data_array.each do |image_data| %>
+    <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
   <% end %>
 </div>
