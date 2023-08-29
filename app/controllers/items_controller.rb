@@ -2,28 +2,22 @@ class ItemsController < ApplicationController
   before_action :set_tier, only: [:update]
 
   def update
-    begin
-      # 以前の処理
-      item = Item.new
-      attach_image_to_item(item)
-  
-      tier_category = TierCategory.find_by(tier_id: @tier.id, name: params[:category])
-      tier_rank = TierRank.find_by(tier_id: @tier.id, name: params[:rank])
-      item.tier_id = @tier.id
-      item.rank_id = tier_rank.id
-      item.category_id = tier_category.id
-  
-      if item.save
-        render json: item, status: :ok
-      else
-        render json: item.errors, status: :unprocessable_entity
-      end
-    rescue => e
-      logger.error("Error updating item: #{e.message}")
-      render json: { error: 'Internal Server Error' }, status: :internal_server_error
+    item = Item.find(params[:image_id])
+    attach_image_to_item(item)
+
+    item.tier_id = @tier.id
+    item.rank_id = params[:rank_id]
+    item.category_id = params[:category_id]
+
+    if item.save
+      render json: item, status: :ok
+    else
+      render json: item.errors, status: :unprocessable_entity
     end
+  rescue StandardError => e
+    logger.error("Error updating item: #{e.message}")
+    render json: { error: 'Internal Server Error' }, status: :internal_server_error
   end
-  
 
   private
 

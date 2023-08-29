@@ -1,13 +1,9 @@
 module UsersHelper
   def user_form_button
     case params[:action]
-    when 'new'
+    when 'new', 'create'
       '登録'
-    when 'edit'
-      'Update'
-    when 'create'
-      '登録'
-    when 'update'
+    when 'edit', 'update'
       'Update'
     else
       raise 'unexpected action'

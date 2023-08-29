@@ -45,11 +45,12 @@ $(function() {
       // クローンをドロップ先に追加
       $(this).append(cloned);
       var categoryIndex = $(this).index() - 1;
-      var category = $(".category-row .category-label").eq(categoryIndex).text();
-      var rank = $(this).siblings('.label-holder').find('.label').text();
+      var categoryId = $(".category-row .category-label").eq(categoryIndex).data('category-id');
+      var rankId = $(this).siblings('.label-holder').data('rank-id');
       var url = window.location.pathname;
       var tierId = url.split('/')[2];
       var imageUrl = $(ui.helper).attr('src');
+      var imageId = $(ui.draggable).attr('id');
       var fileName = decodeURIComponent(imageUrl.split('/').pop());
       var uniqueImageUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime();
 
@@ -59,8 +60,9 @@ $(function() {
         .then(blob => {
           var formData = new FormData();
           formData.append('image', blob, fileName);
-          formData.append('category', category);
-          formData.append('rank', rank);
+          formData.append('category_id', categoryId);
+          formData.append('rank_id', rankId);
+          formData.append('image_id', imageId);
           // Ajaxリクエスト
           $.ajax({
             url: '/tiers/' + tierId + '/items',

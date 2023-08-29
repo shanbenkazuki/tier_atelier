@@ -1,21 +1,31 @@
 <div id="outer-main-flex">
   <div id="tier-wrap" class="create">
     <div id="tier-container">
+      <!-- Category Labels -->
       <div class="category-row">
         <div class="label-holder"></div>
-        <% categories = @tier_categories %>
-        <% categories.each do |category| %>
-          <div class="category-label"><%= category %></div>
+        <% @category_name_and_ids.each do |(category_name, category_id)| %>
+          <div class="category-label" data-category-id="<%= category_id %>"><%= category_name %></div>
         <% end %>
       </div>
-      <% tiers = @tier_ranks %>
+
       <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)'] %>
-      <% tiers.each_with_index do |tier, index| %>
+      <!-- Tier Rows -->
+      <% @rank_name_and_ids.each_with_index do |(rank_name, rank_id), ranks_index| %>
         <div class="tier-row">
-          <div class="label-holder" style="background-color: <%= colors[index] %>;"><span class="label"><%= tier %></span></div>
-          <% categories.each do %>
-            <div class="tier cell"></div>
+          <div class="label-holder" style="background-color: <%= colors[ranks_index] %>;" data-rank-id="<%= rank_id %>">
+            <span class="label"><%= rank_name %></span>
+          </div>
+
+          <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
+            <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
+              <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
+                <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
+              <% end %>
+            </div>
           <% end %>
+
+          <!-- Settings Controls -->
           <div class="settings-control">
             <div class="settings">
               <i class="fas fa-cog fa-2x"></i>
@@ -36,7 +46,8 @@
 </div>
 
 <div class="container image-area d-flex justify-content-center border border-3 border-dark rounded p-3">
-  <% @images.each_with_index do |image, index| %>
-    <%= image_tag image, class: 'draggable', id: "draggable-#{index}" %>
+  <!-- Uncategorized Images -->
+  <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
+    <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
   <% end %>
 </div>
