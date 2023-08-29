@@ -38,46 +38,35 @@ class TiersController < ApplicationController
 
   def edit
     @tier = Tier.find(params[:id])
-
-    # Tier表示用のデータを取得する
-    @category_name_and_ids = TierCategory.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:name, :id)
-    @rank_name_and_ids = TierRank.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:name, :id)
+  
+    tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
+    tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
+  
+    @category_name_and_ids = tier_categories.where.not(order: 0).pluck(:name, :id)
+    @rank_name_and_ids = tier_ranks.where.not(order: 0).pluck(:name, :id)
+    
+    @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
+    @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
+    
     @items = Item.where(tier_id: @tier.id)
-    # 画像のidを配列で取得する
-    @image_ids = @items.map(&:id)
-    
+  
     @images_map = {}
-    @category_ids = TierCategory.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:id)
-    @rank_ids = TierRank.where(tier_id: @tier.id).where.not(order: 0).order(:order).pluck(:id)
-
-    @category_id_with_order_zero = TierCategory.where(tier_id: @tier.id, order: 0).pluck(:id).first
-    @rank_id_with_order_zero = TierRank.where(tier_id: @tier.id, order: 0).pluck(:id).first
-
+  
     @items.each do |item|
-      if item.rank_id == @rank_id_with_order_zero && item.category_id == @category_id_with_order_zero
-        variant = item.image.variant(resize_to_limit: [50, nil]).processed
-        image_data = {
-          url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
-          id: item.id
-        }
-        @images_map["uncategorized_unranked"] ||= []
-        @images_map["uncategorized_unranked"] << image_data
-      end
-    end
-    
-    @rank_ids.each do |rank_id|
-      @category_ids.each do |category_id|
-        items = @items.select do |i| 
-          i.rank_id == rank_id && i.category_id == category_id
-        end
-        @images_map["#{rank_id}_#{category_id}"] = items.map do |item|
-          variant = item.image.variant(resize_to_limit: [50, nil]).processed
-          {
-            url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
-            id: item.id
-          }
-        end
-      end
+      key = if item.rank_id == @rank_id_with_order_zero && item.category_id == @category_id_with_order_zero
+              "uncategorized_unranked"
+            else
+              "#{item.rank_id}_#{item.category_id}"
+            end
+  
+      variant = item.image.variant(resize_to_limit: [50, nil]).processed
+      image_data = {
+        url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
+        id: item.id
+      }
+  
+      @images_map[key] ||= []
+      @images_map[key] << image_data
     end
   end
 
