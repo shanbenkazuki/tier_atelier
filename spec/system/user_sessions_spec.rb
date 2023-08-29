@@ -8,7 +8,7 @@ RSpec.describe 'Users', type: :system do
       before do
         visit login_path
       end
-      
+
       context 'フォームの入力値が正常' do
         it 'ログインが成功する' do
           fill_in 'メールアドレス', with: user.email

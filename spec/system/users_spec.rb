@@ -59,7 +59,7 @@ RSpec.describe 'Users', type: :system do
 
       context 'メールアドレスが既に登録されている' do
         let!(:existing_user) { create(:user, email: 'email@example.com') }
-      
+
         it 'ユーザーの新規作成が失敗する' do
           visit new_user_path
           fill_in 'ユーザ名', with: 'hogehoge'
@@ -71,7 +71,6 @@ RSpec.describe 'Users', type: :system do
           expect(current_path).to eq new_user_path
         end
       end
-
     end
   end
 end

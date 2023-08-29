@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :users
-  get 'tiers/search', to: 'tiers#search', :as => :search
+  get 'tiers/search', to: 'tiers#search', as: :search
   resources :tiers do
     member do
       put 'items', to: 'items#update'

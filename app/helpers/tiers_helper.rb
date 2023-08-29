@@ -3,12 +3,10 @@ module TiersHelper
     case params[:action]
     when 'new'
       '作成'
-    when 'edit'
+    when 'edit', 'update'
       'Update'
     when 'create'
       '登録'
-    when 'update'
-      'Update'
     else
       raise 'unexpected action'
     end

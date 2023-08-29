@@ -1,9 +1,45 @@
 class TiersController < ApplicationController
   def index; end
 
+  def show; end
+
   def new
     @categories = Category.all
     @tier = Tier.new
+  end
+
+  def edit
+    @tier = Tier.find(params[:id])
+
+    tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
+    tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
+
+    @category_name_and_ids = tier_categories.where.not(order: 0).pluck(:name, :id)
+    @rank_name_and_ids = tier_ranks.where.not(order: 0).pluck(:name, :id)
+
+    @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
+    @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
+
+    @items = Item.where(tier_id: @tier.id)
+
+    @images_map = {}
+
+    @items.each do |item|
+      key = if item.rank_id == @rank_id_with_order_zero && item.category_id == @category_id_with_order_zero
+              "uncategorized_unranked"
+            else
+              "#{item.rank_id}_#{item.category_id}"
+            end
+
+      variant = item.image.variant(resize_to_limit: [50, nil]).processed
+      image_data = {
+        url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
+        id: item.id
+      }
+
+      @images_map[key] ||= []
+      @images_map[key] << image_data
+    end
   end
 
   def create
@@ -19,6 +55,7 @@ class TiersController < ApplicationController
       # 画像の数だけItemテーブルに保存する
       params[:tier][:images].each do |image|
         next if image.is_a?(String)
+
         item = Item.new
         item.image.attach(io: image, filename: image.original_filename, content_type: image.content_type)
         tier_category = TierCategory.find_by(tier_id: @tier.id, order: 0)
@@ -30,51 +67,13 @@ class TiersController < ApplicationController
       end
     end
     redirect_to edit_tier_path(@tier), success: t('.success')
-  rescue => e
+  rescue StandardError
     @categories = Category.all
     flash.now[:danger] = t('.fail')
     render :new, status: :unprocessable_entity
   end
 
-  def edit
-    @tier = Tier.find(params[:id])
-  
-    tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
-    tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
-  
-    @category_name_and_ids = tier_categories.where.not(order: 0).pluck(:name, :id)
-    @rank_name_and_ids = tier_ranks.where.not(order: 0).pluck(:name, :id)
-    
-    @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
-    @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
-    
-    @items = Item.where(tier_id: @tier.id)
-  
-    @images_map = {}
-  
-    @items.each do |item|
-      key = if item.rank_id == @rank_id_with_order_zero && item.category_id == @category_id_with_order_zero
-              "uncategorized_unranked"
-            else
-              "#{item.rank_id}_#{item.category_id}"
-            end
-  
-      variant = item.image.variant(resize_to_limit: [50, nil]).processed
-      image_data = {
-        url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
-        id: item.id
-      }
-  
-      @images_map[key] ||= []
-      @images_map[key] << image_data
-    end
-  end
-
-  def update
-    
-  end
-
-  def show; end
+  def update; end
 
   def search; end
 
