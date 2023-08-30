@@ -45,7 +45,7 @@
   </div>
 </div>
 
-<div class="container image-area d-flex justify-content-center border border-3 border-dark rounded p-3">
+<div id="independent-area" class="container image-area d-flex justify-content-center border border-3 border-dark rounded p-3">
   <!-- Uncategorized Images -->
   <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
     <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>

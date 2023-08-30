@@ -4,10 +4,15 @@ class ItemsController < ApplicationController
   def update
     item = Item.find(params[:image_id])
     attach_image_to_item(item)
-
     item.tier_id = @tier.id
-    item.rank_id = params[:rank_id]
-    item.category_id = params[:category_id]
+
+    if params[:is_independent] == 'true'
+      item.rank_id = TierRank.where(tier_id: @tier.id, order: 0).first.id
+      item.category_id = TierCategory.where(tier_id: @tier.id, order: 0).first.id
+    else
+      item.rank_id = params[:rank_id]
+      item.category_id = params[:category_id]
+    end
 
     if item.save
       render json: item, status: :ok
