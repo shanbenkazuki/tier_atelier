@@ -48,8 +48,12 @@ class TiersController < ApplicationController
       # 初期値を保存する
       @tier.tier_categories.create!(name: params["tier"]["default_rank"], order: 0)
       @tier.tier_ranks.create!(name: params["tier"]["default_category"], order: 0)
-      1.upto(5) do |i|
+      category_column_num = params["tier"]["category_column_num"].to_i
+      rank_column_num = params["tier"]["rank_column_num"].to_i
+      1.upto(category_column_num) do |i|
         @tier.tier_categories.create!(name: params["tier"]["category_#{i}"], order: i)
+      end
+      1.upto(rank_column_num) do |i|
         @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
       end
       # 画像の数だけItemテーブルに保存する

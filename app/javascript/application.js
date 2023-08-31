@@ -13,6 +13,10 @@ import "./src/jquery"
 import "./src/jquery-ui"
 
 $(function() {
+  // カテゴリの幅を動的に調整
+  var categoryCount = $('.category-row .category-label').length;
+  $('.category-label').css('width', 'calc(100% / ' + categoryCount + ')');
+
   $('.draggable').draggable({
     revert: 'invalid',
     helper: 'clone',
@@ -139,6 +143,51 @@ $(function() {
             }
           });
         });
+    }
+  });
+  var categoryCounter = 5;
+  var rankCounter = 5;
+  var maxFields = 10; // 例として、最大10個のフィールドを設定
+  
+  $(document).on('click', '#add-category', function() {
+    if(categoryCounter < maxFields){
+      categoryCounter++;
+      var newTextField = "<input class='form-control mt-2' type='text' name='tier[category_" + categoryCounter + "]' id='tier_category_" + categoryCounter + "'>";
+      $(newTextField).insertBefore("#add-category");
+      $('#tier_category_column_num').val(categoryCounter);
+    } else {
+      alert('最大カテゴリ数に達しました');
+    }
+  });
+
+  $(document).on('click', '#remove-category', function() {
+    if(categoryCounter > 5){
+      $("#tier_category_" + categoryCounter).remove();
+      categoryCounter--;
+      $('#tier_category_column_num').val(categoryCounter);
+    } else {
+      alert('これ以上フィールドを削除できません');
+    }
+  });
+
+  $(document).on('click', '#add-rank', function() {
+    if(rankCounter < maxFields){
+      rankCounter++;
+      var newTextField = "<input class='form-control mt-2' type='text' name='tier[rank_" + rankCounter + "]' id='tier_rank_" + rankCounter + "'>";
+      $(newTextField).insertBefore("#add-rank");
+      $('#tier_rank_column_num').val(rankCounter);
+    } else {
+      alert('最大ランク数に達しました');
+    }
+  });
+
+  $(document).on('click', '#remove-rank', function() {
+    if(rankCounter > 5){
+      $("#tier_rank_" + rankCounter).remove();
+      rankCounter--;
+      $('#tier_rank_column_num').val(rankCounter);
+    } else {
+      alert('これ以上フィールドを削除できません');
     }
   });
 });
