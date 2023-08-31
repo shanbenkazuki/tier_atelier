@@ -18,6 +18,7 @@
   <div class="form-group mb-4">
     <label class='control-label'><%= t('.rank') %></label>
     <%= f.hidden_field :default_rank, value: 'unranked' %>
+    <%= f.hidden_field :rank_column_num, value: '5' %>
     <% 5.times do |i| %>
       <%= f.text_field "rank_#{i+1}", class: 'form-control mt-2' %>
     <% end %>
@@ -27,6 +28,7 @@
   <div class="form-group mb-4">
     <label class='control-label'><%= t('.category') %></label>
     <%= f.hidden_field :default_category, value: 'uncategorized' %>
+    <%= f.hidden_field :category_column_num, value: '5' %>
     <% 5.times do |i| %>
       <%= f.text_field "category_#{i+1}", class: 'form-control mt-2' %>
     <% end %>

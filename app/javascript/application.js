@@ -150,16 +150,28 @@ $(function() {
       categoryCounter++;
       var newTextField = "<input class='form-control mt-2' type='text' name='tier[category_" + categoryCounter + "]' id='tier_category_" + categoryCounter + "'>";
       $(newTextField).insertBefore("#add-category");
+      $('#tier_category_column_num').val(categoryCounter);
     } else {
       alert('最大カテゴリ数に達しました');
     }
   });
-  
+
+  $(document).on('click', '#remove-category', function() {
+    if(categoryCounter > 5){
+      $("#tier_category_" + categoryCounter).remove();
+      categoryCounter--;
+      $('#tier_category_column_num').val(categoryCounter);
+    } else {
+      alert('これ以上フィールドを削除できません');
+    }
+  });
+
   $(document).on('click', '#add-rank', function() {
     if(rankCounter < maxFields){
       rankCounter++;
       var newTextField = "<input class='form-control mt-2' type='text' name='tier[rank_" + rankCounter + "]' id='tier_rank_" + rankCounter + "'>";
       $(newTextField).insertBefore("#add-rank");
+      $('#tier_rank_column_num').val(rankCounter);
     } else {
       alert('最大ランク数に達しました');
     }
@@ -169,15 +181,7 @@ $(function() {
     if(rankCounter > 5){
       $("#tier_rank_" + rankCounter).remove();
       rankCounter--;
-    } else {
-      alert('これ以上フィールドを削除できません');
-    }
-  });
-
-  $(document).on('click', '#remove-category', function() {
-    if(categoryCounter > 5){
-      $("#tier_category_" + categoryCounter).remove();
-      categoryCounter--;
+      $('#tier_rank_column_num').val(rankCounter);
     } else {
       alert('これ以上フィールドを削除できません');
     }
