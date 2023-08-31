@@ -164,4 +164,22 @@ $(function() {
       alert('最大ランク数に達しました');
     }
   });
+
+  $(document).on('click', '#remove-rank', function() {
+    if(rankCounter > 5){
+      $("#tier_rank_" + rankCounter).remove();
+      rankCounter--;
+    } else {
+      alert('これ以上フィールドを削除できません');
+    }
+  });
+
+  $(document).on('click', '#remove-category', function() {
+    if(categoryCounter > 5){
+      $("#tier_category_" + categoryCounter).remove();
+      categoryCounter--;
+    } else {
+      alert('これ以上フィールドを削除できません');
+    }
+  });
 });
