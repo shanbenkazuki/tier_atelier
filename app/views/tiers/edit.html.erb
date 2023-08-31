@@ -9,7 +9,7 @@
         <% end %>
       </div>
 
-      <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)'] %>
+      <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)', 'rgb(127, 255, 127)', 'rgb(127, 255, 255)', 'rgb(127, 191, 255)', 'rgb(127, 127, 255)', 'rgb(255, 127, 255)'] %>
       <!-- Tier Rows -->
       <% @rank_name_and_ids.each_with_index do |(rank_name, rank_id), ranks_index| %>
         <div class="tier-row">
@@ -24,21 +24,6 @@
               <% end %>
             </div>
           <% end %>
-
-          <!-- Settings Controls -->
-          <div class="settings-control">
-            <div class="settings">
-              <i class="fas fa-cog fa-2x"></i>
-            </div>
-            <div class="move-buttons">
-              <div class="move-up">
-                <i class="fas fa-arrow-up fa-2x"></i>
-              </div>
-              <div class="move-down">
-                <i class="fas fa-arrow-down fa-2x"></i>
-              </div>
-            </div>
-          </div>
         </div>
       <% end %>
     </div>

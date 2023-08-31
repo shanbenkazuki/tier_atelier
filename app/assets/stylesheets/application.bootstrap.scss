@@ -22,7 +22,6 @@
   line-height: 19px;
   flex: 1;
   border-right: solid 1px #000;
-  width: calc((100% - 180px) / 5);
   display: flex;
   flex-wrap: wrap;
   align-items: flex-start;
@@ -36,6 +35,7 @@
 .label-holder {
   width: 100px;
   min-height: 80px;
+  min-width: 100px;
   border-right: solid 1px #000;
   background-color: inherit;
 }
@@ -95,7 +95,6 @@
 }
 
 .category-label {
-  width: calc((100% - 180px) / 5); 
   background-color: #ccc;
   border-right: solid 1px #000;
 }

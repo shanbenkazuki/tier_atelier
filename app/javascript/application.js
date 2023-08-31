@@ -13,6 +13,10 @@ import "./src/jquery"
 import "./src/jquery-ui"
 
 $(function() {
+  // カテゴリの幅を動的に調整
+  var categoryCount = $('.category-row .category-label').length;
+  $('.category-label').css('width', 'calc(100% / ' + categoryCount + ')');
+
   $('.draggable').draggable({
     revert: 'invalid',
     helper: 'clone',

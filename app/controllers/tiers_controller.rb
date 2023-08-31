@@ -50,8 +50,6 @@ class TiersController < ApplicationController
       @tier.tier_ranks.create!(name: params["tier"]["default_category"], order: 0)
       category_column_num = params["tier"]["category_column_num"].to_i
       rank_column_num = params["tier"]["rank_column_num"].to_i
-      binding.pry
-
       1.upto(category_column_num) do |i|
         @tier.tier_categories.create!(name: params["tier"]["category_#{i}"], order: i)
       end
