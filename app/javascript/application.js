@@ -141,4 +141,27 @@ $(function() {
         });
     }
   });
+  var categoryCounter = 5;
+  var rankCounter = 5;
+  var maxFields = 10; // 例として、最大10個のフィールドを設定
+  
+  $(document).on('click', '#add-category', function() {
+    if(categoryCounter < maxFields){
+      categoryCounter++;
+      var newTextField = "<input class='form-control mt-2' type='text' name='tier[category_" + categoryCounter + "]' id='tier_category_" + categoryCounter + "'>";
+      $(newTextField).insertBefore("#add-category");
+    } else {
+      alert('最大カテゴリ数に達しました');
+    }
+  });
+  
+  $(document).on('click', '#add-rank', function() {
+    if(rankCounter < maxFields){
+      rankCounter++;
+      var newTextField = "<input class='form-control mt-2' type='text' name='tier[rank_" + rankCounter + "]' id='tier_rank_" + rankCounter + "'>";
+      $(newTextField).insertBefore("#add-rank");
+    } else {
+      alert('最大ランク数に達しました');
+    }
+  });
 });
