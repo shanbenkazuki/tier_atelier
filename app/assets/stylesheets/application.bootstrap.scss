@@ -48,10 +48,9 @@
 }
 
 #tier-container {
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
-  border: solid 1px #000;
-  border-top: none;
   background: #333;
 }
 
@@ -79,32 +78,18 @@
   flex-direction: column;
 }
 
-#outer-main-flex {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  max-width: 1800px;
-  margin: 0 auto;
-  width: 100%;
-}
-
-#tier-wrap {
-  margin: 20px 0;
-  width: 100%;
-  max-width: 2000px;
-}
-
 .category-label {
-  background-color: #ccc;
   border-right: solid 1px #000;
+  width: 20%;
 }
 
-.image-area {
+#independent-area {
   flex-wrap: wrap;
 }
 
 .container {
   margin-bottom: 72px;
+  max-width: 1600px;
 }
 
 .label-holder, .category-label, .settings-control, .settings, .move-buttons {

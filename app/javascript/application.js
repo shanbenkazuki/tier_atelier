@@ -13,10 +13,6 @@ import "./src/jquery"
 import "./src/jquery-ui"
 
 $(function() {
-  // カテゴリの幅を動的に調整
-  var categoryCount = $('.category-row .category-label').length;
-  $('.category-label').css('width', 'calc(100% / ' + categoryCount + ')');
-
   $('.draggable').draggable({
     revert: 'invalid',
     helper: 'clone',
@@ -86,8 +82,7 @@ $(function() {
     }
   });  
 
-  // containerをドロップ先として設定
-  $('.container').droppable({
+  $('#independent-area').droppable({
     accept: '.draggable',
     drop: function(event, ui) {
       // 元の画像を削除

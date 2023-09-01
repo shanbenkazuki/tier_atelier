@@ -1,38 +1,30 @@
-<div id="outer-main-flex">
-  <div id="tier-wrap" class="create">
-    <div id="tier-container">
-      <!-- Category Labels -->
-      <div class="category-row">
-        <div class="label-holder"></div>
-        <% @category_name_and_ids.each do |(category_name, category_id)| %>
-          <div class="category-label" data-category-id="<%= category_id %>"><%= category_name %></div>
-        <% end %>
-      </div>
-
-      <% colors = ['rgb(255, 127, 127)', 'rgb(255, 191, 127)', 'rgb(255, 223, 127)', 'rgb(255, 255, 127)', 'rgb(191, 255, 127)', 'rgb(127, 255, 127)', 'rgb(127, 255, 255)', 'rgb(127, 191, 255)', 'rgb(127, 127, 255)', 'rgb(255, 127, 255)'] %>
-      <!-- Tier Rows -->
-      <% @rank_name_and_ids.each_with_index do |(rank_name, rank_id), ranks_index| %>
-        <div class="tier-row">
-          <div class="label-holder" style="background-color: <%= colors[ranks_index] %>;" data-rank-id="<%= rank_id %>">
-            <span class="label"><%= rank_name %></span>
-          </div>
-
-          <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
-            <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
-              <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
-                <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
+<div class="container">
+  <div id="tier-container">
+    <div class="category-row">
+      <div class="label-holder"></div>
+      <% @category_name_and_ids.each_with_index do |(category_name, category_id), categories_index| %>
+        <div class="category-label" data-category-id="<%= category_id %>" style="background-color: <%= @tier_colors[categories_index] %>;" ><%= category_name %></div>
       <% end %>
     </div>
+    <% @rank_name_and_ids.each_with_index do |(rank_name, rank_id), ranks_index| %>
+      <div class="tier-row">
+        <div class="label-holder" style="background-color: <%= @tier_colors[ranks_index] %>;" data-rank-id="<%= rank_id %>">
+          <span class="label"><%= rank_name %></span>
+        </div>
+        <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
+          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
+            <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
+              <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
   </div>
-</div>
-
-<div id="independent-area" class="container image-area d-flex justify-content-center border border-3 border-dark rounded p-3">
-  <!-- Uncategorized Images -->
-  <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
-    <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
-  <% end %>
+  <div id="independent-area" class="d-flex justify-content-center border border-dark rounded p-3">
+    <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
+      <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
+    <% end %>
+  </div>
+  <%= button_tag 'Click me', type: 'button', class: 'btn btn-primary' %>
 </div>
