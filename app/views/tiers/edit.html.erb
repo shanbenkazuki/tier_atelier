@@ -14,7 +14,7 @@
         <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
           <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
             <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
-              <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id], id: 'open-modal' %>
+              <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
             <% end %>
           </div>
         <% end %>
