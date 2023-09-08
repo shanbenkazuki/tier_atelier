@@ -190,6 +190,9 @@ $(function() {
     autoOpen: false,
     modal: true,
     buttons: {
+      "ダウンロード": function() {
+        alert("ダウンロードボタンがクリックされました");
+      },
       "Close": function() {
         $(this).dialog("close");
       }
