@@ -26,4 +26,9 @@
       <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
     <% end %>
   </div>
+  <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary', id: 'open-modal' %>
+  <!-- Modal -->
+  <div id="myModal" title="Modal Title">
+    <p>画像を保存します。</p>
+  </div>
 </div>
