@@ -192,7 +192,23 @@ $(function() {
     modal: true,
     buttons: {
       "ダウンロード": function() {
-        alert("ダウンロードボタンがクリックされました");
+        $.ajax({
+          url: '/screenshot',
+          method: 'POST',
+          success: function(response) {
+            if(response.message === "Screenshot saved") {
+              var a = document.createElement('a');
+              a.href = '/screenshot/download';
+              a.download = 'screenshot.png';
+              document.body.appendChild(a);
+              a.click();
+              document.body.removeChild(a);
+            }
+          },
+          error: function(err) {
+            alert("エラーが発生しました: " + err.responseText);
+          }
+        });
       },
       "Close": function() {
         $(this).dialog("close");
