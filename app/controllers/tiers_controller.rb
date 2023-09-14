@@ -22,6 +22,8 @@ class TiersController < ApplicationController
 
     @items = Item.where(tier_id: @tier.id)
 
+    @tier_colors = Rails.application.config.tier_colors
+
     @images_map = {}
 
     @items.each do |item|

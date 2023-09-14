@@ -48,10 +48,9 @@
 }
 
 #tier-container {
+  margin: 20px 0;
   display: flex;
   flex-direction: column;
-  border: solid 1px #000;
-  border-top: none;
   background: #333;
 }
 
@@ -79,6 +78,7 @@
   flex-direction: column;
 }
 
+
 #outer-main-flex {
   display: flex;
   justify-content: space-around;
@@ -95,16 +95,17 @@
 }
 
 .category-label {
-  background-color: #ccc;
   border-right: solid 1px #000;
+  width: 20%;
 }
 
-.image-area {
+#independent-area {
   flex-wrap: wrap;
 }
 
 .container {
   margin-bottom: 72px;
+  max-width: 1600px;
 }
 
 .label-holder, .category-label, .settings-control, .settings, .move-buttons {
