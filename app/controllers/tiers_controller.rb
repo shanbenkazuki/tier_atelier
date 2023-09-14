@@ -33,9 +33,12 @@ class TiersController < ApplicationController
               "#{item.rank_id}_#{item.category_id}"
             end
 
-      variant = item.image.variant(resize_to_limit: [50, nil]).processed
+      variant = item.image.variant(resize_to_fill: [50, 50])
+      blob = variant.blob
+      # url = Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true)
+      image_data_uri = "data:#{blob.content_type};base64,#{Base64.strict_encode64(blob.download)}"
       image_data = {
-        url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
+        url: image_data_uri,
         id: item.id
       }
 

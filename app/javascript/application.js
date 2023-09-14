@@ -7,6 +7,7 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
 import { fab } from '@fortawesome/free-brands-svg-icons'
 import { library } from "@fortawesome/fontawesome-svg-core";
+import html2canvas from 'html2canvas';
 library.add(fas, far, fab)
 
 import "./src/jquery"
@@ -49,9 +50,11 @@ $(function() {
       var rankId = $(this).siblings('.label-holder').data('rank-id');
       var tierId = window.location.pathname.split('/')[2];
       var imageUrl = $(ui.helper).attr('src');
+      console.log(imageUrl);
       var imageId = $(ui.draggable).attr('id');
       var fileName = decodeURIComponent(imageUrl.split('/').pop());
       var uniqueImageUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime();
+      console.log(uniqueImageUrl);
 
       // URLからBlobデータを取得
       fetch(uniqueImageUrl)
@@ -78,7 +81,10 @@ $(function() {
               console.error('Response:', jqXHR.responseText);
             }
           });
-        });
+        })
+        .catch(error => {
+          console.error('Error fetching the image:', error);
+        });;
     }
   });  
 
@@ -191,7 +197,16 @@ $(function() {
     modal: true,
     buttons: {
       "ダウンロード": function() {
-        alert("ダウンロードボタンがクリックされました");
+        var element = document.getElementById('tier-container');
+        html2canvas(element, {
+        }).then(canvas => {
+          var imgData = canvas.toDataURL('image/png');
+          var link = document.createElement('a');
+          link.href = imgData;
+          link.download = 'screenshot.png';
+          link.click();
+        });
+        // alert("ダウンロードボタンがクリックされました");
       },
       "Close": function() {
         $(this).dialog("close");
