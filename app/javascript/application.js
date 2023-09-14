@@ -186,4 +186,21 @@ $(function() {
       alert('これ以上フィールドを削除できません');
     }
   });
+
+  $("#myModal").dialog({
+    autoOpen: false,
+    modal: true,
+    buttons: {
+      "ダウンロード": function() {
+        alert("ダウンロードボタンがクリックされました");
+      },
+      "Close": function() {
+        $(this).dialog("close");
+      }
+    }
+  });
+
+  $(document).on('click', '#open-modal', function() {
+    $("#myModal").dialog("open");
+  });
 });
