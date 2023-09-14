@@ -197,12 +197,7 @@ $(function() {
           method: 'POST',
           success: function(response) {
             if(response.message === "Screenshot saved") {
-              var a = document.createElement('a');
-              a.href = '/screenshot/download';
-              a.download = 'screenshot.png';
-              document.body.appendChild(a);
-              a.click();
-              document.body.removeChild(a);
+              window.location.href = '/screenshot/download';
             }
           },
           error: function(err) {
