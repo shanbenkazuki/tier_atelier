@@ -87,7 +87,7 @@ $(function() {
   });  
 
   // containerをドロップ先として設定
-  $('.container').droppable({
+  $('#independent-area').droppable({
     accept: '.draggable',
     drop: function(event, ui) {
       // 元の画像を削除
