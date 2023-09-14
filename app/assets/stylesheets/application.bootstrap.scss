@@ -78,6 +78,22 @@
   flex-direction: column;
 }
 
+
+#outer-main-flex {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  max-width: 1800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+#tier-wrap {
+  margin: 20px 0;
+  width: 100%;
+  max-width: 2000px;
+}
+
 .category-label {
   border-right: solid 1px #000;
   width: 20%;
