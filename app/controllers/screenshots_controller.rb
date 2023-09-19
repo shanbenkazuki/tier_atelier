@@ -5,7 +5,7 @@ class ScreenshotsController < ApplicationController
 
   def create
     begin
-      # 一時的なディレクトリを使用してスクリーンショットを保存する 
+      # 一時的なディレクトリを使用してスクリーンショットを保存する
       tempfile = Tempfile.new(['screenshot', '.png'], Rails.root.join('tmp'))
 
       Playwright.create(playwright_cli_executable_path: 'npx playwright') do |playwright|
