@@ -42,7 +42,7 @@ class ScreenshotsController < ApplicationController
     if filepath && File.exist?(filepath)
       pp 'download'
       send_file filepath, filename: "screenshot.png", type: "image/png"
-      # ダウンロード後にファイルを削除
+      # ダウンロード後にファイルを削除 
       # File.delete(filepath)
       session.delete(:screenshot_path)
     else
