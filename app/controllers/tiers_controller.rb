@@ -32,13 +32,12 @@ class TiersController < ApplicationController
             else
               "#{item.rank_id}_#{item.category_id}"
             end
-
-      variant = item.image.variant(resize_to_limit: [50, nil]).processed  
+      variant = item.image.variant(resize_to_limit: [50, 50]).processed
       image_data = {
-        url: Rails.application.routes.url_helpers.rails_representation_path(variant, only_path: true),
+        url: url_for(variant.url),
         id: item.id
       }
-
+    
       @images_map[key] ||= []
       @images_map[key] << image_data
     end

@@ -209,15 +209,6 @@ $(function() {
   });
 
   $(document).on('click', '#open-modal', function() {
-    // $("#myModal").dialog("open");
-    html2canvas(document.querySelector("#tier-container"), { 
-      useCORS: true,
-      allowTaint: true
-    }).then(canvas => {
-      var link = document.createElement('a');
-      link.href = canvas.toDataURL("image/png");
-      link.download = 'tier-container.png';
-      link.click();
-    });
+    $("#myModal").dialog("open");
   });
 });
