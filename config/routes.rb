@@ -13,6 +13,4 @@ Rails.application.routes.draw do
   get 'login' => 'user_sessions#new', :as => :login
   post 'login' => "user_sessions#create"
   post 'logout' => 'user_sessions#destroy', :as => :logout
-  post 'screenshot', to: 'screenshots#create'
-  get 'screenshot/download', to: 'screenshots#download', as: :screenshot_download
 end

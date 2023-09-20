@@ -2,6 +2,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
+import html2canvas from 'html2canvas'
 import '@fortawesome/fontawesome-free'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
@@ -192,17 +193,13 @@ $(function() {
     modal: true,
     buttons: {
       "ダウンロード": function() {
-        $.ajax({
-          url: '/screenshot',
-          method: 'POST',
-          success: function(response) {
-            if(response.message === "Screenshot saved") {
-              window.location.href = '/screenshot/download';
-            }
-          },
-          error: function(err) {
-            alert("エラーが発生しました: " + err.responseText);
-          }
+        html2canvas(document.querySelector("#tier-container"), { 
+          useCORS: true 
+        }).then(canvas => {
+          var link = document.createElement('a');
+          link.href = canvas.toDataURL("image/png");
+          link.download = 'tier-container.png';
+          link.click();
         });
       },
       "Close": function() {
