@@ -192,18 +192,6 @@ $(function() {
     modal: true,
     buttons: {
       "ダウンロード": function() {
-        $.ajax({
-          url: '/screenshot',
-          method: 'POST',
-          success: function(response) {
-            if(response.message === "Screenshot saved") {
-              window.location.href = '/screenshot/download';
-            }
-          },
-          error: function(err) {
-            alert("エラーが発生しました: " + err.responseText);
-          }
-        });
       },
       "Close": function() {
         $(this).dialog("close");
