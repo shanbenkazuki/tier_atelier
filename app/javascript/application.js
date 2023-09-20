@@ -2,6 +2,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
+import html2canvas from 'html2canvas'
 import '@fortawesome/fontawesome-free'
 import { fas } from '@fortawesome/free-solid-svg-icons'
 import { far } from '@fortawesome/free-regular-svg-icons'
@@ -192,6 +193,14 @@ $(function() {
     modal: true,
     buttons: {
       "ダウンロード": function() {
+        html2canvas(document.querySelector("#tier-container"), { 
+          useCORS: true 
+        }).then(canvas => {
+          var link = document.createElement('a');
+          link.href = canvas.toDataURL("image/png");
+          link.download = 'tier-container.png';
+          link.click();
+        });
       },
       "Close": function() {
         $(this).dialog("close");
@@ -200,6 +209,15 @@ $(function() {
   });
 
   $(document).on('click', '#open-modal', function() {
-    $("#myModal").dialog("open");
+    // $("#myModal").dialog("open");
+    html2canvas(document.querySelector("#tier-container"), { 
+      useCORS: true,
+      allowTaint: true
+    }).then(canvas => {
+      var link = document.createElement('a');
+      link.href = canvas.toDataURL("image/png");
+      link.download = 'tier-container.png';
+      link.click();
+    });
   });
 });

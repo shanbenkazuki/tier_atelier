@@ -14,7 +14,7 @@
         <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
           <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
             <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
-              <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
+              <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id], crossorigin: "anonymous" %>
             <% end %>
           </div>
         <% end %>
@@ -23,7 +23,7 @@
   </div>
   <div id="independent-area" class="d-flex justify-content-center border border-dark rounded p-3">
     <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
-      <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id] %>
+      <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id], crossorigin: "anonymous" %>
     <% end %>
   </div>
   <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary', id: 'open-modal' %>
