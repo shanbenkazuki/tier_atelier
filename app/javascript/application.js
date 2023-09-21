@@ -211,4 +211,12 @@ $(function() {
   $(document).on('click', '#open-modal', function() {
     $("#myModal").dialog("open");
   });
+
+  $(document).on('change', '#image-upload', function() {
+    let numberOfFiles = $(this)[0].files.length;
+    if (numberOfFiles > 30) {
+      alert('画像は30枚以下にしてください');
+      $(this).val('');
+    }
+  });
 });
