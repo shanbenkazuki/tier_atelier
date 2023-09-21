@@ -32,7 +32,7 @@ class TiersController < ApplicationController
             else
               "#{item.rank_id}_#{item.category_id}"
             end
-      variant = item.image.variant(resize_to_limit: [50, 50]).processed
+      variant = item.image.variant(resize_to_limit: [50, nil]).processed
       image_data = {
         url: url_for(variant.url),
         id: item.id
