@@ -1,1 +1,8 @@
-show
+<% content_for :title, t('.title') %>
+
+<%= render layout: "layouts/custom_layout" do %>
+  <h1><%= current_user.name %>'s Tier</h1>
+
+  <!-- Tier削除ボタン -->
+  <%= link_to 'Tierを削除', tier_path(@tier), data: { turbo_method: :delete }, class: 'btn btn-danger' %>
+<% end %>

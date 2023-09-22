@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_08_11_061955) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_22_083508) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -61,13 +61,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_061955) do
 
   create_table "items", force: :cascade do |t|
     t.bigint "tier_id", null: false
-    t.bigint "rank_id", null: false
-    t.bigint "category_id", null: false
+    t.bigint "tier_rank_id", null: false
+    t.bigint "tier_category_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["category_id"], name: "index_items_on_category_id"
-    t.index ["rank_id"], name: "index_items_on_rank_id"
+    t.index ["tier_category_id"], name: "index_items_on_tier_category_id"
     t.index ["tier_id"], name: "index_items_on_tier_id"
+    t.index ["tier_rank_id"], name: "index_items_on_tier_rank_id"
   end
 
   create_table "likes", force: :cascade do |t|
@@ -154,8 +154,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_08_11_061955) do
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "comments", "tiers", column: "tier_list_id"
   add_foreign_key "comments", "users"
-  add_foreign_key "items", "tier_categories", column: "category_id"
-  add_foreign_key "items", "tier_ranks", column: "rank_id"
+  add_foreign_key "items", "tier_categories"
+  add_foreign_key "items", "tier_ranks"
   add_foreign_key "items", "tiers"
   add_foreign_key "likes", "tiers", column: "tier_list_id"
   add_foreign_key "likes", "users"

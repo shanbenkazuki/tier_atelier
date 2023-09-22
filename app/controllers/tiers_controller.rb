@@ -29,10 +29,10 @@ class TiersController < ApplicationController
     @images_map = {}
 
     @items.each do |item|
-      key = if item.rank_id == @rank_id_with_order_zero && item.category_id == @category_id_with_order_zero
+      key = if item.tier_rank_id == @rank_id_with_order_zero && item.tier_category_id == @category_id_with_order_zero
               "uncategorized_unranked"
             else
-              "#{item.rank_id}_#{item.category_id}"
+              "#{item.tier_rank_id}_#{item.tier_category_id}"
             end
       variant = item.image.variant(resize_to_limit: [50, nil]).processed
       image_data = {
@@ -68,8 +68,8 @@ class TiersController < ApplicationController
         tier_category = TierCategory.find_by(tier_id: @tier.id, order: 0)
         tier_rank = TierRank.find_by(tier_id: @tier.id, order: 0)
         item.tier_id = @tier.id
-        item.rank_id = tier_rank.id
-        item.category_id = tier_category.id
+        item.tier_rank_id = tier_rank.id
+        item.tier_category_id = tier_category.id
         item.save!
       end
     end
@@ -81,6 +81,17 @@ class TiersController < ApplicationController
   end
 
   def update; end
+
+  def destroy
+    @tier = Tier.find(params[:id])
+  
+    @tier.items.each do |item|
+      item.image.purge_later if item.image.attached?
+    end
+  
+    @tier.destroy
+    redirect_to user_path(@tier.user), notice: 'Tier was successfully deleted.'
+  end
 
   def search; end
 

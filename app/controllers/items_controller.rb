@@ -7,11 +7,11 @@ class ItemsController < ApplicationController
     item.tier_id = @tier.id
 
     if params[:is_independent] == 'true'
-      item.rank_id = TierRank.where(tier_id: @tier.id, order: 0).first.id
-      item.category_id = TierCategory.where(tier_id: @tier.id, order: 0).first.id
+      item.tier_rank_id = TierRank.where(tier_id: @tier.id, order: 0).first.id
+      item.tier_category_id = TierCategory.where(tier_id: @tier.id, order: 0).first.id
     else
-      item.rank_id = params[:rank_id]
-      item.category_id = params[:category_id]
+      item.tier_rank_id = params[:rank_id]
+      item.tier_category_id = params[:category_id]
     end
 
     if item.save
