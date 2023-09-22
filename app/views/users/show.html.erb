@@ -1,0 +1,13 @@
+<% content_for :title, t('.title') %>
+
+<%= render layout: "layouts/custom_layout" do %>
+  <h1><%= @user.name %>'s Tiers</h1>
+
+  <ul>
+  <% @user.tiers.each do |tier| %>
+    <li>
+      <%= link_to tier.title, tier_path(tier) %>
+    </li>
+  <% end %>
+  </ul>
+<% end %>
