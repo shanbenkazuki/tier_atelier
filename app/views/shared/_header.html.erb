@@ -22,7 +22,7 @@
             <%= t('defaults.account') %>
           <% end %>
           <ul class="dropdown-menu">
-            <li><%= link_to 'プロフィール', '#', class: 'dropdown-item' %></li>
+            <li><%= link_to 'プロフィール', user_path(current_user), class: 'dropdown-item' %></li>
             <li><%= link_to '言語', '#', class: 'dropdown-item' %></li>
             <li><%= link_to 'ログアウト', logout_path, class: 'dropdown-item', data: { turbo_method: :post }  %></li>
           </ul>
