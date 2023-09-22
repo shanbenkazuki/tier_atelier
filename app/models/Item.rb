@@ -1,7 +1,7 @@
 class Item < ApplicationRecord
   belongs_to :tier
-  belongs_to :rank, class_name: 'TierRank'
-  belongs_to :category, class_name: 'TierCategory'
+  belongs_to :tier_rank
+  belongs_to :tier_category
 
   has_one_attached :image
 end
