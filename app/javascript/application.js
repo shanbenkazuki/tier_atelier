@@ -113,7 +113,6 @@ $(function() {
       var isIndependent = $(this).attr('id') == 'independent-area';
       var imageUrl = $(ui.helper).attr('src');
       var uniqueImageUrl = imageUrl + (imageUrl.includes('?') ? '&' : '?') + 'timestamp=' + new Date().getTime();
-      var fileName = decodeURIComponent(imageUrl.split('/').pop());
       var imageId = $(ui.draggable).attr('id');
 
       // URLからBlobデータを取得
@@ -121,7 +120,6 @@ $(function() {
         .then(response => response.blob())
         .then(blob => {
           var formData = new FormData();
-          formData.append('image', blob, fileName);
           formData.append('image_id', imageId);
           formData.append('is_independent', isIndependent);
           // Ajaxリクエスト
