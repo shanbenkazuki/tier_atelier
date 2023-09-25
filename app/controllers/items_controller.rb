@@ -3,7 +3,6 @@ class ItemsController < ApplicationController
 
   def update
     item = Item.find(params[:image_id])
-    attach_image_to_item(item)
     item.tier_id = @tier.id
 
     if params[:is_independent] == 'true'
@@ -28,10 +27,5 @@ class ItemsController < ApplicationController
 
   def set_tier
     @tier = Tier.find(params[:id])
-  end
-
-  def attach_image_to_item(item)
-    uploaded_image = params[:image]
-    item.image.attach(io: uploaded_image, filename: uploaded_image.original_filename, content_type: uploaded_image.content_type)
   end
 end
