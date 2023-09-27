@@ -15,12 +15,13 @@ class TiersController < ApplicationController
   def edit
     @tier = Tier.find(params[:id])
 
+    pp @tier
     set_meta_tags title: @tier.title,
     og: {
-      image: url_for(@tier.cover_image.blob.url)
+      image: url_for(@tier.cover_image.blob&.url)
     },
     twitter: {
-      image: url_for(@tier.cover_image.blob.url)
+      image: url_for(@tier.cover_image.blob&.url)
     }
 
     tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
@@ -56,6 +57,7 @@ class TiersController < ApplicationController
   end
 
   def create
+    pp params
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.create!(tier_params)
       # 初期値を保存する
