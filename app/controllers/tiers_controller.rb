@@ -98,6 +98,6 @@ class TiersController < ApplicationController
   private
 
   def tier_params
-    params.require(:tier).permit(:category_id, :title, :description)
+    params.require(:tier).permit(:category_id, :title, :description, :cover_image)
   end
 end

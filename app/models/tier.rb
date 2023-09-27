@@ -7,4 +7,6 @@ class Tier < ApplicationRecord
   has_many :items, dependent: :destroy
 
   validates :title, presence: true
+
+  has_one_attached :cover_image
 end
