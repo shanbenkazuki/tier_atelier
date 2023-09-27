@@ -1,4 +1,6 @@
 class TiersController < ApplicationController
+  include ApplicationHelper
+
   def index; end
 
   def show
@@ -12,6 +14,14 @@ class TiersController < ApplicationController
 
   def edit
     @tier = Tier.find(params[:id])
+
+    set_meta_tags title: @tier.title,
+    og: {
+      image: url_for(@tier.cover_image.blob.url)
+    },
+    twitter: {
+      image: url_for(@tier.cover_image.blob.url)
+    }
 
     tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
     tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
@@ -98,6 +108,6 @@ class TiersController < ApplicationController
   private
 
   def tier_params
-    params.require(:tier).permit(:category_id, :title, :description)
+    params.require(:tier).permit(:category_id, :title, :description, :cover_image)
   end
 end
