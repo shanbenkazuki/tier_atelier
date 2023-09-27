@@ -84,7 +84,10 @@ class TiersController < ApplicationController
       end
     end
     redirect_to edit_tier_path(@tier), success: t('.success')
-  rescue StandardError
+  rescue StandardError => e
+    Rails.logger.error "ERROR: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    
     @categories = Category.all
     flash.now[:danger] = t('.fail')
     render :new, status: :unprocessable_entity
