@@ -27,6 +27,9 @@
     <% end %>
   </div>
   <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary', id: 'open-modal' %>
+  <%= link_to "https://twitter.com/intent/tweet?text=Hello,%20World!%20(from%20@gem)&url=#{CGI.escape(request.original_url)}", target: "_blank", class: "btn btn-primary" do %>
+    <i class="fab fa-twitter"></i> Tweet
+  <% end %>
   <!-- Modal -->
   <div id="myModal" title="Modal Title">
     <p>プレビュー表示予定</p>
