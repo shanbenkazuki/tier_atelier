@@ -14,45 +14,7 @@ class TiersController < ApplicationController
 
   def edit
     @tier = Tier.find(params[:id])
-
-    set_meta_tags title: @tier.title,
-    og: {
-      image: url_for(@tier.cover_image.blob&.url)
-    },
-    twitter: {
-      image: url_for(@tier.cover_image.blob&.url)
-    }
-
-    tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
-    tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
-
-    @category_name_and_ids = tier_categories.where.not(order: 0).pluck(:name, :id)
-    @rank_name_and_ids = tier_ranks.where.not(order: 0).pluck(:name, :id)
-
-    @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
-    @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
-
-    @items = Item.where(tier_id: @tier.id)
-
-    @tier_colors = Rails.application.config.tier_colors
-
-    @images_map = {}
-
-    @items.each do |item|
-      key = if item.tier_rank_id == @rank_id_with_order_zero && item.tier_category_id == @category_id_with_order_zero
-              "uncategorized_unranked"
-            else
-              "#{item.tier_rank_id}_#{item.tier_category_id}"
-            end
-      variant = item.image.variant(resize_to_limit: [50, nil]).processed
-      image_data = {
-        url: url_for(variant.url),
-        id: item.id
-      }
-    
-      @images_map[key] ||= []
-      @images_map[key] << image_data
-    end
+    @categories = Category.all
   end
 
   def create

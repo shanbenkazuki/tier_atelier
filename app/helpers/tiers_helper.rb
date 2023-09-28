@@ -4,7 +4,7 @@ module TiersHelper
     when 'new'
       '作成'
     when 'edit', 'update'
-      'Update'
+      '更新'
     when 'create'
       '登録'
     else
