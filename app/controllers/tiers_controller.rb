@@ -9,7 +9,7 @@ class TiersController < ApplicationController
 
   def new
     @categories = Category.all
-    @tier = Tier.new 
+    @tier = Tier.new
     @tier_categories = TierCategory.new
     @tier_ranks = TierRank.new
     @items = Item.new
