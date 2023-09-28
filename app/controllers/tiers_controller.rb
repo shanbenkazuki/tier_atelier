@@ -15,7 +15,6 @@ class TiersController < ApplicationController
   def edit
     @tier = Tier.find(params[:id])
 
-    pp @tier
     set_meta_tags title: @tier.title,
     og: {
       image: url_for(@tier.cover_image.blob&.url)
@@ -57,7 +56,6 @@ class TiersController < ApplicationController
   end
 
   def create
-    pp params
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.create!(tier_params)
       # 初期値を保存する
@@ -85,7 +83,7 @@ class TiersController < ApplicationController
         item.save!
       end
     end
-    redirect_to edit_tier_path(@tier), success: t('.success')
+    redirect_to make_tier_path(@tier), success: t('.success')
   rescue StandardError => e
     Rails.logger.error "ERROR: #{e.message}"
     Rails.logger.error e.backtrace.join("\n")
@@ -106,6 +104,10 @@ class TiersController < ApplicationController
   
     @tier.destroy
     redirect_to user_path(@tier.user), notice: 'Tier was successfully deleted.'
+  end
+
+  def make
+
   end
 
   def search; end
