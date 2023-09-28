@@ -63,7 +63,52 @@ class TiersController < ApplicationController
     render :new, status: :unprocessable_entity
   end
 
-  def update; end
+  def update
+    begin
+      ActiveRecord::Base.transaction do
+        @tier = current_user.tiers.find(params[:id])
+        @tier.update!(tier_params)
+        
+        # Update or create TierCategories
+        params["tier"]["category_column_num"].to_i.times do |i|
+          name = params["tier"]["category_#{i + 1}"]
+          tier_category = @tier.tier_categories.find_or_initialize_by(order: i + 1)
+          tier_category.update!(name: name)
+        end
+  
+        # Update or create TierRanks
+        params["tier"]["rank_column_num"].to_i.times do |i|
+          name = params["tier"]["rank_#{i + 1}"]
+          tier_rank = @tier.tier_ranks.find_or_initialize_by(order: i + 1)
+          tier_rank.update!(name: name)
+        end
+  
+        # add new images
+        if params[:tier][:images]
+          params[:tier][:images].each do |image|
+            next if image.is_a?(String)
+  
+            item = @tier.items.new
+            item.image.attach(io: image, filename: image.original_filename, content_type: image.content_type)
+            tier_category = @tier.tier_categories.find_by(order: 0)
+            tier_rank = @tier.tier_ranks.find_by(order: 0)
+            item.tier_rank_id = tier_rank.id
+            item.tier_category_id = tier_category.id
+            item.save!
+          end
+        end
+      end
+  
+      redirect_to make_tier_path(@tier), success: t('.success')
+    rescue StandardError => e
+      Rails.logger.error "ERROR: #{e.message}"
+      Rails.logger.error e.backtrace.join("\n")
+  
+      @categories = Category.all
+      flash.now[:danger] = t('.fail')
+      render :edit, status: :unprocessable_entity
+    end
+  end
 
   def destroy
     @tier = Tier.find(params[:id])
