@@ -10,12 +10,75 @@ class TiersController < ApplicationController
   def new
     @categories = Category.all
     @tier = Tier.new
+    @tier_categories = TierCategory.new
+    @tier_ranks = TierRank.new
+    @items = Item.new
   end
 
   def edit
     @tier = Tier.find(params[:id])
+    
+    @tier_categories = @tier.tier_categories
+    @tier_ranks = @tier.tier_ranks
+    @items = @tier.items
+    
+    @categories = Category.all
+  end
 
-    pp @tier
+  def create
+    ActiveRecord::Base.transaction do
+      @tier = current_user.tiers.create!(tier_params)
+      # 初期値を保存する
+      @tier.tier_categories.create!(name: params["tier"]["default_rank"], order: 0)
+      @tier.tier_ranks.create!(name: params["tier"]["default_category"], order: 0)
+      category_column_num = params["tier"]["category_column_num"].to_i
+      rank_column_num = params["tier"]["rank_column_num"].to_i
+      1.upto(category_column_num) do |i|
+        @tier.tier_categories.create!(name: params["tier"]["category_#{i}"], order: i)
+      end
+      1.upto(rank_column_num) do |i|
+        @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
+      end
+      # 画像の数だけItemテーブルに保存する
+      params[:tier][:images].each do |image|
+        next if image.is_a?(String)
+
+        item = Item.new
+        item.image.attach(io: image, filename: image.original_filename, content_type: image.content_type)
+        tier_category = TierCategory.find_by(tier_id: @tier.id, order: 0)
+        tier_rank = TierRank.find_by(tier_id: @tier.id, order: 0)
+        item.tier_id = @tier.id
+        item.tier_rank_id = tier_rank.id
+        item.tier_category_id = tier_category.id
+        item.save!
+      end
+    end
+    redirect_to make_tier_path(@tier), success: t('.success')
+  rescue StandardError => e
+    Rails.logger.error "ERROR: #{e.message}"
+    Rails.logger.error e.backtrace.join("\n")
+    
+    @categories = Category.all
+    flash.now[:danger] = t('.fail')
+    render :new, status: :unprocessable_entity
+  end
+
+  def update; end
+
+  def destroy
+    @tier = Tier.find(params[:id])
+  
+    @tier.items.each do |item|
+      item.image.purge_later if item.image.attached?
+    end
+  
+    @tier.destroy
+    redirect_to user_path(@tier.user), notice: 'Tier was successfully deleted.'
+  end
+
+  def make
+    @tier = Tier.find(params[:id])
+
     set_meta_tags title: @tier.title,
     og: {
       image: url_for(@tier.cover_image.blob&.url)
@@ -54,58 +117,6 @@ class TiersController < ApplicationController
       @images_map[key] ||= []
       @images_map[key] << image_data
     end
-  end
-
-  def create
-    pp params
-    ActiveRecord::Base.transaction do
-      @tier = current_user.tiers.create!(tier_params)
-      # 初期値を保存する
-      @tier.tier_categories.create!(name: params["tier"]["default_rank"], order: 0)
-      @tier.tier_ranks.create!(name: params["tier"]["default_category"], order: 0)
-      category_column_num = params["tier"]["category_column_num"].to_i
-      rank_column_num = params["tier"]["rank_column_num"].to_i
-      1.upto(category_column_num) do |i|
-        @tier.tier_categories.create!(name: params["tier"]["category_#{i}"], order: i)
-      end
-      1.upto(rank_column_num) do |i|
-        @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
-      end
-      # 画像の数だけItemテーブルに保存する
-      params[:tier][:images].each do |image|
-        next if image.is_a?(String)
-
-        item = Item.new
-        item.image.attach(io: image, filename: image.original_filename, content_type: image.content_type)
-        tier_category = TierCategory.find_by(tier_id: @tier.id, order: 0)
-        tier_rank = TierRank.find_by(tier_id: @tier.id, order: 0)
-        item.tier_id = @tier.id
-        item.tier_rank_id = tier_rank.id
-        item.tier_category_id = tier_category.id
-        item.save!
-      end
-    end
-    redirect_to edit_tier_path(@tier), success: t('.success')
-  rescue StandardError => e
-    Rails.logger.error "ERROR: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-    
-    @categories = Category.all
-    flash.now[:danger] = t('.fail')
-    render :new, status: :unprocessable_entity
-  end
-
-  def update; end
-
-  def destroy
-    @tier = Tier.find(params[:id])
-  
-    @tier.items.each do |item|
-      item.image.purge_later if item.image.attached?
-    end
-  
-    @tier.destroy
-    redirect_to user_path(@tier.user), notice: 'Tier was successfully deleted.'
   end
 
   def search; end
