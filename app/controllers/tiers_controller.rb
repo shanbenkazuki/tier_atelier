@@ -71,7 +71,6 @@ class TiersController < ApplicationController
         
         # Update or create TierCategories
         params["tier"]["category_column_num"].to_i.times do |i|
-          pp i
           name = params["tier"]["category_#{i}"]
           tier_category = @tier.tier_categories.find_or_initialize_by(order: i + 1)
           tier_category.update!(name: name)
