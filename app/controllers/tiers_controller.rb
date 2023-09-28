@@ -10,10 +10,18 @@ class TiersController < ApplicationController
   def new
     @categories = Category.all
     @tier = Tier.new
+    @tier_categories = TierCategory.new
+    @tier_ranks = TierRank.new
+    @items = Item.new
   end
 
   def edit
     @tier = Tier.find(params[:id])
+    
+    @tier_categories = @tier.tier_categories
+    @tier_ranks = @tier.tier_ranks
+    @items = @tier.items
+    
     @categories = Category.all
   end
 

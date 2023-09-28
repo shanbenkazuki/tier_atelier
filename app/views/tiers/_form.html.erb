@@ -24,7 +24,7 @@
     <%= f.hidden_field :default_rank, value: 'unranked' %>
     <%= f.hidden_field :rank_column_num, value: '5' %>
     <% 5.times do |i| %>
-      <%= f.text_field "rank_#{i+1}", class: 'form-control mt-2' %>
+      <%= f.text_field "rank_#{i+1}", value: tier_ranks[i+1]&.name, class: 'form-control mt-2' %>
     <% end %>
     <%= button_tag t('.add_column'), type: 'button', id: 'add-rank', class: 'btn btn-secondary mt-2' %>
     <%= button_tag t('.remove_column'), type: 'button', id: 'remove-rank', class: 'btn btn-danger mt-2' %>
@@ -34,7 +34,7 @@
     <%= f.hidden_field :default_category, value: 'uncategorized' %>
     <%= f.hidden_field :category_column_num, value: '5' %>
     <% 5.times do |i| %>
-      <%= f.text_field "category_#{i+1}", class: 'form-control mt-2' %>
+      <%= f.text_field "category_#{i+1}",value: tier_categories[i+1]&.name, class: 'form-control mt-2' %>
     <% end %>
     <%= button_tag t('.add_column'), type: 'button', id: 'add-category', class: 'btn btn-secondary mt-2' %>
     <%= button_tag t('.remove_column'), type: 'button', id: 'remove-category', class: 'btn btn-danger mt-2' %>
