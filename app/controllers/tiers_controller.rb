@@ -18,8 +18,8 @@ class TiersController < ApplicationController
   end
 
   def edit
-    @tier_categories = @tier.tier_categories.not_zero_order
-    @tier_ranks = @tier.tier_ranks.not_zero_order
+    @tier_categories = @tier.tier_categories.non_zero.sort_by_asc
+    @tier_ranks = @tier.tier_ranks.non_zero.sort_by_asc
     @items = @tier.items
   end
 
@@ -32,10 +32,10 @@ class TiersController < ApplicationController
       category_column_num = params["tier"]["category_column_num"].to_i
       rank_column_num = params["tier"]["rank_column_num"].to_i
       1.upto(category_column_num) do |i|
-        @tier.tier_categories.create!(name: params["tier"]["category_#{i}"], order: i)
+        @tier.tier_categories.create!(name: params["tier"]["category_#{i-1}"], order: i)
       end
       1.upto(rank_column_num) do |i|
-        @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
+        @tier.tier_ranks.create!(name: params["tier"]["rank_#{i-1}"], order: i)
       end
       # 画像の数だけItemテーブルに保存する
       params[:tier][:images].each do |image|
@@ -57,6 +57,8 @@ class TiersController < ApplicationController
     Rails.logger.error e.backtrace.join("\n")
     
     @categories = Category.all
+    @tier_categories = Array.new(5) { TierCategory.new }
+    @tier_ranks = Array.new(5) { TierRank.new }
     flash.now[:danger] = t('.fail')
     render :new, status: :unprocessable_entity
   end
@@ -69,14 +71,15 @@ class TiersController < ApplicationController
         
         # Update or create TierCategories
         params["tier"]["category_column_num"].to_i.times do |i|
-          name = params["tier"]["category_#{i + 1}"]
+          pp i
+          name = params["tier"]["category_#{i}"]
           tier_category = @tier.tier_categories.find_or_initialize_by(order: i + 1)
           tier_category.update!(name: name)
         end
   
         # Update or create TierRanks
         params["tier"]["rank_column_num"].to_i.times do |i|
-          name = params["tier"]["rank_#{i + 1}"]
+          name = params["tier"]["rank_#{i}"]
           tier_rank = @tier.tier_ranks.find_or_initialize_by(order: i + 1)
           tier_rank.update!(name: name)
         end
@@ -103,6 +106,8 @@ class TiersController < ApplicationController
       Rails.logger.error e.backtrace.join("\n")
   
       @categories = Category.all
+      @tier_categories = @tier.tier_categories.non_zero
+      @tier_ranks = @tier.tier_ranks.non_zero
       flash.now[:danger] = t('.fail')
       render :edit, status: :unprocessable_entity
     end
@@ -133,8 +138,8 @@ class TiersController < ApplicationController
     tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
     tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
 
-    @category_name_and_ids = tier_categories.not_zero_order.pluck(:name, :id)
-    @rank_name_and_ids = tier_ranks.not_zero_order.pluck(:name, :id)
+    @category_name_and_ids = tier_categories.non_zero.pluck(:name, :id)
+    @rank_name_and_ids = tier_ranks.non_zero.pluck(:name, :id)
 
     @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
     @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
