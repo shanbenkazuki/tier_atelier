@@ -1,5 +1,8 @@
 class TiersController < ApplicationController
   include ApplicationHelper
+  before_action :set_categories, only: [:new, :edit]
+  before_action :set_tier, only: [:edit]
+  before_action :set_column_numbers, only: [:new, :edit]
 
   def index; end
 
@@ -8,29 +11,24 @@ class TiersController < ApplicationController
   end
 
   def new
-    @categories = Category.all
     @tier = Tier.new
-    @tier_categories = TierCategory.new
-    @tier_ranks = TierRank.new
+    @tier_categories = Array.new(5) { TierCategory.new }
+    @tier_ranks = Array.new(5) { TierRank.new }
     @items = Item.new
   end
 
   def edit
-    @tier = Tier.find(params[:id])
-    
-    @tier_categories = @tier.tier_categories
-    @tier_ranks = @tier.tier_ranks
+    @tier_categories = @tier.tier_categories.non_zero.sort_by_asc
+    @tier_ranks = @tier.tier_ranks.non_zero.sort_by_asc
     @items = @tier.items
-    
-    @categories = Category.all
   end
 
   def create
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.create!(tier_params)
       # 初期値を保存する
-      @tier.tier_categories.create!(name: params["tier"]["default_rank"], order: 0)
-      @tier.tier_ranks.create!(name: params["tier"]["default_category"], order: 0)
+      @tier.tier_categories.create!(name: params["tier"]["default_category"], order: 0)
+      @tier.tier_ranks.create!(name: params["tier"]["default_rank"], order: 0)
       category_column_num = params["tier"]["category_column_num"].to_i
       rank_column_num = params["tier"]["rank_column_num"].to_i
       1.upto(category_column_num) do |i|
@@ -59,6 +57,8 @@ class TiersController < ApplicationController
     Rails.logger.error e.backtrace.join("\n")
     
     @categories = Category.all
+    @tier_categories = Array.new(5) { TierCategory.new }
+    @tier_ranks = Array.new(5) { TierRank.new }
     flash.now[:danger] = t('.fail')
     render :new, status: :unprocessable_entity
   end
@@ -105,6 +105,8 @@ class TiersController < ApplicationController
       Rails.logger.error e.backtrace.join("\n")
   
       @categories = Category.all
+      @tier_categories = @tier.tier_categories.non_zero
+      @tier_ranks = @tier.tier_ranks.non_zero
       flash.now[:danger] = t('.fail')
       render :edit, status: :unprocessable_entity
     end
@@ -135,8 +137,8 @@ class TiersController < ApplicationController
     tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
     tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
 
-    @category_name_and_ids = tier_categories.where.not(order: 0).pluck(:name, :id)
-    @rank_name_and_ids = tier_ranks.where.not(order: 0).pluck(:name, :id)
+    @category_name_and_ids = tier_categories.non_zero.pluck(:name, :id)
+    @rank_name_and_ids = tier_ranks.non_zero.pluck(:name, :id)
 
     @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
     @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
@@ -170,5 +172,19 @@ class TiersController < ApplicationController
 
   def tier_params
     params.require(:tier).permit(:category_id, :title, :description, :cover_image)
+  end
+
+  def set_categories
+    @categories = Category.all
+  end
+  
+  def set_tier
+    @tier = Tier.find(params[:id])
+  end
+  
+  def set_column_numbers
+    default_column_num = 5
+    @category_column_num = @tier_categories&.count || default_column_num
+    @rank_column_num = @tier_ranks&.count || default_column_num
   end
 end
