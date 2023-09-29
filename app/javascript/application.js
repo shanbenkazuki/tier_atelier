@@ -2,6 +2,7 @@
 import "@hotwired/turbo-rails"
 import "./controllers"
 import * as bootstrap from "bootstrap"
+import * as ActiveStorage from "@rails/activestorage"
 import html2canvas from 'html2canvas'
 import '@fortawesome/fontawesome-free'
 import { fas } from '@fortawesome/free-solid-svg-icons'
@@ -12,6 +13,8 @@ library.add(fas, far, fab)
 
 import "./src/jquery"
 import "./src/jquery-ui"
+
+ActiveStorage.start()
 
 $(function() {
   $('.draggable').draggable({

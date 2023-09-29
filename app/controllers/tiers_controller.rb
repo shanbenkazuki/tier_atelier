@@ -38,17 +38,23 @@ class TiersController < ApplicationController
         @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
       end
       # 画像の数だけItemテーブルに保存する
-      params[:tier][:images].each do |image|
-        next if image.is_a?(String)
-
-        item = Item.new
-        item.image.attach(io: image, filename: image.original_filename, content_type: image.content_type)
-        tier_category = TierCategory.find_by(tier_id: @tier.id, order: 0)
-        tier_rank = TierRank.find_by(tier_id: @tier.id, order: 0)
-        item.tier_id = @tier.id
-        item.tier_rank_id = tier_rank.id
-        item.tier_category_id = tier_category.id
-        item.save!
+      if params[:tier][:images].reject(&:blank?).present?
+        params[:tier][:images].reject!(&:blank?)
+        # 初期値を保存する
+        tier_category = @tier.tier_categories.find_by(order: 0)
+        tier_rank = @tier.tier_ranks.find_by(order: 0)
+        params[:tier][:images].reject!(&:blank?)
+        params[:tier][:images].each do |image|
+          item = @tier.items.build(item_params)
+          
+          # リレーションを活用して id のセットを省略
+          item.tier_category = tier_category
+          item.tier_rank = tier_rank
+          
+          item.image.attach(image)
+          
+          item.save!
+        end
       end
     end
     redirect_to make_tier_path(@tier), success: t('.success')
@@ -84,16 +90,21 @@ class TiersController < ApplicationController
         end
   
         # add new images
-        if params[:tier][:images]
+        if params[:tier][:images].reject(&:blank?).present?
+          params[:tier][:images].reject!(&:blank?)
           params[:tier][:images].each do |image|
-            next if image.is_a?(String)
-  
-            item = @tier.items.new
-            item.image.attach(io: image, filename: image.original_filename, content_type: image.content_type)
+            item = @tier.items.build(item_params)
+            
+            # 初期値を保存する
             tier_category = @tier.tier_categories.find_by(order: 0)
             tier_rank = @tier.tier_ranks.find_by(order: 0)
-            item.tier_rank_id = tier_rank.id
-            item.tier_category_id = tier_category.id
+            
+            # リレーションを活用して id のセットを省略
+            item.tier_category = tier_category
+            item.tier_rank = tier_rank
+            
+            item.image.attach(image)
+            
             item.save!
           end
         end
@@ -172,6 +183,10 @@ class TiersController < ApplicationController
 
   def tier_params
     params.require(:tier).permit(:category_id, :title, :description, :cover_image)
+  end
+
+  def item_params
+    params.require(:tier).permit(:image)
   end
 
   def set_categories
