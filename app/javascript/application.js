@@ -13,6 +13,7 @@ library.add(fas, far, fab)
 
 import "./src/jquery"
 import "./src/jquery-ui"
+import "./src/direct_uploads"
 
 ActiveStorage.start()
 
@@ -220,4 +221,26 @@ $(function() {
       $(this).val('');
     }
   });
+
+  showUploadedImagePreview('#image-upload');
+  showUploadedImagePreview('#cover-image-upload');
+
+  function showUploadedImagePreview(inputSelector) {
+    $(document).on('change', inputSelector, function() {
+      let images = this.files;
+      let previewArea = $(this).next('.image-preview');
+      previewArea.empty();
+  
+      $.each(images, function(index, image) {
+        let reader = new FileReader();
+  
+        reader.onload = function(e) {
+          let img = $('<img>').attr('src', e.target.result).css({width: '80px', height: 'auto'});
+          previewArea.append(img);
+        };
+  
+        reader.readAsDataURL(image);
+      });
+    });
+  }
 });
