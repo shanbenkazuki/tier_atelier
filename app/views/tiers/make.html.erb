@@ -1,5 +1,5 @@
 <div class="container">
-  <div id="tier-container">
+  <div id="tier-container" data-tier-id="<%= @tier.id %>">
     <div class="category-row">
       <div class="label-holder"></div>
       <% @category_name_and_ids.each_with_index do |(category_name, category_id), categories_index| %>
@@ -14,16 +14,16 @@
         <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
           <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
             <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
-              <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id], crossorigin: "anonymous" %>
+              <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous", draggable: "true" %>
             <% end %>
           </div>
         <% end %>
       </div>
     <% end %>
   </div>
-  <div id="independent-area" class="d-flex justify-content-center border border-dark rounded p-3">
+  <div id="default-area" class="d-flex justify-content-center border border-dark rounded p-3" data-default-category-id="<%= @category_id_with_order_zero %>" data-default-rank-id="<%= @rank_id_with_order_zero %>">
     <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
-      <%= image_tag image_data[:url], class: 'draggable', id: image_data[:id], crossorigin: "anonymous" %>
+      <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous", draggable: "true" %>
     <% end %>
   </div>
   <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary', id: 'open-modal' %>
