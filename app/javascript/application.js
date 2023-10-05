@@ -20,48 +20,57 @@ import "./src/tier_image_uploader"
 
 ActiveStorage.start()
 
-document.addEventListener("DOMContentLoaded", function() {
-  var modal = document.getElementById("myModal");
-  var btn = document.getElementById("openModal");
-  var span = document.getElementById("closeModal");
+document.addEventListener("DOMContentLoaded", () => {
+  const modal = document.getElementById("save-image-modal");
+  const openBtn = document.getElementById("open-save-image-modal");
+  const downloadBtn = document.getElementById("download-image-button");
 
   // ボタンクリックでモーダルを開く
-  btn.onclick = function() {
+  openBtn.addEventListener('click', () => {
     modal.style.display = "block";
-  }
+  });
 
-  // × マークをクリックでモーダルを閉じる
-  span.onclick = function() {
-    modal.style.display = "none";
-  }
+  // ダウンロードボタンの動作
+  downloadBtn.addEventListener('click', () => {
+    html2canvas(document.querySelector("#tier-container"), { 
+      useCORS: true 
+    }).then(canvas => {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL("image/png");
+      link.download = 'tier-container.png';
+      link.click();
+    });
+  });
 
   // モーダルの外側をクリックでモーダルを閉じる
-  window.onclick = function(event) {
-    if (event.target == modal) {
+  window.addEventListener('click', (event) => {
+    if (event.target === modal) {
       modal.style.display = "none";
     }
-  }
+  });
 });
 
 
-$(function() {
-  // $("#myModal").dialog({
-  //   autoOpen: false,
-  //   modal: true,
-  //   buttons: {
-  //     "ダウンロード": function() {
-  //       html2canvas(document.querySelector("#tier-container"), { 
-  //         useCORS: true 
-  //       }).then(canvas => {
-  //         var link = document.createElement('a');
-  //         link.href = canvas.toDataURL("image/png");
-  //         link.download = 'tier-container.png';
-  //         link.click();
-  //       });
-  //     },
-  //     "Close": function() {
-  //       $(this).dialog("close");
-  //     }
-  //   }
-  // });
-});
+
+
+// $(function() {
+//   $("#myModal").dialog({
+//     autoOpen: false,
+//     modal: true,
+//     buttons: {
+//       "ダウンロード": function() {
+//         html2canvas(document.querySelector("#tier-container"), { 
+//           useCORS: true 
+//         }).then(canvas => {
+//           var link = document.createElement('a');
+//           link.href = canvas.toDataURL("image/png");
+//           link.download = 'tier-container.png';
+//           link.click();
+//         });
+//       },
+//       "Close": function() {
+//         $(this).dialog("close");
+//       }
+//     }
+//   });
+// });
