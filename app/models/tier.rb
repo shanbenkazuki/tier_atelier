@@ -1,4 +1,6 @@
 class Tier < ApplicationRecord
+  authenticates_with_sorcery!
+
   belongs_to :user
   belongs_to :category
 

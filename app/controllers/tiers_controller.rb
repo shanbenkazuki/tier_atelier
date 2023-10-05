@@ -3,6 +3,7 @@ class TiersController < ApplicationController
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit]
   before_action :set_column_numbers, only: [:new, :edit]
+  before_action :ensure_logged_in
 
   def index; end
 
@@ -203,5 +204,12 @@ class TiersController < ApplicationController
     default_column_num = 5
     @category_column_num = @tier_categories&.count || default_column_num
     @rank_column_num = @tier_ranks&.count || default_column_num
+  end
+
+  def ensure_logged_in
+    unless logged_in?
+      flash[:danger] = "ログインしてください"
+      require_login
+    end
   end
 end
