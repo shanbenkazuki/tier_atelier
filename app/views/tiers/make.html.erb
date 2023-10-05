@@ -33,8 +33,14 @@
   <%= link_to edit_tier_path(@tier), class: 'btn btn-primary' do %>
     編集
   <% end %>
-  <!-- Modal -->
-  <div id="myModal" title="Modal Title">
-    <p>プレビュー表示予定</p>
+  <!-- モーダルのトリガーボタン -->
+  <button id="openModal">モーダルを開く</button>
+
+  <!-- モーダル -->
+  <div id="myModal" class="modal">
+    <div class="modal-content">
+      <span id="closeModal" class="close">&times;</span>
+      <p>これはモーダルのコンテンツです。</p>
+    </div>
   </div>
 </div>
