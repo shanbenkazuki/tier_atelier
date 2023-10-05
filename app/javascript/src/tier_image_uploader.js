@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('turbo:load', () => {
 
   // 画像アップロード制限のリスナー
   const imageUploadElem = document.querySelector('#image-upload');

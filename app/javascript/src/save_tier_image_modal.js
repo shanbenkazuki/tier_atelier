@@ -1,6 +1,6 @@
 import html2canvas from 'html2canvas'
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("turbo:load", () => {
   const downloadBtn = document.getElementById("download-image-button");
 
   if (downloadBtn) {

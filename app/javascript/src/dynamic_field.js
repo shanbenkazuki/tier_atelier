@@ -28,7 +28,7 @@ function removeField(counter, min, idPrefix, alertMessage) {
     return counter;
 }
 
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('turbo:load', function() {
     document.body.addEventListener('click', function(event) {
         switch (event.target.id) {
             case 'add-category':

@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("turbo:load", function() {
 
   function getAttributeFromElement(element, selector, attribute) {
     return element.querySelector(selector).getAttribute(attribute);
