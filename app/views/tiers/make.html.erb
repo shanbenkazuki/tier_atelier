@@ -26,15 +26,28 @@
       <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous", draggable: "true" %>
     <% end %>
   </div>
-  <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary', id: 'open-modal' %>
+  <%= button_tag '保存', type: 'button', class: 'btn btn-primary', data: { bs_toggle: 'modal', bs_target: '#save-image-modal' } %>
   <%= link_to "https://twitter.com/intent/tweet?text=Hello,%20World!%20(from%20@gem)&url=#{CGI.escape(request.original_url)}", target: "_blank", class: "btn btn-primary" do %>
     <i class="fab fa-twitter"></i> Tweet
   <% end %>
   <%= link_to edit_tier_path(@tier), class: 'btn btn-primary' do %>
     編集
   <% end %>
-  <!-- Modal -->
-  <div id="myModal" title="Modal Title">
-    <p>プレビュー表示予定</p>
+  <div class="modal fade" id="save-image-modal" tabindex="-1" aria-labelledby="saveImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveImageModalLabel">モーダルのタイトル</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>これはモーダルのコンテンツです。</p>
+        </div>
+        <div class="modal-footer">
+          <%= button_tag 'ダウンロード', type: 'button', class: 'btn btn-primary', id: 'download-image-button' %>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
