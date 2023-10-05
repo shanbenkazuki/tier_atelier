@@ -45,7 +45,7 @@ RSpec.configure do |config|
   config.shared_context_metadata_behavior = :apply_to_host_groups
 
   config.before(:each, type: :system) do
-    Webdrivers::Chromedriver.required_version = '114.0.5735.90'
+    Webdrivers::Chromedriver.required_version = '117.0.5938.149'
   end
 
 # The settings below are suggested to provide a good initial experience
