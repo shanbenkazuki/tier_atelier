@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function() {
   document.addEventListener("direct-upload:initialize", event => {
     const { target, detail } = event
     const { id, file } = detail
-    console.log(target)
     target.insertAdjacentHTML("beforebegin", `
       <div id="direct-upload-${id}" class="direct-upload direct-upload--pending">
         <div id="direct-upload-progress-${id}" class="direct-upload__progress" style="width: 0%"></div>
