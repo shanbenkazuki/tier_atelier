@@ -1,7 +1,7 @@
 <%= form_with model: tier, local: true, html: { multipart: true } do |f| %>
   <div class="form-group mb-4">
     <%= f.label :category_id, Tier.human_attribute_name(:category_id), class: 'control-label' %>
-    <%= f.select :category_id, @categories.collect { |c| [c.name, c.id] }, {}, { class: 'form-control' } %>
+    <%= f.select :category_id, categories.collect { |c| [c.name, c.id] }, {}, { class: 'form-control' } %>
   </div>
   <div class="form-group mb-4">
     <%= f.label :title, Tier.human_attribute_name(:title), class: 'control-label' %>
@@ -23,16 +23,28 @@
   </div>
   <div class="form-group mb-4">
     <label class='control-label'><%= t('.rank') %></label>
-    <%= f.hidden_field :default_rank, value: 'unranked' %>
-    <%= f.hidden_field :rank_column_num, value: @rank_column_num %>
-    <%= render partial: 'dynamic_field', locals: { f: f, collection: @tier_ranks, field_prefix: "rank" } %>
+    <%= f.fields_for :tier_ranks do |rank_form| %>
+      <% if rank_form.index.zero? %>
+        <%= rank_form.hidden_field :name, value: 'unranked' %>
+        <%= rank_form.hidden_field :order, value: 0 %>
+      <% else %>
+        <%= rank_form.text_field :name, class: 'form-control mt-2' %>
+        <%= rank_form.hidden_field :order, value: rank_form.index %>
+      <% end %>
+    <% end %>
     <%= render partial: 'button_group', locals: { type: 'rank' } %>
   </div>
   <div class="form-group mb-4">
     <label class='control-label'><%= t('.category') %></label>
-    <%= f.hidden_field :default_category, value: 'uncategorized' %>
-    <%= f.hidden_field :category_column_num, value: @category_column_num %>
-    <%= render partial: 'dynamic_field', locals: { f: f, collection: @tier_categories, field_prefix: "category" } %>
+    <%= f.fields_for :tier_categories do |category_form| %>
+      <% if category_form.index.zero? %>
+        <%= category_form.hidden_field :name, value: 'uncategorized' %>
+        <%= category_form.hidden_field :order, value: 0 %>
+      <% else %>
+        <%= category_form.text_field :name, class: 'form-control mt-2' %>
+        <%= category_form.hidden_field :order, value: category_form.index %>
+      <% end %>
+    <% end %>
     <%= render partial: 'button_group', locals: { type: 'category' } %>
   </div>
 

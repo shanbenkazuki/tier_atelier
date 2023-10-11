@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener("turbo:load", function() {
 
   function getAttributeFromElement(element, selector, attribute) {
     return element.querySelector(selector).getAttribute(attribute);
@@ -61,14 +61,40 @@ document.addEventListener("DOMContentLoaded", function() {
     return document.querySelector('meta[name="csrf-token"]').getAttribute('content');
   }
 
-  document.querySelectorAll(".tier.cell, #default-area").forEach(cell => {
-    cell.addEventListener("dragover", e => e.preventDefault());
-    cell.addEventListener("drop", e => handleDrop(e, cell));
-  });
+  function handleDragOver(e) {
+    e.preventDefault();
+  }
 
-  document.querySelectorAll("img[draggable]").forEach(img => {
-    img.addEventListener("dragstart", e => {
-      e.dataTransfer.setData("text", img.id);
+  function setupDragListeners() {
+    document.querySelectorAll(".tier.cell, #default-area").forEach(cell => {
+      // 既存のイベントリスナーを削除
+      cell.removeEventListener("dragover", handleDragOver);
+      cell.removeEventListener("drop", function(e) {
+        handleDrop(e, cell);
+      });
+
+      // イベントリスナーを再度追加
+      cell.addEventListener("dragover", handleDragOver);
+      cell.addEventListener("drop", function(e) {
+        handleDrop(e, cell);
+      });
     });
-  });
+  }
+
+  function handleImageDragStart(e) {
+    e.dataTransfer.setData("text", this.id);
+  }
+
+  function setupImageDragListeners() {
+    document.querySelectorAll("img[draggable]").forEach(img => {
+      // 既存のイベントリスナーを削除
+      img.removeEventListener("dragstart", handleImageDragStart);
+      // イベントリスナーを再度追加
+      img.addEventListener("dragstart", handleImageDragStart);
+    });
+  }
+
+  // イベントリスナーの設定
+  setupDragListeners();
+  setupImageDragListeners();
 });
