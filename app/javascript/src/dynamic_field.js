@@ -28,21 +28,28 @@ function removeField(counter, min, idPrefix, alertMessage) {
     return counter;
 }
 
-document.addEventListener('turbo:load', function() {
-    document.body.addEventListener('click', function(event) {
-        switch (event.target.id) {
-            case 'add-category':
-                categoryCounter = addField(event, categoryCounter, maxFields, 'category', '最大カテゴリ数に達しました');
-                break;
-            case 'remove-category':
-                categoryCounter = removeField(categoryCounter, 5, 'category', 'これ以上フィールドを削除できません');
-                break;
-            case 'add-rank':
-                rankCounter = addField(event, rankCounter, maxFields, 'rank', '最大ランク数に達しました');
-                break;
-            case 'remove-rank':
-                rankCounter = removeField(rankCounter, 5, 'rank', 'これ以上フィールドを削除できません');
-                break;
-        }
-    });
-});
+function handleBodyClick(event) {
+    switch (event.target.id) {
+        case 'add-category':
+            categoryCounter = addField(event, categoryCounter, maxFields, 'category', '最大カテゴリ数に達しました');
+            break;
+        case 'remove-category':
+            categoryCounter = removeField(categoryCounter, 5, 'category', 'これ以上フィールドを削除できません');
+            break;
+        case 'add-rank':
+            rankCounter = addField(event, rankCounter, maxFields, 'rank', '最大ランク数に達しました');
+            break;
+        case 'remove-rank':
+            rankCounter = removeField(rankCounter, 5, 'rank', 'これ以上フィールドを削除できません');
+            break;
+    }
+}
+
+function setupListeners() {
+    // 既存のイベントリスナーを削除
+    document.body.removeEventListener('click', handleBodyClick);
+    // イベントリスナーを再度追加
+    document.body.addEventListener('click', handleBodyClick);
+}
+
+document.addEventListener('turbo:load', setupListeners);
