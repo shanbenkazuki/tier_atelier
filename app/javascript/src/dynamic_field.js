@@ -1,13 +1,14 @@
 let categoryCounter = 5;
 let rankCounter = 5;
-const maxFields = 10; // 例として、最大10個のフィールドを設定
+const maxFields = 10;
 
 function addField(event, counter, max, idPrefix, alertMaxMessage) {
     if (counter < max) {
         counter++;
-        const newTextField = `<input class='form-control mt-2' type='text' name='tier[${idPrefix}_${counter}]' id='tier_${idPrefix}_${counter}'>`;
+        const newTextField = `
+            <input class="form-control mt-2" type="text" name="tier[tier_${idPrefix}_attributes][${counter}][name]" id="tier_tier_${idPrefix}_attributes_${counter}_name">
+            <input value="${counter}" autocomplete="off" type="hidden" name="tier[tier_${idPrefix}_attributes][${counter}][order]" id="tier_tier_${idPrefix}_attributes_${counter}_order">`;
         event.target.insertAdjacentHTML('beforebegin', newTextField);
-        document.getElementById(`tier_${idPrefix}_column_num`).value = counter;
     } else {
         alert(alertMaxMessage);
     }
@@ -21,7 +22,6 @@ function removeField(counter, min, idPrefix, alertMessage) {
             elementToRemove.parentNode.removeChild(elementToRemove);
         }
         counter--;
-        document.getElementById(`tier_${idPrefix}_column_num`).value = counter;
     } else {
         alert(alertMessage);
     }
@@ -31,16 +31,16 @@ function removeField(counter, min, idPrefix, alertMessage) {
 function handleBodyClick(event) {
     switch (event.target.id) {
         case 'add-category':
-            categoryCounter = addField(event, categoryCounter, maxFields, 'category', '最大カテゴリ数に達しました');
+            categoryCounter = addField(event, categoryCounter, maxFields, 'categories', '最大カテゴリ数に達しました');
             break;
         case 'remove-category':
-            categoryCounter = removeField(categoryCounter, 5, 'category', 'これ以上フィールドを削除できません');
+            categoryCounter = removeField(categoryCounter, 5, 'categories', 'これ以上フィールドを削除できません');
             break;
         case 'add-rank':
-            rankCounter = addField(event, rankCounter, maxFields, 'rank', '最大ランク数に達しました');
+            rankCounter = addField(event, rankCounter, maxFields, 'ranks', '最大ランク数に達しました');
             break;
         case 'remove-rank':
-            rankCounter = removeField(rankCounter, 5, 'rank', 'これ以上フィールドを削除できません');
+            rankCounter = removeField(rankCounter, 5, 'ranks', 'これ以上フィールドを削除できません');
             break;
     }
 }

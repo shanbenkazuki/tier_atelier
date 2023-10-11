@@ -3,47 +3,59 @@ require 'rails_helper'
 RSpec.describe "Tiers", type: :system do
   let(:user) { create(:user) }
 
-  # describe "ログイン前" do
-  #   context "アクセス制限" do
-  #     it "新規ページにアクセスするとエラーとなる" do
-  #       visit new_tier_path
-  #       expect(page).to have_content('ログインしてください')
-  #       expect(current_path).to eq login_path
-  #     end
+  describe "ログイン前" do
+    context "アクセス制限" do
+      it "新規ページにアクセスするとエラーとなる" do
+        visit new_tier_path
+        expect(page).to have_content('ログインしてください')
+        expect(current_path).to eq login_path
+      end
   
-  #     it "編集ページにアクセスするとエラーとなる" do
-  #       tier = create(:tier)  # あるTierを作成（必要に応じてFactoryBot等を使用）
-  #       visit edit_tier_path(tier)  # 作成したTierの編集ページへアクセス
-  #       expect(page).to have_content('ログインしてください')
-  #       expect(current_path).to eq login_path
-  #     end
+      # it "編集ページにアクセスするとエラーとなる" do
+      #   tier = create(:tier)  # あるTierを作成（必要に応じてFactoryBot等を使用）
+      #   visit edit_tier_path(tier)  # 作成したTierの編集ページへアクセス
+      #   expect(page).to have_content('ログインしてください')
+      #   expect(current_path).to eq login_path
+      # end
       
-  #     it "詳細ページにアクセスするとエラーとなる" do
-  #       tier = create(:tier)  # あるTierを作成（必要に応じてFactoryBot等を使用）
-  #       visit tier_path(tier)  # 作成したTierの詳細ページへアクセス
-  #       expect(page).to have_content('ログインしてください')
-  #       expect(current_path).to eq login_path
-  #     end
-  #   end
-  # end
+      # it "詳細ページにアクセスするとエラーとなる" do
+      #   tier = create(:tier)  # あるTierを作成（必要に応じてFactoryBot等を使用）
+      #   visit tier_path(tier)  # 作成したTierの詳細ページへアクセス
+      #   expect(page).to have_content('ログインしてください')
+      #   expect(current_path).to eq login_path
+      # end
+    end
+  end
 
   describe "ログイン後" do
+    let!(:categories) { create_list(:category, 5) }
+    
     before do
       login_as(user)
-      ActiveStorage::Current.url_options = { protocol: 'http://', host: 'example.com', port: 80 }
-      
     end
     
     describe "新規登録" do
       def fill_tier_rank(from, to)
         (from..to).each do |i|
-          fill_in "tier_rank_#{i}", with: ["S", "A", "B", "C", "D"][i % 5]
+          fill_in "tier_tier_ranks_attributes_#{i}_name", with: ["S", "A", "B", "C", "D"][i % 5]
+        end
+      end
+
+      def fill_tier_rank_brank(from, to)
+        (from..to).each do |i|
+          fill_in "tier_tier_ranks_attributes_#{i}_name", with: ["", "A", "B", "C", "D"][i % 5]
         end
       end
       
       def fill_tier_category(from, to)
         (from..to).each do |i|
-          fill_in "tier_category_#{i}", with: ["Jungle", "Roam", "Exp", "Gold", "Mid"][i % 5]
+          fill_in "tier_tier_categories_attributes_#{i}_name", with: ["Jungle", "Roam", "Exp", "Gold", "Mid"][i % 5]
+        end
+      end
+
+      def fill_tier_category_brank(from, to)
+        (from..to).each do |i|
+          fill_in "tier_tier_categories_attributes_#{i}_name", with: ["", "Roam", "Exp", "Gold", "Mid"][i % 5]
         end
       end
       
@@ -60,54 +72,55 @@ RSpec.describe "Tiers", type: :system do
         element = find('input[type="submit"][value="作成"]')
         hide_footer_and_scroll_to(element)
         click_button "作成"
-        expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
       end
+
       context "正常系" do
-        let!(:categories) { create_list(:category, 5) }
-
-        # context "カテゴリとランクが5フィールドの場合" do
-        #   it "tierの新規登録が成功する" do
-        #     visit new_tier_path
-        #     select "フード", from: "tier_category_id"
-        #     fill_in "タイトル", with: "テストタイトル"
-        #     fill_in "説明", with: "テストの説明"
-        #     fill_tier_rank(1, 5)
-        #     fill_tier_category(1, 5)
-        #     submit_form
-        #   end
-        # end
+        context "カテゴリとランクが5フィールドの場合" do
+          it "tierの新規登録が成功する" do
+            visit new_tier_path
+            select "フード", from: "tier_category_id"
+            fill_in "タイトル", with: "テストタイトル"
+            fill_in "説明", with: "テストの説明"
+            fill_tier_rank(1, 5)
+            fill_tier_category(1, 5)
+            submit_form
+            expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
+          end
+        end
         
-        # context "カテゴリとランクが10フィールドの場合" do
-        #   it "tierの新規登録が成功する" do
-        #     visit new_tier_path
-        #     select "フード", from: "tier_category_id"
-        #     fill_in "タイトル", with: "テストタイトル"
-        #     fill_in "説明", with: "テストの説明"
-        #     click_add_button('#add-rank', 5)
-        #     fill_tier_rank(1, 10)
-        #     hide_footer_and_scroll_to(find('#add-category'))
-        #     click_add_button('#add-category', 5)
-        #     fill_tier_category(1, 10)
-        #     submit_form
-        #   end
-        # end
+        context "カテゴリとランクが10フィールドの場合" do
+          it "tierの新規登録が成功する" do
+            visit new_tier_path
+            select "フード", from: "tier_category_id"
+            fill_in "タイトル", with: "テストタイトル"
+            fill_in "説明", with: "テストの説明"
+            click_add_button('#add-rank', 5)
+            fill_tier_rank(1, 10)
+            hide_footer_and_scroll_to(find('#add-category'))
+            click_add_button('#add-category', 5)
+            fill_tier_category(1, 10)
+            submit_form
+            expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
+          end
+        end
     
-        # context "カバー画像がある場合" do
-        #   it "tierの新規登録が成功する" do
-        #     visit new_tier_path
-        #     select "フード", from: "tier_category_id"
-        #     fill_in "タイトル", with: "テストタイトル"
-        #     fill_in "説明", with: "テストの説明"
-        #     fill_tier_rank(1, 5)
-        #     fill_tier_category(1, 5)
+        context "カバー画像がある場合" do
+          it "tierの新規登録が成功する" do
+            visit new_tier_path
+            select "フード", from: "tier_category_id"
+            fill_in "タイトル", with: "テストタイトル"
+            fill_in "説明", with: "テストの説明"
+            fill_tier_rank(1, 5)
+            fill_tier_category(1, 5)
 
-        #     # 画像をアップロード
-        #     image_path = Rails.root.join('spec', 'fixtures', 'test_cover_image.png')
-        #     attach_file('tier[cover_image]', image_path)
+            # 画像をアップロード
+            image_path = Rails.root.join('spec', 'fixtures', 'test_cover_image.png')
+            attach_file('tier[cover_image]', image_path)
 
-        #     submit_form
-        #   end
-        # end
+            submit_form
+            expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
+          end
+        end
     
         context "Tier画像がある場合" do
           it "3枚でtierの新規登録が成功する" do
@@ -126,27 +139,93 @@ RSpec.describe "Tiers", type: :system do
             attach_file('tier[images][]', image_paths, make_visible: true)
         
             submit_form
+            expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
           end
         end
       end
       
       context "異常系" do
         it "タイトルが空白の場合、新規登録が失敗する" do
-          # タイトル空白に関するシナリオ
-          # ...
-        end
-    
-        context "カテゴリに関するエラー" do
-          it "カテゴリに1つでも空白がある場合、新規登録が失敗する" do
-            # カテゴリの空白に関するシナリオ
-            # ...
+          visit new_tier_path
+          select "フード", from: "tier_category_id"
+          fill_in "説明", with: "テストの説明"
+          fill_tier_rank(1, 5)
+          fill_tier_category(1, 5)
+      
+          submit_form
+          expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
+          expect(current_path).to eq new_tier_path
+
+          # 入力された値が維持されているかを確認
+          expect(page).to have_field('説明', with: 'テストの説明')
+          selected_option = find('#tier_category_id option[selected]').text
+          expect(selected_option).to eq('フード')
+
+          ranks = ["S", "A", "B", "C", "D"]
+          categories = ["Jungle", "Roam", "Exp", "Gold", "Mid"]
+          
+          (1..5).each do |i|
+            expect(page).to have_field("tier_tier_ranks_attributes_#{i}_name", with: ranks[i % 5])
+            expect(page).to have_field("tier_tier_categories_attributes_#{i}_name", with: categories[i % 5])
           end
         end
     
+        
         context "ランクに関するエラー" do
           it "ランクに1つでも空白がある場合、新規登録が失敗する" do
-            # ランクの空白に関するシナリオ
-            # ...
+            visit new_tier_path
+            select "フード", from: "tier_category_id"
+            fill_in "タイトル", with: "テストタイトル"
+            fill_in "説明", with: "テストの説明"
+            fill_tier_rank_brank(1, 5)
+            fill_tier_category(1, 5)
+        
+            submit_form
+            expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
+            expect(current_path).to eq new_tier_path
+  
+            # 入力された値が維持されているかを確認
+            expect(page).to have_field('タイトル', with: 'テストタイトル')
+            expect(page).to have_field('説明', with: 'テストの説明')
+            selected_option = find('#tier_category_id option[selected]').text
+            expect(selected_option).to eq('フード')
+  
+            ranks = ["", "A", "B", "C", "D"]
+            categories = ["Jungle", "Roam", "Exp", "Gold", "Mid"]
+            
+            (1..5).each do |i|
+              expect(page).to have_field("tier_tier_ranks_attributes_#{i}_name", with: ranks[i % 5])
+              expect(page).to have_field("tier_tier_categories_attributes_#{i}_name", with: categories[i % 5])
+            end
+          end
+        end
+
+        context "カテゴリに関するエラー" do
+          it "カテゴリに1つでも空白がある場合、新規登録が失敗する" do
+            visit new_tier_path
+            select "フード", from: "tier_category_id"
+            fill_in "タイトル", with: "テストタイトル"
+            fill_in "説明", with: "テストの説明"
+            fill_tier_rank(1, 5)
+            fill_tier_category_brank(1, 5)
+        
+            submit_form
+            expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
+            expect(current_path).to eq new_tier_path
+  
+            # 入力された値が維持されているかを確認
+            expect(page).to have_field('タイトル', with: 'テストタイトル')
+            expect(page).to have_field('説明', with: 'テストの説明')
+            selected_option = find('#tier_category_id option[selected]').text
+            expect(selected_option).to eq('フード')
+  
+            ranks = ["S", "A", "B", "C", "D"]
+            categories = ["", "Roam", "Exp", "Gold", "Mid"]
+            
+            (1..5).each do |i|
+              expect(page).to have_field("tier_tier_ranks_attributes_#{i}_name", with: ranks[i % 5])
+              expect(page).to have_field("tier_tier_categories_attributes_#{i}_name", with: categories[i % 5])
+            end
           end
         end
       end

@@ -1,10 +1,7 @@
 class TiersController < ApplicationController
-  class CustomCategoryError < StandardError; end
-  class CustomRankError < StandardError; end
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit]
-  before_action :set_column_numbers, only: [:new, :edit]
   before_action :require_login
 
   def index; end
@@ -15,8 +12,8 @@ class TiersController < ApplicationController
 
   def new
     @tier = Tier.new
-    @tier_categories = Array.new(5) { TierCategory.new }
-    @tier_ranks = Array.new(5) { TierRank.new }
+    Tier::DEFAULT_FIELD_NUM.times { @tier.tier_categories.build }
+    Tier::DEFAULT_FIELD_NUM.times { @tier.tier_ranks.build }
     @items = Item.new
   end
 
@@ -29,48 +26,30 @@ class TiersController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.create!(tier_params)
-      # 初期値を保存する
-      @tier.tier_categories.create!(name: params["tier"]["default_category"], order: 0)
-      @tier.tier_ranks.create!(name: params["tier"]["default_rank"], order: 0)
-      category_column_num = params["tier"]["category_column_num"].to_i
-      rank_column_num = params["tier"]["rank_column_num"].to_i
-      1.upto(category_column_num) do |i|
-        begin
-          @tier.tier_categories.create!(name: params["tier"]["category_#{i}"], order: i)
-        rescue ActiveRecord::RecordInvalid
-          raise CustomCategoryError, "すべてのカテゴリを入力してください"
-        end
-      end
-      1.upto(rank_column_num) do |i|
-        begin
-          @tier.tier_ranks.create!(name: params["tier"]["rank_#{i}"], order: i)
-        rescue ActiveRecord::RecordInvalid
-          raise CustomRankError, "すべてのランクを入力してください"
+
+      # 画像の数だけItemテーブルに保存する
+      if params[:tier][:images].reject(&:blank?).present?
+        # 初期値を取得
+        tier_category_id = @tier.tier_categories.find_by(order: 0).id
+        tier_rank_id = @tier.tier_ranks.find_by(order: 0).id
+        
+        params[:tier][:images].reject!(&:blank?)
+        params[:tier][:images].each do |image|
+          item = @tier.items.build(
+            tier_category_id: tier_category_id,
+            tier_rank_id: tier_rank_id
+          )
+
+          item.image.attach(image)
+          item.save!
         end
       end
     end
     redirect_to make_tier_path(@tier), success: t('.success')
-  rescue CustomCategoryError => ce
-    Rails.logger.error ce.message
-    flash[:danger] = ce.message
-    prepare_new_variables
-    render :new, status: :unprocessable_entity
-  rescue CustomRankError => re
-    Rails.logger.error re.message
-    flash[:danger] = re.message
-    prepare_new_variables
-    render :new, status: :unprocessable_entity
   rescue ActiveRecord::RecordInvalid => e
-    Rails.logger.error "Validation Error: #{e.record.errors.full_messages.to_sentence}"
-    flash[:danger] = e.record.errors.full_messages.to_sentence
-    prepare_new_variables # 新しいメソッドで必要な変数の設定を共通化
-    render :new, status: :unprocessable_entity
+    handle_error("Validation Error: #{e.record.errors.full_messages.to_sentence}")
   rescue StandardError => e
-    Rails.logger.error "ERROR: #{e.message}"
-    Rails.logger.error e.backtrace.join("\n")
-    flash[:danger] = t('.fail')
-    prepare_new_variables # 新しいメソッドで必要な変数の設定を共通化
-    render :new, status: :unprocessable_entity
+    handle_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}")
   end
 
   def update
@@ -186,7 +165,24 @@ class TiersController < ApplicationController
   private
 
   def tier_params
-    params.require(:tier).permit(:category_id, :title, :description, :cover_image)
+    params.require(:tier).permit(
+      :category_id, 
+      :title, 
+      :description, 
+      :cover_image,
+      tier_ranks_attributes: [
+        :name, 
+        :order
+      ],
+      tier_categories_attributes: [
+        :name, 
+        :order
+      ]
+    )
+  end
+
+  def tier_category_params
+    params.require(:tier).permit(:name, :order)
   end
 
   def item_params
@@ -200,18 +196,12 @@ class TiersController < ApplicationController
   def set_tier
     @tier = Tier.find(params[:id])
   end
-  
-  def set_column_numbers
-    default_column_num = 5
-    @category_column_num = @tier_categories&.count || default_column_num
-    @rank_column_num = @tier_ranks&.count || default_column_num
-  end
 
-  def prepare_new_variables
+  def handle_error(error_message)
+    Rails.logger.error error_message
+    @tier = Tier.new(tier_params)
     @categories = Category.all
-    @tier_categories = Array.new(5) { TierCategory.new }
-    @tier_ranks = Array.new(5) { TierRank.new }
-    @category_column_num = 5
-    @rank_column_num = 5
+    flash.now[:danger] = t('.fail')
+    render :new, status: :unprocessable_entity
   end
 end
