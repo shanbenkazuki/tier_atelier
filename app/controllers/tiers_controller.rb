@@ -48,13 +48,12 @@ class TiersController < ApplicationController
 
   def destroy
     @tier = Tier.find(params[:id])
-  
-    @tier.items.each do |item|
-      item.image.purge_later if item.image.attached?
+
+    if @tier.destroy
+      redirect_back fallback_location: root_path, success: 'Tierを削除しました'
+    else
+      redirect_back fallback_location: root_path, danger: 'Tierの削除に失敗しました'
     end
-  
-    @tier.destroy
-    redirect_to user_path(@tier.user), notice: 'Tier was successfully deleted.'
   end
 
   def make

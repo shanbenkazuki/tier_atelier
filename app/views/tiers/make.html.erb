@@ -30,9 +30,8 @@
   <%= link_to "https://twitter.com/intent/tweet?text=Hello,%20World!%20(from%20@gem)&url=#{CGI.escape(request.original_url)}", target: "_blank", class: "btn btn-primary" do %>
     <i class="fab fa-twitter"></i> Tweet
   <% end %>
-  <%= link_to edit_tier_path(@tier), class: 'btn btn-primary' do %>
-    編集
-  <% end %>
+  <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary' %>
+  <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
   <div class="modal fade" id="save-image-modal" tabindex="-1" aria-labelledby="saveImageModalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
