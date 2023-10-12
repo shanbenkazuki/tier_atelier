@@ -32,21 +32,5 @@
   <% end %>
   <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary' %>
   <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
-  <div class="modal fade" id="save-image-modal" tabindex="-1" aria-labelledby="saveImageModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="saveImageModalLabel">モーダルのタイトル</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <p>これはモーダルのコンテンツです。</p>
-        </div>
-        <div class="modal-footer">
-          <%= button_tag 'ダウンロード', type: 'button', class: 'btn btn-primary', id: 'download-image-button' %>
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <%= render 'save_image_modal' %>
 </div>
