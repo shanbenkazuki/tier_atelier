@@ -1,5 +1,5 @@
 <% content_for :title, t('.title') %>
 
 <%= render layout: "layouts/custom_layout" do %>
-  <%= render 'form', tier: @tier, tier_categories: @tier_categories, tier_ranks: @tier_ranks, categories: @categories, rank_column_num: @rank_column_num, category_column_num: @category_column_num %>
+  <%= render 'form', tier: @tier, categories: @categories %>
 <% end %>
