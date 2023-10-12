@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     collection do
       get 'search', to: 'tiers#search'
     end
-  
+
     member do
       get 'make', to: 'tiers#make'
       put 'items', to: 'items#update'

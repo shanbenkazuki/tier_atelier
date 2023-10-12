@@ -10,14 +10,14 @@ RSpec.describe "Tiers", type: :system do
         expect(page).to have_content('ログインしてください')
         expect(current_path).to eq login_path
       end
-  
+
       it "編集ページにアクセスするとエラーとなる" do
         tier = create(:tier)
         visit edit_tier_path(tier)
         expect(page).to have_content('ログインしてください')
         expect(current_path).to eq login_path
       end
-      
+
       # it "詳細ページにアクセスするとエラーとなる" do
       #   tier = create(:tier)  # あるTierを作成（必要に応じてFactoryBot等を使用）
       #   visit tier_path(tier)  # 作成したTierの詳細ページへアクセス
@@ -35,11 +35,11 @@ RSpec.describe "Tiers", type: :system do
         fill_in "tier_#{attribute_name}_attributes_#{i}_name", with: values[i % values.length]
       end
     end
-    
+
     def click_add_button(id, times)
       times.times { find(id).click }
     end
-    
+
     def hide_footer_and_scroll_to(element)
       page.execute_script("document.querySelector('footer.fixed-bottom').style.display = 'none';")
       scroll_to(element)
@@ -57,11 +57,11 @@ RSpec.describe "Tiers", type: :system do
       fill_attributes('tier_ranks', ranks, 1, ranks.length - 1)
       fill_attributes('tier_categories', categories, 1, categories.length - 1)
     end
-    
+
     def check_labels(expected_category_labels:, expected_rank_labels:)
       category_labels = all('.category-label').map(&:text)
       expect(category_labels).to eq(expected_category_labels)
-    
+
       rank_labels = all('.label-holder .label').map(&:text)
       expect(rank_labels).to eq(expected_rank_labels)
     end
@@ -71,7 +71,7 @@ RSpec.describe "Tiers", type: :system do
         title: "新規テストタイトル",
         description: "新規テストの説明",
         ranks: ["unranked", "S", "A", "B", "C", "D"],
-        categories: ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
+        categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
       )
     end
 
@@ -80,17 +80,17 @@ RSpec.describe "Tiers", type: :system do
         expect(page).to have_field("tier_tier_ranks_attributes_#{i}_name", with: ranks[i % ranks.length])
       end
     end
-    
+
     def check_category_fields(range, categories)
       range.each do |i|
         expect(page).to have_field("tier_tier_categories_attributes_#{i}_name", with: categories[i % categories.length])
       end
     end
-    
+
     before do
       login_as(user)
     end
-    
+
     describe "新規登録" do
       before do
         visit new_tier_path
@@ -108,10 +108,10 @@ RSpec.describe "Tiers", type: :system do
               title: "新規テストタイトル",
               description: "新規テストの説明",
               ranks: ["unranked", "S", "A", "B", "C", "D", "E", "F", "G", "H", "I"],
-              categories: ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
+              categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
             )
 
-            image_path = Rails.root.join('spec', 'fixtures', 'test_cover_image.png')
+            image_path = Rails.root.join("spec/fixtures/test_cover_image.png")
             attach_file('tier[cover_image]', image_path)
 
             tier_image_names = ["アーロット", "アウラド", "アウルス"]
@@ -130,16 +130,16 @@ RSpec.describe "Tiers", type: :system do
           end
         end
       end
-      
+
       context "異常系" do
         it "タイトルが空白の場合、新規登録が失敗する" do
           fill_form(
             title: "",
             description: "新規テストの説明",
             ranks: ["unranked", "S", "A", "B", "C", "D"],
-            categories: ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
+            categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
           )
-      
+
           scroll_and_submit_form("作成")
 
           expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
@@ -151,62 +151,61 @@ RSpec.describe "Tiers", type: :system do
           expect(selected_option).to eq('フード')
 
           ranks = ["unranked", "S", "A", "B", "C", "D"]
-          categories = ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
-          
+          categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
+
           check_rank_fields((1..5), ranks)
           check_category_fields((1..5), categories)
         end
-    
-        
+
         context "ランクに関するエラー" do
           it "ランクに1つでも空白がある場合、新規登録が失敗する" do
             fill_form(
               title: "新規テストタイトル",
               description: "新規テストの説明",
               ranks: ["unranked", "", "A", "B", "C", "D"],
-              categories: ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
+              categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
             )
-        
+
             scroll_and_submit_form("作成")
-  
+
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
             expect(current_path).to eq new_tier_path
-  
+
             # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
-  
+
             ranks = ["unranked", "", "A", "B", "C", "D"]
-            categories = ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
-            
+            categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
+
             check_rank_fields((1..5), ranks)
             check_category_fields((1..5), categories)
           end
 
           it "ランクを追加して新規登録が失敗する" do
             click_add_button('#add-rank', 2)
-            
+
             fill_form(
               title: "新規テストタイトル",
               description: "新規テストの説明",
               ranks: ["unranked", "S", "A", "B", "C", "D", "", "F"],
-              categories: ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
+              categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
             )
-            
+
             scroll_and_submit_form("作成")
-            
+
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
             expect(current_path).to eq new_tier_path
-  
+
             # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
-  
+
             ranks = ["unranked", "S", "A", "B", "C", "D", "", "F"]
-            categories = ["uncategorized","Jungle", "Roam", "Exp", "Gold", "Mid"]
-            
+            categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
+
             check_rank_fields((1..7), ranks)
             check_category_fields((1..5), categories)
           end
@@ -218,22 +217,22 @@ RSpec.describe "Tiers", type: :system do
               title: "新規テストタイトル",
               description: "新規テストの説明",
               ranks: ["unranked", "S", "A", "B", "C", "D"],
-              categories: ["uncategorized","", "Roam", "Exp", "Gold", "Mid"]
+              categories: ["uncategorized", "", "Roam", "Exp", "Gold", "Mid"]
             )
-        
+
             scroll_and_submit_form("作成")
-  
+
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
             expect(current_path).to eq new_tier_path
-  
+
             # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
-  
+
             ranks = ["unranked", "S", "A", "B", "C", "D"]
-            categories = ["uncategorized","", "Roam", "Exp", "Gold", "Mid"]
-            
+            categories = ["uncategorized", "", "Roam", "Exp", "Gold", "Mid"]
+
             check_rank_fields((1..5), ranks)
             check_category_fields((1..5), categories)
           end
@@ -246,22 +245,22 @@ RSpec.describe "Tiers", type: :system do
               title: "新規テストタイトル",
               description: "新規テストの説明",
               ranks: ["unranked", "S", "A", "B", "C", "D"],
-              categories: ["uncategorized","Jungle", "Roam", "Exp", "Gold", "", "Balance", "Speeder"]
+              categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "", "Balance", "Speeder"]
             )
-            
+
             scroll_and_submit_form("作成")
-            
+
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
             expect(current_path).to eq new_tier_path
-  
+
             # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
-  
+
             ranks = ["unranked", "S", "A", "B", "C", "D"]
-            categories = ["uncategorized","Jungle", "Roam", "Exp", "Gold", "", "Balance", "Speeder"]
-            
+            categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "", "Balance", "Speeder"]
+
             check_rank_fields((1..5), ranks)
             check_category_fields((1..7), categories)
           end
@@ -278,7 +277,7 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "編集・更新" do
-      let(:tier) { create(:tier, user: user, category: categories[0]) }
+      let(:tier) { create(:tier, user:, category: categories[0]) }
 
       before do
         visit edit_tier_path(tier)
@@ -290,7 +289,7 @@ RSpec.describe "Tiers", type: :system do
           click_add_button('#add-rank', 2)
           hide_footer_and_scroll_to(find('#add-category'))
           click_add_button('#add-category', 2)
-          
+
           fill_form(
             title: "更新テストタイトル",
             description: "更新テストの説明",
@@ -298,7 +297,7 @@ RSpec.describe "Tiers", type: :system do
             categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker", "Fighter", "Mage"]
           )
 
-          cover_image_path = Rails.root.join('spec', 'fixtures', 'update_cover_image.png')
+          cover_image_path = Rails.root.join("spec/fixtures/update_cover_image.png")
           attach_file('tier[cover_image]', cover_image_path)
 
           tier_image_names = ["アーロット", "アウラド", "アウルス"]
@@ -306,9 +305,9 @@ RSpec.describe "Tiers", type: :system do
             Rails.root.join('spec', 'fixtures', "#{name}.png")
           end
           attach_file('tier[images][]', tier_image_paths, make_visible: true)
-          
+
           scroll_and_submit_form("更新")
-        
+
           expect(page).to have_selector('.alert.alert-success', text: 'Tier更新に成功しました')
           expect(current_path).to eq make_tier_path(tier)
           check_labels(
@@ -317,7 +316,7 @@ RSpec.describe "Tiers", type: :system do
           )
         end
       end
-    
+
       context "異常系" do
         it "タイトルが空白の場合、更新が失敗する" do
           fill_form(
@@ -337,12 +336,12 @@ RSpec.describe "Tiers", type: :system do
           expect(selected_option).to eq('スポーツ')
 
           ranks = ["unranked", "E", "F", "G", "H", "I"]
-          categories = ["uncategorized","Balance", "Speeder", "Defender", "Supporter", "Attacker"]
-          
+          categories = ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
+
           check_rank_fields((1..5), ranks)
           check_category_fields((1..5), categories)
         end
-    
+
         context "カテゴリに関するエラー" do
           it "カテゴリに1つでも空白がある場合、更新が失敗する" do
             fill_form(
@@ -351,24 +350,24 @@ RSpec.describe "Tiers", type: :system do
               ranks: ["unranked", "E", "F", "G", "", "I"],
               categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
             )
-  
+
             scroll_and_submit_form("更新")
-  
+
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier更新に失敗しました')
             expect(current_path).to eq edit_tier_path(tier)
-  
+
             expect(page).to have_field('説明', with: '更新テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('スポーツ')
-  
+
             ranks = ["unranked", "E", "F", "G", "", "I"]
-            categories = ["uncategorized","Balance", "Speeder", "Defender", "Supporter", "Attacker"]
-            
+            categories = ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
+
             check_rank_fields((1..5), ranks)
             check_category_fields((1..5), categories)
           end
         end
-    
+
         context "ランクに関するエラー" do
           it "ランクに1つでも空白がある場合、更新が失敗する" do
             fill_form(
@@ -377,19 +376,18 @@ RSpec.describe "Tiers", type: :system do
               ranks: ["unranked", "E", "F", "G", "H", "I"],
               categories: ["uncategorized", "Balance", "Speeder", "Defender", "", "Attacker"]
             )
-  
+
             scroll_and_submit_form("更新")
-  
+
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier更新に失敗しました')
             expect(current_path).to eq edit_tier_path(tier)
-  
+
             expect(page).to have_field('説明', with: '更新テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('スポーツ')
-  
+
             ranks = ["unranked", "E", "F", "G", "H", "I"]
-            categories = ["uncategorized","Balance", "Speeder", "Defender", "", "Attacker"]
-            
+
             check_rank_fields((1..5), ranks)
           end
         end

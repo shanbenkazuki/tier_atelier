@@ -9,8 +9,6 @@ class ApplicationController < ActionController::Base
   end
 
   def set_active_storage_url_options
-    if Rails.env.test?
-      ActiveStorage::Current.url_options = { protocol: 'http://', host: 'example.com', port: 80 }
-    end
+    ActiveStorage::Current.url_options = { protocol: 'http://', host: 'example.com', port: 80 } if Rails.env.test?
   end
 end
