@@ -32,7 +32,7 @@ class TiersController < ApplicationController
   rescue StandardError => e
     handle_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}", Tier.new(tier_params))
   end
-  
+
   def update
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.find(params[:id])
@@ -60,12 +60,12 @@ class TiersController < ApplicationController
     @tier = Tier.find(params[:id])
 
     set_meta_tags title: @tier.title,
-    og: {
-      image: url_for(@tier.cover_image.blob&.url)
-    },
-    twitter: {
-      image: url_for(@tier.cover_image.blob&.url)
-    }
+                  og: {
+                    image: url_for(@tier.cover_image.blob&.url)
+                  },
+                  twitter: {
+                    image: url_for(@tier.cover_image.blob&.url)
+                  }
 
     tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
     tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
@@ -93,7 +93,7 @@ class TiersController < ApplicationController
         url: url_for(variant.url),
         id: item.id
       }
-    
+
       @images_map[key] ||= []
       @images_map[key] << image_data
     end
@@ -105,19 +105,19 @@ class TiersController < ApplicationController
 
   def tier_params
     params.require(:tier).permit(
-      :category_id, 
-      :title, 
-      :description, 
+      :category_id,
+      :title,
+      :description,
       :cover_image,
       tier_ranks_attributes: [
         :id,
-        :name, 
+        :name,
         :order,
         :_destroy
       ],
       tier_categories_attributes: [
         :id,
-        :name, 
+        :name,
         :order,
         :_destroy
       ]
@@ -135,7 +135,7 @@ class TiersController < ApplicationController
   def set_categories
     @categories = Category.all
   end
-  
+
   def set_tier
     @tier = Tier.find(params[:id])
   end
@@ -150,18 +150,18 @@ class TiersController < ApplicationController
   end
 
   def save_images
-    return unless params[:tier][:images].reject(&:blank?).present?
-  
+    return if params[:tier][:images].compact_blank.blank?
+
     tier_category_id = @tier.tier_categories.find_by(order: 0).id
     tier_rank_id = @tier.tier_ranks.find_by(order: 0).id
-  
-    params[:tier][:images].reject!(&:blank?)
+
+    params[:tier][:images].compact_blank!
     params[:tier][:images].each do |image|
       item = @tier.items.build(
-        tier_category_id: tier_category_id,
-        tier_rank_id: tier_rank_id
+        tier_category_id:,
+        tier_rank_id:
       )
-  
+
       item.image.attach(image)
       item.save!
     end
