@@ -14,96 +14,36 @@ class TiersController < ApplicationController
     @tier = Tier.new
     Tier::DEFAULT_FIELD_NUM.times { @tier.tier_categories.build }
     Tier::DEFAULT_FIELD_NUM.times { @tier.tier_ranks.build }
-    @items = Item.new
   end
 
   def edit
-    @tier_categories = @tier.tier_categories.non_zero.sort_by_asc
-    @tier_ranks = @tier.tier_ranks.non_zero.sort_by_asc
-    @items = @tier.items
+    @tier.tier_ranks.order(:order)
+    @tier.tier_categories.order(:order)
   end
 
   def create
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.create!(tier_params)
-
-      # 画像の数だけItemテーブルに保存する
-      if params[:tier][:images].reject(&:blank?).present?
-        # 初期値を取得
-        tier_category_id = @tier.tier_categories.find_by(order: 0).id
-        tier_rank_id = @tier.tier_ranks.find_by(order: 0).id
-        
-        params[:tier][:images].reject!(&:blank?)
-        params[:tier][:images].each do |image|
-          item = @tier.items.build(
-            tier_category_id: tier_category_id,
-            tier_rank_id: tier_rank_id
-          )
-
-          item.image.attach(image)
-          item.save!
-        end
-      end
+      save_images
     end
     redirect_to make_tier_path(@tier), success: t('.success')
   rescue ActiveRecord::RecordInvalid => e
-    handle_error("Validation Error: #{e.record.errors.full_messages.to_sentence}")
+    handle_error("Validation Error: #{e.record.errors.full_messages.to_sentence}", Tier.new(tier_params))
   rescue StandardError => e
-    handle_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}")
+    handle_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}", Tier.new(tier_params))
   end
-
+  
   def update
-    begin
-      ActiveRecord::Base.transaction do
-        @tier = current_user.tiers.find(params[:id])
-        @tier.update!(tier_params)
-        
-        # Update or create TierCategories
-        params["tier"]["category_column_num"].to_i.times do |i|
-          name = params["tier"]["category_#{i + 1}"]
-          tier_category = @tier.tier_categories.find_or_initialize_by(order: i + 1)
-          tier_category.update!(name: name)
-        end
-  
-        # Update or create TierRanks
-        params["tier"]["rank_column_num"].to_i.times do |i|
-          name = params["tier"]["rank_#{i + 1}"]
-          tier_rank = @tier.tier_ranks.find_or_initialize_by(order: i + 1)
-          tier_rank.update!(name: name)
-        end
-  
-        # add new images
-        if params[:tier][:images].reject(&:blank?).present?
-          params[:tier][:images].reject!(&:blank?)
-          params[:tier][:images].each do |image|
-            item = @tier.items.build(item_params)
-            
-            # 初期値を保存する
-            tier_category = @tier.tier_categories.find_by(order: 0)
-            tier_rank = @tier.tier_ranks.find_by(order: 0)
-            
-            # リレーションを活用して id のセットを省略
-            item.tier_category = tier_category
-            item.tier_rank = tier_rank
-            
-            item.image.attach(image)
-            
-            item.save!
-          end
-        end
-      end
-  
-      redirect_to make_tier_path(@tier), success: t('.success')
-    rescue StandardError => e
-      Rails.logger.error "ERROR: #{e.message}"
-      Rails.logger.error e.backtrace.join("\n")
-  
-      @categories = Category.all
-      @tier_categories = @tier.tier_categories.non_zero
-      @tier_ranks = @tier.tier_ranks.non_zero
-      flash.now[:danger] = t('.fail')
-      render :edit, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @tier = current_user.tiers.find(params[:id])
+      @tier.update!(tier_params)
+      save_images
     end
+    redirect_to make_tier_path(@tier), success: t('.success')
+  rescue ActiveRecord::RecordInvalid => e
+    handle_error("Validation Error: #{e.record.errors.full_messages.to_sentence}", @tier)
+  rescue StandardError => e
+    handle_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}", @tier)
   end
 
   def destroy
@@ -171,12 +111,16 @@ class TiersController < ApplicationController
       :description, 
       :cover_image,
       tier_ranks_attributes: [
+        :id,
         :name, 
-        :order
+        :order,
+        :_destroy
       ],
       tier_categories_attributes: [
+        :id,
         :name, 
-        :order
+        :order,
+        :_destroy
       ]
     )
   end
@@ -197,11 +141,30 @@ class TiersController < ApplicationController
     @tier = Tier.find(params[:id])
   end
 
-  def handle_error(error_message)
+  def handle_error(error_message, tier)
     Rails.logger.error error_message
-    @tier = Tier.new(tier_params)
+    @tier = tier
     @categories = Category.all
     flash.now[:danger] = t('.fail')
-    render :new, status: :unprocessable_entity
+    action_name = tier.new_record? ? :new : :edit
+    render action_name, status: :unprocessable_entity
+  end
+
+  def save_images
+    return unless params[:tier][:images].reject(&:blank?).present?
+  
+    tier_category_id = @tier.tier_categories.find_by(order: 0).id
+    tier_rank_id = @tier.tier_ranks.find_by(order: 0).id
+  
+    params[:tier][:images].reject!(&:blank?)
+    params[:tier][:images].each do |image|
+      item = @tier.items.build(
+        tier_category_id: tier_category_id,
+        tier_rank_id: tier_rank_id
+      )
+  
+      item.image.attach(image)
+      item.save!
+    end
   end
 end

@@ -14,6 +14,6 @@ class Tier < ApplicationRecord
 
   has_one_attached :cover_image
   
-  accepts_nested_attributes_for :tier_ranks, reject_if: :all_blank
-  accepts_nested_attributes_for :tier_categories, reject_if: :all_blank
+  accepts_nested_attributes_for :tier_ranks, reject_if: :all_blank, allow_destroy: true
+  accepts_nested_attributes_for :tier_categories, reject_if: :all_blank, allow_destroy: true
 end
