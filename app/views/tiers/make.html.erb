@@ -1,4 +1,11 @@
 <div class="container">
+  <h1 class="mb-3"><%= @tier.title %></h1>
+  
+  <p class="mb-4"><%= @tier.description %></p>
+
+  <%= link_to "https://twitter.com/intent/tweet?text=Hello,%20World!%20(from%20@gem)&url=#{CGI.escape(request.original_url)}", target: "_blank", class: "btn btn-primary" do %>
+    <i class="fab fa-twitter"></i> Tweet
+  <% end %>
   <div id="tier-container" data-tier-id="<%= @tier.id %>">
     <div class="category-row">
       <div class="label-holder"></div>
@@ -21,16 +28,17 @@
       </div>
     <% end %>
   </div>
-  <div id="default-area" class="d-flex justify-content-center border border-dark rounded p-3" data-default-category-id="<%= @category_id_with_order_zero %>" data-default-rank-id="<%= @rank_id_with_order_zero %>">
+  <div id="default-area" class="d-flex justify-content-center border border-dark rounded p-3 mb-3" data-default-category-id="<%= @category_id_with_order_zero %>" data-default-rank-id="<%= @rank_id_with_order_zero %>">
     <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
       <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous", draggable: "true" %>
     <% end %>
   </div>
-  <%= button_tag '保存', type: 'button', class: 'btn btn-primary', data: { bs_toggle: 'modal', bs_target: '#save-image-modal' } %>
-  <%= link_to "https://twitter.com/intent/tweet?text=Hello,%20World!%20(from%20@gem)&url=#{CGI.escape(request.original_url)}", target: "_blank", class: "btn btn-primary" do %>
-    <i class="fab fa-twitter"></i> Tweet
-  <% end %>
-  <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary' %>
-  <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger' %>
+
+<div class="d-flex justify-content-center mb-3 mx-4 px-4">
+    <%= button_tag '保存', type: 'button', class: 'btn btn-secondary btn-lg me-custom', data: { bs_toggle: 'modal', bs_target: '#save-image-modal' } %>
+    <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary btn-lg me-custom' %>
+    <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg' %>
+</div>
+
   <%= render 'save_image_modal' %>
 </div>
