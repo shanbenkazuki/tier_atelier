@@ -88,7 +88,7 @@ class TiersController < ApplicationController
             else
               "#{item.tier_rank_id}_#{item.tier_category_id}"
             end
-      variant = item.image.variant(resize_to_limit: [80, nil]).processed
+      variant = item.image.variant(resize_to_limit: [60, nil]).processed
       image_data = {
         url: url_for(variant.url),
         id: item.id
