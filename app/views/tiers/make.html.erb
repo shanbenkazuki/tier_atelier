@@ -28,7 +28,7 @@
       </div>
     <% end %>
   </div>
-  <div id="default-area" class="d-flex justify-content-center border border-dark rounded p-3 mb-3" data-default-category-id="<%= @category_id_with_order_zero %>" data-default-rank-id="<%= @rank_id_with_order_zero %>">
+  <div id="default-area" class="d-flex flex-wrap justify-content-center align-items-stretch gap-2 p-3 mb-3 border border-dark rounded" data-default-category-id="<%= @category_id_with_order_zero %>" data-default-rank-id="<%= @rank_id_with_order_zero %>">
     <% (@images_map["uncategorized_unranked"] || []).each do |image_data| %>
       <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous", draggable: "true" %>
     <% end %>
