@@ -1,13 +1,44 @@
 class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
-  before_action :set_tier, only: [:edit]
+  before_action :set_tier, only: [:edit, :show]
   before_action :require_login
 
   def index; end
 
   def show
     @tier = Tier.find(params[:id])
+
+    tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
+    tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
+
+    @category_name_and_ids = tier_categories.non_zero.pluck(:name, :id)
+    @rank_name_and_ids = tier_ranks.non_zero.pluck(:name, :id)
+
+    @category_id_with_order_zero = tier_categories.find_by(order: 0)&.id
+    @rank_id_with_order_zero = tier_ranks.find_by(order: 0)&.id
+
+    @items = Item.where(tier_id: @tier.id)
+
+    @tier_colors = Rails.application.config.tier_colors
+
+    @images_map = {}
+
+    @items.each do |item|
+      key = if item.tier_rank_id == @rank_id_with_order_zero && item.tier_category_id == @category_id_with_order_zero
+              "uncategorized_unranked"
+            else
+              "#{item.tier_rank_id}_#{item.tier_category_id}"
+            end
+      variant = item.image.variant(resize_to_limit: [60, nil]).processed
+      image_data = {
+        url: url_for(variant.url),
+        id: item.id
+      }
+
+      @images_map[key] ||= []
+      @images_map[key] << image_data
+    end
   end
 
   def new
