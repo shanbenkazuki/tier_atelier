@@ -17,6 +17,15 @@ class ItemsController < ApplicationController
     render json: { error: 'Internal Server Error' }, status: :internal_server_error
   end
 
+  def destroy
+    @item = Item.find(params[:id])
+    if @item.destroy
+      render json: { status: 'success', message: 'Item successfully deleted' }
+    else
+      render json: { status: 'error', message: 'Failed to delete item' }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def set_tier

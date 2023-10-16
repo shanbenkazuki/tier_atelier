@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
+import DeleteTierImageController from "./delete_tier_image_controller"
+application.register("delete-tier-image", DeleteTierImageController)
+
 import HelloController from "./hello_controller"
 application.register("hello", HelloController)
