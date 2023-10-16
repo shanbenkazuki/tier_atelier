@@ -10,10 +10,10 @@ import { fab } from '@fortawesome/free-brands-svg-icons'
 import { library } from "@fortawesome/fontawesome-svg-core";
 library.add(fas, far, fab)
 
-import "./src/direct_uploads"
-import "./src/tier_item_updater"
-import "./src/dynamic_field"
-import "./src/tier_image_uploader"
-import "./src/save_tier_image_modal"
+// import "./src/direct_uploads"
+// import "./src/tier_item_updater"
+// import "./src/dynamic_field"
+// import "./src/tier_image_uploader"
+// import "./src/save_tier_image_modal"
 
 ActiveStorage.start()

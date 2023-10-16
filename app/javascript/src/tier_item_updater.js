@@ -39,8 +39,8 @@ document.addEventListener("turbo:load", function() {
 
   function handleDrop(e, element) {
     e.preventDefault();
-    const itemId = e.dataTransfer.getData("text");
-    const draggedElem = document.getElementById(itemId);
+    const itemId = e.dataTransfer.getData("item-id");
+    const draggedElem = document.querySelector('[data-image-id="' + itemId + '"]');
     element.appendChild(draggedElem);
 
     const tierId = getAttributeFromElement(document, "#tier-container", "data-tier-id");
@@ -82,7 +82,7 @@ document.addEventListener("turbo:load", function() {
   }
 
   function handleImageDragStart(e) {
-    e.dataTransfer.setData("text", this.id);
+    e.dataTransfer.setData("item-id", this.getAttribute('data-image-id'));
   }
 
   function setupImageDragListeners() {

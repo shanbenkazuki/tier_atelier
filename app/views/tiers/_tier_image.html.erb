@@ -1,0 +1,11 @@
+<% (images["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
+  <%= image_tag image_data[:url], 
+    data: { 
+      image_id: image_data[:id], 
+      action: "dragstart->delete-tier-image#dragStart",
+      controller: "delete-tier-image"
+    }, 
+    crossorigin: "anonymous", 
+    draggable: "true" 
+  %>
+<% end %>

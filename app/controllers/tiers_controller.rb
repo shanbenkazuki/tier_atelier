@@ -115,7 +115,7 @@ class TiersController < ApplicationController
 
     @items.each do |item|
       key = if item.tier_rank_id == @rank_id_with_order_zero && item.tier_category_id == @category_id_with_order_zero
-              "uncategorized_unranked"
+              "unranked_uncategorized"
             else
               "#{item.tier_rank_id}_#{item.tier_category_id}"
             end
