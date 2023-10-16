@@ -209,7 +209,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@hotwired/stimulus@npm:^3.2.1":
+"@hotwired/stimulus-webpack-helpers@npm:^1.0.0":
+  version: 1.0.1
+  resolution: "@hotwired/stimulus-webpack-helpers@npm:1.0.1"
+  peerDependencies:
+    "@hotwired/stimulus": ">= 3.0"
+  checksum: 68d833f74fb90f2993c7baed6e542880c23416a129b50cadc00571102c782f6bdc8c68742ecdd668cc702aa0fafd8888f91098ed7dc43c12b2212fe5969ef6cd
+  languageName: node
+  linkType: hard
+
+"@hotwired/stimulus@npm:^3.2.1, @hotwired/stimulus@npm:^3.2.2":
   version: 3.2.2
   resolution: "@hotwired/stimulus@npm:3.2.2"
   checksum: e0c13469df89f760f35cce0fd7af5f7eeabd4ff79c4ad2b05fe7d8d7b845818c6736c3cd515c1906e144aa27529d5a60377647937b756950b4f709be329c9046
@@ -2268,6 +2277,7 @@ __metadata:
     react: ^18.2.0
     react-dom: ^18.2.0
     sass: ^1.64.2
+    stimulus: ^3.2.2
   languageName: unknown
   linkType: soft
 
@@ -2493,6 +2503,16 @@ __metadata:
   version: 2.0.1
   resolution: "statuses@npm:2.0.1"
   checksum: 18c7623fdb8f646fb213ca4051be4df7efb3484d4ab662937ca6fbef7ced9b9e12842709872eb3020cc3504b93bde88935c9f6417489627a7786f24f8031cbcb
+  languageName: node
+  linkType: hard
+
+"stimulus@npm:^3.2.2":
+  version: 3.2.2
+  resolution: "stimulus@npm:3.2.2"
+  dependencies:
+    "@hotwired/stimulus": ^3.2.2
+    "@hotwired/stimulus-webpack-helpers": ^1.0.0
+  checksum: ccdd6a1902b099def8463f8c948f576e0a80960ca79eb3c0c1c256bd04eb49411515dd2056eb1e7ffb7abef59546057db187e04aae0212d8368156b7b0bce936
   languageName: node
   linkType: hard
 
