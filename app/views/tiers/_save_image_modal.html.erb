@@ -9,7 +9,11 @@
         <p>これはモーダルのコンテンツです。</p>
       </div>
       <div class="modal-footer">
-        <%= button_tag 'ダウンロード', type: 'button', class: 'btn btn-primary', id: 'download-image-button' %>
+        <%= button_tag 'ダウンロード', 
+          type: 'button', 
+          class: 'btn btn-primary', 
+          data: { controller: "download-tier", action: "click->download-tier#downloadImage" } 
+        %>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">閉じる</button>
       </div>
     </div>
