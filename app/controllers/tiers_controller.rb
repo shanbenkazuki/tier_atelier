@@ -55,7 +55,7 @@ class TiersController < ApplicationController
   def create
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.create!(tier_params)
-      save_images
+      @tier.add_images(params[:tier][:images])
     end
     redirect_to make_tier_path(@tier), success: t('.success')
   rescue ActiveRecord::RecordInvalid => e
@@ -68,7 +68,7 @@ class TiersController < ApplicationController
     ActiveRecord::Base.transaction do
       @tier = current_user.tiers.find(params[:id])
       @tier.update!(tier_params)
-      save_images
+      @tier.add_images(params[:tier][:images])
     end
     redirect_to make_tier_path(@tier), success: t('.success')
   rescue ActiveRecord::RecordInvalid => e
@@ -178,23 +178,5 @@ class TiersController < ApplicationController
     flash.now[:danger] = t('.fail')
     action_name = tier.new_record? ? :new : :edit
     render action_name, status: :unprocessable_entity
-  end
-
-  def save_images
-    return if params[:tier][:images].compact_blank.blank?
-
-    tier_category_id = @tier.tier_categories.find_by(order: 0).id
-    tier_rank_id = @tier.tier_ranks.find_by(order: 0).id
-
-    params[:tier][:images].compact_blank!
-    params[:tier][:images].each do |image|
-      item = @tier.items.build(
-        tier_category_id:,
-        tier_rank_id:
-      )
-
-      item.image.attach(image)
-      item.save!
-    end
   end
 end

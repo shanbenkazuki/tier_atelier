@@ -65,8 +65,8 @@ export default class extends Controller {
   }
 
   fetchUpdateItem(tierId, categoryId, rankId, itemId) {
-    fetch(`/tiers/${tierId}/items`, {
-      method: 'PUT',
+    fetch(`/tiers/${tierId}/items/${itemId}`, {
+      method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
         'X-Requested-With': 'XMLHttpRequest',
@@ -74,8 +74,7 @@ export default class extends Controller {
       },
       body: JSON.stringify({
         category_id: categoryId,
-        rank_id: rankId,
-        image_id: itemId
+        rank_id: rankId
       })
     })
     .then(response => {
