@@ -1,14 +1,12 @@
 class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
-  before_action :set_tier, only: [:edit, :show]
+  before_action :set_tier, only: [:edit, :show, :destory]
   before_action :require_login
 
   def index; end
 
   def show
-    @tier = Tier.find(params[:id])
-
     tier_categories = TierCategory.where(tier_id: @tier.id).order(:order)
     tier_ranks = TierRank.where(tier_id: @tier.id).order(:order)
 
@@ -47,10 +45,7 @@ class TiersController < ApplicationController
     Tier::DEFAULT_FIELD_NUM.times { @tier.tier_ranks.build }
   end
 
-  def edit
-    @tier.tier_ranks.order(:order)
-    @tier.tier_categories.order(:order)
-  end
+  def edit; end
 
   def create
     ActiveRecord::Base.transaction do
@@ -78,8 +73,6 @@ class TiersController < ApplicationController
   end
 
   def destroy
-    @tier = Tier.find(params[:id])
-
     if @tier.destroy
       redirect_back fallback_location: root_path, success: 'Tierを削除しました'
     else
