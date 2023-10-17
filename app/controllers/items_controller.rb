@@ -1,16 +1,15 @@
 class ItemsController < ApplicationController
-  before_action :set_tier, only: [:update]
+  before_action :set_item, only: [:update, :destroy]
 
   def update
-    item = Item.find(params[:image_id])
-    item.tier_id = @tier.id
-    item.tier_rank_id = params[:rank_id]
-    item.tier_category_id = params[:category_id]
+    @item.tier_id = params[:tier_id]
+    @item.tier_rank_id = params[:rank_id]
+    @item.tier_category_id = params[:category_id]
 
-    if item.save
-      render json: item, status: :ok
+    if @item.save
+      render json: @item, status: :ok
     else
-      render json: item.errors, status: :unprocessable_entity
+      render json: @item.errors, status: :unprocessable_entity
     end
   rescue StandardError => e
     logger.error("Error updating item: #{e.message}")
@@ -18,7 +17,6 @@ class ItemsController < ApplicationController
   end
 
   def destroy
-    @item = Item.find(params[:id])
     if @item.destroy
       render json: { status: 'success', message: 'Item successfully deleted' }
     else
@@ -28,7 +26,7 @@ class ItemsController < ApplicationController
 
   private
 
-  def set_tier
-    @tier = Tier.find(params[:id])
+  def set_item
+    @item = Item.find(params[:id])
   end
 end

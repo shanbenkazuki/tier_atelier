@@ -7,10 +7,10 @@ Rails.application.routes.draw do
 
     member do
       get 'make', to: 'tiers#make'
-      put 'items', to: 'items#update'
     end
+
+    resources :items, only: [:create, :update, :destroy]
   end
-  resources :items
   root 'top#index'
   get 'privacy_policy', to: 'top#privacy_policy'
   get 'terms_of_use', to: 'top#terms_of_use'
