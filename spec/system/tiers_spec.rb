@@ -100,9 +100,9 @@ RSpec.describe "Tiers", type: :system do
       context "正常系" do
         context "カテゴリとランクが10フィールドの場合" do
           it "tierの新規登録が成功する" do
-            click_add_button('#add-rank', 5)
-            hide_footer_and_scroll_to(find('#add-category'))
-            click_add_button('#add-category', 5)
+            click_add_button('#add-ranks', 5)
+            hide_footer_and_scroll_to(find('#add-categories'))
+            click_add_button('#add-categories', 5)
 
             fill_form(
               title: "新規テストタイトル",
@@ -184,7 +184,7 @@ RSpec.describe "Tiers", type: :system do
           end
 
           it "ランクを追加して新規登録が失敗する" do
-            click_add_button('#add-rank', 2)
+            click_add_button('#add-ranks', 2)
 
             fill_form(
               title: "新規テストタイトル",
@@ -238,8 +238,8 @@ RSpec.describe "Tiers", type: :system do
           end
 
           it "カテゴリを追加して新規登録が失敗する" do
-            hide_footer_and_scroll_to(find('#add-category'))
-            click_add_button('#add-category', 2)
+            hide_footer_and_scroll_to(find('#add-categories'))
+            click_add_button('#add-categories', 2)
 
             fill_form(
               title: "新規テストタイトル",
@@ -286,9 +286,9 @@ RSpec.describe "Tiers", type: :system do
 
       context "正常系" do
         it "tierの更新が成功する" do
-          click_add_button('#add-rank', 2)
-          hide_footer_and_scroll_to(find('#add-category'))
-          click_add_button('#add-category', 2)
+          click_add_button('#add-ranks', 2)
+          hide_footer_and_scroll_to(find('#add-categories'))
+          click_add_button('#add-categories', 2)
 
           fill_form(
             title: "更新テストタイトル",
