@@ -449,6 +449,17 @@ RSpec.describe "Tiers", type: :system do
           estes_image.drag_to(tier_cell_1_4)
           expect(find("div[class='tier cell 1-4']")).to have_selector("img[src*='Estes.png']")
         end
+
+        it "画像の削除ができる" do
+          visit arrange_tier_path(tier)
+
+          uranus_image = find("img[src*='Uranus.png']")
+          delete_image_area = find("#trash-can")
+
+          uranus_image.drag_to(delete_image_area)
+
+          expect(page).to have_no_selector("img[src*='Uranus.png']")
+        end
       end
     end
   end
