@@ -13,8 +13,9 @@ export default class extends Controller {
 
   deleteItem(event) {
     const imageId = event.dataTransfer.getData('image-id');
+    const tierId = this.getAttributeFromElement(document, "#tier-container", "data-tier-id");
 
-    fetch(`/items/${imageId}`, {
+    fetch(`/tiers/${tierId}/items/${imageId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',

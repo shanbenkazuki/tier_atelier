@@ -20,9 +20,9 @@ FactoryBot.define do
         content_type: 'image/png'
       )
 
-      ['ウラノス.png', 'エウドラ.png', 'エスタス.png'].each_with_index do |filename, index|
-        tier_rank = tier.tier_ranks[index % tier.tier_ranks.size]  # Cycle through tier ranks
-        tier_category = tier.tier_categories[index % tier.tier_categories.size]  # Cycle through tier categories
+      ['Uranus.png', 'Eudora.png', 'Estes.png'].each do |filename|
+        tier_rank = tier.tier_ranks[0]
+        tier_category = tier.tier_categories[0]
 
         item = FactoryBot.create(:item, tier:, tier_rank:, tier_category:)
         item.image.attach(
