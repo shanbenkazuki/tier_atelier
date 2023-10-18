@@ -18,12 +18,12 @@ RSpec.describe "Tiers", type: :system do
         expect(current_path).to eq login_path
       end
 
-      # it "詳細ページにアクセスするとエラーとなる" do
-      #   tier = create(:tier)  # あるTierを作成（必要に応じてFactoryBot等を使用）
-      #   visit tier_path(tier)  # 作成したTierの詳細ページへアクセス
-      #   expect(page).to have_content('ログインしてください')
-      #   expect(current_path).to eq login_path
-      # end
+      it "詳細ページにアクセスするとエラーとなる" do
+        tier = create(:tier)
+        visit tier_path(tier)
+        expect(page).to have_content('ログインしてください')
+        expect(current_path).to eq login_path
+      end
     end
   end
 
@@ -36,7 +36,7 @@ RSpec.describe "Tiers", type: :system do
       end
     end
 
-    def click_add_button(id, times)
+    def multi_click(id, times)
       times.times { find(id).click }
     end
 
@@ -87,6 +87,14 @@ RSpec.describe "Tiers", type: :system do
       end
     end
 
+    def delete_tier_from_path(path)
+      visit path
+      accept_confirm do
+        click_link '削除'
+      end
+      expect(page).to have_selector('.alert.alert-success', text: 'Tierを削除しました')
+    end
+
     before do
       login_as(user)
     end
@@ -100,9 +108,13 @@ RSpec.describe "Tiers", type: :system do
       context "正常系" do
         context "カテゴリとランクが10フィールドの場合" do
           it "tierの新規登録が成功する" do
-            click_add_button('#add-ranks', 5)
+            multi_click('#add-ranks', 1)
+            multi_click('#remove-ranks', 1)
+            multi_click('#add-ranks', 5)
             hide_footer_and_scroll_to(find('#add-categories'))
-            click_add_button('#add-categories', 5)
+            multi_click('#add-categories', 1)
+            multi_click('#remove-categories', 1)
+            multi_click('#add-categories', 5)
 
             fill_form(
               title: "新規テストタイトル",
@@ -184,7 +196,7 @@ RSpec.describe "Tiers", type: :system do
           end
 
           it "ランクを追加して新規登録が失敗する" do
-            click_add_button('#add-ranks', 2)
+            multi_click('#add-ranks', 2)
 
             fill_form(
               title: "新規テストタイトル",
@@ -239,7 +251,7 @@ RSpec.describe "Tiers", type: :system do
 
           it "カテゴリを追加して新規登録が失敗する" do
             hide_footer_and_scroll_to(find('#add-categories'))
-            click_add_button('#add-categories', 2)
+            multi_click('#add-categories', 2)
 
             fill_form(
               title: "新規テストタイトル",
@@ -268,10 +280,6 @@ RSpec.describe "Tiers", type: :system do
       end
     end
 
-    describe "一覧表示" do
-      # ...
-    end
-
     describe "詳細表示" do
       # ...
     end
@@ -280,15 +288,16 @@ RSpec.describe "Tiers", type: :system do
       let(:tier) { create(:tier, user:, category: categories[0]) }
 
       before do
-        visit edit_tier_path(tier)
+        visit make_tier_path(tier)
+        click_link '編集'
         select "スポーツ", from: "tier_category_id"
       end
 
       context "正常系" do
         it "tierの更新が成功する" do
-          click_add_button('#add-ranks', 2)
+          multi_click('#add-ranks', 2)
           hide_footer_and_scroll_to(find('#add-categories'))
-          click_add_button('#add-categories', 2)
+          multi_click('#add-categories', 2)
 
           fill_form(
             title: "更新テストタイトル",
@@ -394,10 +403,22 @@ RSpec.describe "Tiers", type: :system do
       end
     end
 
-    # describe "削除" do
-    #   it "tierの削除が成功する" do
-    #     # ...
-    #   end
-    # end
+    describe "削除" do
+      let(:tier) { create(:tier, user:, category: categories[0]) }
+
+      before do
+        visit make_tier_path(tier)
+      end
+
+      context "正常系" do
+        it "make画面からtierの削除が成功する" do
+          delete_tier_from_path(make_tier_path(tier))
+        end
+
+        it "詳細画面からtierの削除が成功する" do
+          delete_tier_from_path(tier_path(tier))
+        end
+      end
+    end
   end
 end
