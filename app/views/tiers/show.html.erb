@@ -10,16 +10,16 @@
   <div id="tier-container" data-tier-id="<%= @tier.id %>">
     <div class="category-row">
       <div class="label-holder"></div>
-      <% @category_name_and_ids.each_with_index do |(category_name, category_id), categories_index| %>
+      <% @category_labels.each_with_index do |(category_name, category_id), categories_index| %>
         <div class="category-label" data-category-id="<%= category_id %>" style="background-color: <%= @tier_colors[categories_index] %>;" ><%= category_name %></div>
       <% end %>
     </div>
-    <% @rank_name_and_ids.each_with_index do |(rank_name, rank_id), ranks_index| %>
+    <% @rank_labels.each_with_index do |(rank_name, rank_id), ranks_index| %>
       <div class="tier-row">
         <div class="label-holder" style="background-color: <%= @tier_colors[ranks_index] %>;" data-rank-id="<%= rank_id %>">
           <span class="label"><%= rank_name %></span>
         </div>
-        <% @category_name_and_ids.each_with_index do |(category, category_id), categories_index| %>
+        <% @category_labels.each_with_index do |(category, category_id), categories_index| %>
           <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
             <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
               <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous",style: "pointer-events: none;" %>
