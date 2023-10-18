@@ -34,4 +34,23 @@ class Tier < ApplicationRecord
       item.save!
     end
   end
+
+  def self.create_with_images(user, tier_params, images)
+    tier = user.tiers.create!(tier_params)
+    tier.add_images(images)
+    tier
+  end
+
+  def update_with_images(tier_params, images)
+    update!(tier_params)
+    add_images(images)
+  end
+
+  def category_with_order_zero
+    tier_categories.find_by(order: 0)
+  end
+
+  def rank_with_order_zero
+    tier_ranks.find_by(order: 0)
+  end
 end

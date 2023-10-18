@@ -13,15 +13,33 @@ export default class extends Controller {
 
   deleteItem(event) {
     const imageId = event.dataTransfer.getData('image-id');
-
-    fetch(`/items/${imageId}`, {
+    if (!imageId) {
+      console.error("Image ID is not found.");
+      return;
+    }
+  
+    const tierId = this.getAttributeFromElement(document, "#tier-container", "data-tier-id");
+    if (!tierId) {
+      console.error("Tier ID is not found.");
+      return;
+    }
+  
+    const csrfTokenElement = document.querySelector('meta[name="csrf-token"]');
+    const csrfToken = csrfTokenElement ? csrfTokenElement.content : null;
+  
+    fetch(`/tiers/${tierId}/items/${imageId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type': 'application/json',
-        'X-CSRF-Token': document.querySelector('meta[name="csrf-token"]').content
+        'X-CSRF-Token': csrfToken
       }
     })
-    .then(response => response.json())
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Failed to delete the item. Status code: ${response.status}`);
+      }
+      return response.json();
+    })
     .then(data => {
       if (data.status === 'success') {
         const imageElement = document.querySelector(`[data-image-id="${imageId}"]`);
@@ -29,8 +47,12 @@ export default class extends Controller {
           imageElement.remove();
         }
       }
+    })
+    .catch(error => {
+      console.error(`Error in deleteItem: ${error.message}`);
     });
   }
+  
 
   updateItem(event) {
     event.preventDefault();
