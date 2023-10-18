@@ -432,14 +432,12 @@ RSpec.describe "Tiers", type: :system do
           eudora_image = find("img[src*='Eudora.png']")
           estes_image = find("img[src*='Estes.png']")
 
-          # ドラッグアンドドロップ先の<div>要素を見つける
           tier_cell_4_1 = find("div[class='tier cell 4-1']")
           tier_cell_3_3 = find("div[class='tier cell 3-3']")
           tier_cell_1_4 = find("div[class='tier cell 1-4']")
 
           default_area = find("#default-area")
 
-          # 画像要素を<div>要素にドラッグアンドドロップ
           uranus_image.drag_to(tier_cell_4_1)
           expect(find("div[class='tier cell 4-1']")).to have_selector("img[src*='Uranus.png']")
           uranus_image.drag_to(default_area)
@@ -459,6 +457,13 @@ RSpec.describe "Tiers", type: :system do
           uranus_image.drag_to(delete_image_area)
 
           expect(page).to have_no_selector("img[src*='Uranus.png']")
+        end
+
+        it "tierの画像をダウンロードできる" do
+          visit arrange_tier_path(tier)
+
+          click_button '保存'
+          click_button 'ダウンロード'
         end
       end
     end
