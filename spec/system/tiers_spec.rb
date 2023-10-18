@@ -288,7 +288,7 @@ RSpec.describe "Tiers", type: :system do
       let(:tier) { create(:tier, user:, category: categories[0]) }
 
       before do
-        visit make_tier_path(tier)
+        visit arrange_tier_path(tier)
         click_link '編集'
         select "スポーツ", from: "tier_category_id"
       end
@@ -318,7 +318,7 @@ RSpec.describe "Tiers", type: :system do
           scroll_and_submit_form("更新")
 
           expect(page).to have_selector('.alert.alert-success', text: 'Tier更新に成功しました')
-          expect(current_path).to eq make_tier_path(tier)
+          expect(current_path).to eq arrange_tier_path(tier)
           check_labels(
             expected_category_labels: ["Balance", "Speeder", "Defender", "Supporter", "Attacker", "Fighter", "Mage"],
             expected_rank_labels: ["E", "F", "G", "H", "I", "J", "K"]
@@ -407,12 +407,12 @@ RSpec.describe "Tiers", type: :system do
       let(:tier) { create(:tier, user:, category: categories[0]) }
 
       before do
-        visit make_tier_path(tier)
+        visit arrange_tier_path(tier)
       end
 
       context "正常系" do
-        it "make画面からtierの削除が成功する" do
-          delete_tier_from_path(make_tier_path(tier))
+        it "arrange画面からtierの削除が成功する" do
+          delete_tier_from_path(arrange_tier_path(tier))
         end
 
         it "詳細画面からtierの削除が成功する" do

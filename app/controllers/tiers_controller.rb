@@ -1,7 +1,7 @@
 class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
-  before_action :set_tier, only: [:edit, :show, :destroy, :make]
+  before_action :set_tier, only: [:edit, :show, :destroy, :arrange]
   before_action :require_login
 
   def index; end
@@ -35,7 +35,7 @@ class TiersController < ApplicationController
     end
   end
 
-  def make
+  def arrange
     set_meta_tags title: @tier.title,
                   og: {
                     image: url_for(@tier.cover_image.blob&.url)
@@ -85,7 +85,7 @@ class TiersController < ApplicationController
         @tier.update_with_images(tier_params, params[:tier][:images])
       end
     end
-    redirect_to make_tier_path(@tier), success: t('.success')
+    redirect_to arrange_tier_path(@tier), success: t('.success')
   rescue ActiveRecord::RecordInvalid => e
     handle_tier_error("Validation Error: #{e.record.errors.full_messages.to_sentence}")
   rescue StandardError => e

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     end
 
     member do
-      get 'make', to: 'tiers#make'
+      get 'arrange', to: 'tiers#arrange'
     end
 
     resources :items, only: [:create, :update, :destroy]
