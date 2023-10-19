@@ -48,6 +48,18 @@ class TiersController < ApplicationController
 
   def search; end
 
+  def create_from_template
+    template = Template.find(params[:template_id])
+    @tier = current_user.tiers.initialize_from_template(template)
+
+    if @tier.save
+      @tier.add_items_from_template(template)
+      redirect_to arrange_tier_path(@tier), success: t('.success')
+    else
+      redirect_to templates_path, alert: @tier.errors.full_messages.join(", ")
+    end
+  end
+
   private
 
   def tier_params

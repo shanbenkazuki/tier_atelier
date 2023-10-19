@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   resources :tiers do
     collection do
       get 'search', to: 'tiers#search'
+      post 'create_from_template', to: 'tiers#create_from_template'
     end
 
     member do
