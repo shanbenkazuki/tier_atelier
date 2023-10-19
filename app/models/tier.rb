@@ -9,8 +9,6 @@ class Tier < ApplicationRecord
   has_many :tier_ranks, dependent: :destroy
   has_many :tier_categories, dependent: :destroy
   has_many :items, dependent: :destroy
-  has_many :tier_template_relationships, dependent: :destroy
-  has_many :templates, through: :tier_template_relationships
 
   validates :title, presence: true
 

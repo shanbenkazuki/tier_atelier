@@ -9,26 +9,49 @@ class TemplatesController < ApplicationController
   def show; end
 
   def new
-    @tier_id = params[:tier_id]
+    @tier = Tier.find_by(id: params[:tier_id])
     @template = Template.new
   end
 
   def edit; end
 
   def create
-    tier = current_user.tiers.find_by(id: params[:template][:tier_id])
-
-    redirect_to root_path, alert: "Invalid tier selection." and return if tier.nil?
-
+    tier = current_user.tiers.find_by(id: params[:tier_id])
     @template = current_user.templates.build(template_params)
-    @template.tiers << tier
 
-    if @template.save
-      redirect_to @template, notice: "テンプレートの作成に成功しました"
-    else
-      @categories = Category.all
-      render :new, status: :unprocessable_entity
+    ActiveRecord::Base.transaction do
+      @template.save!
+
+      # Itemの画像のコピー
+      tier.items.each do |item|
+        if item.image.attached?
+          @template.tier_images.attach(item.image.blob)
+        else
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      # TierCategoryのコピー
+      tier.tier_categories.each do |tier_category|
+        @template.template_categories.create!(
+          name: tier_category.name,
+          order: tier_category.order
+        )
+      end
+
+      # TierRankのコピー
+      tier.tier_ranks.each do |tier_rank|
+        @template.template_ranks.create!(
+          name: tier_rank.name,
+          order: tier_rank.order
+        )
+      end
     end
+
+    redirect_to @template, notice: "テンプレートの作成に成功しました"
+  rescue ActiveRecord::RecordInvalid
+    @categories = Category.all
+    render :new, status: :unprocessable_entity
   end
 
   def update

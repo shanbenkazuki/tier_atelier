@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_19_015420) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_19_090932) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -89,6 +89,24 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_19_015420) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
+  create_table "template_categories", force: :cascade do |t|
+    t.bigint "template_id", null: false
+    t.string "name"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["template_id"], name: "index_template_categories_on_template_id"
+  end
+
+  create_table "template_ranks", force: :cascade do |t|
+    t.bigint "template_id", null: false
+    t.string "name"
+    t.integer "order"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["template_id"], name: "index_template_ranks_on_template_id"
+  end
+
   create_table "templates", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
@@ -116,15 +134,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_19_015420) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tier_id"], name: "index_tier_ranks_on_tier_id"
-  end
-
-  create_table "tier_template_relationships", force: :cascade do |t|
-    t.bigint "tier_id", null: false
-    t.bigint "template_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["template_id"], name: "index_tier_template_relationships_on_template_id"
-    t.index ["tier_id"], name: "index_tier_template_relationships_on_tier_id"
   end
 
   create_table "tiers", force: :cascade do |t|
@@ -157,12 +166,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_19_015420) do
   add_foreign_key "items", "tiers"
   add_foreign_key "likes", "tiers", column: "tier_list_id"
   add_foreign_key "likes", "users"
+  add_foreign_key "template_categories", "templates"
+  add_foreign_key "template_ranks", "templates"
   add_foreign_key "templates", "categories"
   add_foreign_key "templates", "users"
   add_foreign_key "tier_categories", "tiers"
   add_foreign_key "tier_ranks", "tiers"
-  add_foreign_key "tier_template_relationships", "templates"
-  add_foreign_key "tier_template_relationships", "tiers"
   add_foreign_key "tiers", "categories"
   add_foreign_key "tiers", "users"
 end
