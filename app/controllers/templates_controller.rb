@@ -1,57 +1,60 @@
 class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
+  before_action :set_categories, only: [:new]
 
-  # GET /templates
   def index
     @templates = Template.all
   end
 
-  # GET /templates/1
   def show; end
 
-  # GET /templates/new
   def new
+    @tier_id = params[:tier_id]
     @template = Template.new
   end
 
-  # GET /templates/1/edit
   def edit; end
 
-  # POST /templates
   def create
-    @template = Template.new(template_params)
+    tier = current_user.tiers.find_by(id: params[:template][:tier_id])
+
+    redirect_to root_path, alert: "Invalid tier selection." and return if tier.nil?
+
+    @template = current_user.templates.build(template_params)
+    @template.tiers << tier
 
     if @template.save
-      redirect_to @template, notice: "Template was successfully created."
+      redirect_to @template, notice: "テンプレートの作成に成功しました"
     else
+      @categories = Category.all
       render :new, status: :unprocessable_entity
     end
   end
 
-  # PATCH/PUT /templates/1
   def update
     if @template.update(template_params)
-      redirect_to @template, notice: "Template was successfully updated."
+      redirect_to @template, notice: "テンプレートの作成に失敗しました"
     else
       render :edit, status: :unprocessable_entity
     end
   end
 
-  # DELETE /templates/1
   def destroy
     @template.destroy
-    redirect_to templates_url, notice: "Template was successfully destroyed.", status: :see_other
+    redirect_to templates_url, notice: "テンプレートの削除に成功しました", status: :see_other
   end
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_template
     @template = Template.find(params[:id])
   end
 
-  # Only allow a list of trusted parameters through.
   def template_params
-    params.fetch(:template, {})
+    params.require(:template).permit(:title, :description, :category_id)
+  end
+
+  def set_categories
+    @categories = Category.all
   end
 end
