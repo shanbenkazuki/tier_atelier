@@ -10,7 +10,11 @@ Rails.application.routes.draw do
     end
 
     resources :items, only: [:create, :update, :destroy]
+    resources :templates, only: [:new, :create]
   end
+
+  resources :templates, except: [:new, :create]
+
   root 'top#index'
   get 'privacy_policy', to: 'top#privacy_policy'
   get 'terms_of_use', to: 'top#terms_of_use'

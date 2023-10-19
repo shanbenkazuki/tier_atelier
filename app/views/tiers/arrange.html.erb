@@ -36,14 +36,14 @@
     <%= render partial: 'tier_image', locals: { images: @images_map, rank_id: "unranked", category_id: "uncategorized" } %>
   </div>
 
-<div class="d-flex justify-content-center align-items-center mb-3 mx-4 px-4">
-  <%= button_tag '保存', type: 'button', class: 'btn btn-secondary btn-lg me-custom', data: { bs_toggle: 'modal', bs_target: '#save-image-modal' } %>
-  <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary btn-lg me-custom' %>
-  <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg me-custom' %>
-  <div id="trash-can" data-controller="item-drag" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
-    <i class="fas fa-trash fa-2x"></i>
+  <div class="d-flex justify-content-center align-items-center mb-3 mx-4 px-4">
+    <%= button_tag '保存', type: 'button', class: 'btn btn-secondary btn-lg me-custom', data: { bs_toggle: 'modal', bs_target: '#save-image-modal' } %>
+    <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary btn-lg me-custom' %>
+    <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg me-custom' %>
+    <div id="trash-can" data-controller="item-drag" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
+      <i class="fas fa-trash fa-2x"></i>
+    </div>
   </div>
-</div>
 
-  <%= render 'save_image_modal' %>
+  <%= render 'save_image_modal', tier: @tier %>
 </div>
