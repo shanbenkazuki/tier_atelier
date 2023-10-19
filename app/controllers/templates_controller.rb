@@ -6,7 +6,9 @@ class TemplatesController < ApplicationController
     @templates = Template.all
   end
 
-  def show; end
+  def show
+    setup_template
+  end
 
   def new
     @tier = Tier.find_by(id: params[:tier_id])
@@ -22,7 +24,6 @@ class TemplatesController < ApplicationController
     ActiveRecord::Base.transaction do
       @template.save!
 
-      # Itemの画像のコピー
       tier.items.each do |item|
         if item.image.attached?
           @template.tier_images.attach(item.image.blob)
@@ -31,7 +32,6 @@ class TemplatesController < ApplicationController
         end
       end
 
-      # TierCategoryのコピー
       tier.tier_categories.each do |tier_category|
         @template.template_categories.create!(
           name: tier_category.name,
@@ -39,7 +39,6 @@ class TemplatesController < ApplicationController
         )
       end
 
-      # TierRankのコピー
       tier.tier_ranks.each do |tier_rank|
         @template.template_ranks.create!(
           name: tier_rank.name,
@@ -79,5 +78,25 @@ class TemplatesController < ApplicationController
 
   def set_categories
     @categories = Category.all
+  end
+
+  def setup_template
+    @category_labels = @template.template_categories.non_zero.pluck(:name, :id)
+    @rank_labels = @template.template_ranks.non_zero.pluck(:name, :id)
+
+    @uncategorized_template_category_id = @template.category_with_order_zero&.id
+    @unranked_template_rank_id = @template.rank_with_order_zero&.id
+
+    @items = @template.tier_images
+
+    @template_colors = Rails.application.config.tier_colors
+
+    @template_images_map = {}
+
+    @items.each do |item|
+      variant_url = url_for(item.variant(resize_to_limit: [60, nil]).processed.url)
+      @template_images_map["default_area"] ||= []
+      @template_images_map["default_area"] << { url: variant_url, id: item.id }
+    end
   end
 end

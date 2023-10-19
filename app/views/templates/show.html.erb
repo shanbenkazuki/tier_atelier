@@ -1,10 +1,25 @@
-<p style="color: green"><%= notice %></p>
-
-<%= render @template %>
-
-<div>
-  <%= link_to "Edit this template", edit_template_path(@template) %> |
-  <%= link_to "Back to templates", templates_path %>
-
-  <%= button_to "Destroy this template", @template, method: :delete %>
+<div class="container">
+  <div id="tier-container" data-template-id="<%= @template.id %>">
+      <div class="category-row">
+        <div class="label-holder"></div>
+        <% @category_labels.each_with_index do |(category_name, category_id), categories_index| %>
+          <div class="category-label" data-category-id="<%= category_id %>" style="background-color: <%= @template_colors[categories_index] %>;" ><%= category_name %></div>
+        <% end %>
+      </div>
+      <% @rank_labels.each_with_index do |(rank_name, rank_id), ranks_index| %>
+        <div class="tier-row">
+          <div class="label-holder" style="background-color: <%= @template_colors[ranks_index] %>;" data-rank-id="<%= rank_id %>">
+            <span class="label"><%= rank_name %></span>
+          </div>
+          <% @category_labels.each_with_index do |(category, category_id), categories_index| %>
+            <div class="tier cell">
+            </div>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+    <div id="default-area" class="d-flex flex-wrap justify-content-center align-items-stretch gap-2 p-3 mb-3 border border-dark rounded">
+    <%= render 'template_image', template_images: @template_images_map %>
+  </div>
 </div>
