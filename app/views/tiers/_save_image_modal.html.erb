@@ -1,20 +1,20 @@
 <div class="modal fade" id="save-image-modal" tabindex="-1" aria-labelledby="saveImageModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
+  <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="saveImageModalLabel">モーダルのタイトル</h5>
+        <h5 class="modal-title" id="saveImageModalLabel">Tierのイメージ</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>これはモーダルのコンテンツです。</p>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer justify-content-center">
+        <%= link_to '反映する', '#', class: 'btn btn-success me-3' %>
+        <%= link_to 'テンプレートにする', new_tier_template_path(tier), class: 'btn btn-secondary me-3' %>
         <%= button_tag 'ダウンロード', 
-          type: 'button', 
-          class: 'btn btn-primary', 
-          data: { controller: "download-tier", action: "click->download-tier#downloadImage" } 
+            type: 'button', 
+            class: 'btn btn-primary', 
+            data: { controller: "download-tier", action: "click->download-tier#downloadImage" } 
         %>
-        <%= link_to 'テンプレートを作成', new_tier_template_path(tier), class: 'btn btn-secondary' %>
       </div>
     </div>
   </div>

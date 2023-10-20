@@ -7,6 +7,9 @@ import { application } from "./application"
 import DeleteTierImageController from "./delete_tier_image_controller"
 application.register("delete-tier-image", DeleteTierImageController)
 
+import DisplayModalTierImageController from "./display_modal_tier_image_controller"
+application.register("display-modal-tier-image", DisplayModalTierImageController)
+
 import DownloadTierController from "./download_tier_controller"
 application.register("download-tier", DownloadTierController)
 
