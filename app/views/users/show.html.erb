@@ -1,13 +1,36 @@
 <% content_for :title, t('.title') %>
 
 <%= render layout: "layouts/custom_layout" do %>
-  <h1><%= @user.name %>'s Tiers</h1>
+  <h1>作成したTier</h1>
 
-  <ul>
-  <% @user.tiers.each do |tier| %>
-    <li>
-      <%= link_to tier.title, tier_path(tier) %>
-    </li>
-  <% end %>
-  </ul>
+  <div class="row">
+      <% @user.tiers.each do |tier| %>
+        <div class="col-md-3 scale-on-hover">
+            <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
+                <% if tier.cover_image.attached? %>
+                    <%= image_tag tier.cover_image, alt: tier.title, class: 'img-fluid shadow' %>
+                <% else %>
+                    <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
+                <% end %>
+                <div class="text-center fw-bold mt-2">
+                    <%= tier.title %>
+                </div>
+            <% end %>
+        </div>
+      <% end %>
+  </div>
+
+  <h1>作成したTemplate</h1>
+  <div class="row">
+      <% @user.templates.each do |template| %>
+        <div class="col-md-3 scale-on-hover">
+            <%= link_to template_path(template), class: 'text-dark text-decoration-none' do %>
+                <%= image_tag 'default_cover.webp', alt: template.title, class: 'img-fluid shadow' %>
+                <div class="text-center fw-bold mt-2">
+                    <%= template.title %>
+                </div>
+            <% end %>
+        </div>
+      <% end %>
+  </div>
 <% end %>
