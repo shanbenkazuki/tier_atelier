@@ -6,6 +6,7 @@ class Template < ApplicationRecord
   has_many :template_categories, dependent: :destroy
 
   has_many_attached :tier_images
+  has_one_attached :template_cover_image
 
   def category_with_order_zero
     template_categories.find_by(order: 0)
