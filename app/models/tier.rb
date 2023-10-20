@@ -11,6 +11,7 @@ class Tier < ApplicationRecord
   has_many :items, dependent: :destroy
 
   validates :title, presence: true
+  validates :images, content_type: ['image/png', 'image/jpeg', 'image/webp']
 
   has_one_attached :cover_image
 

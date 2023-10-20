@@ -13,7 +13,7 @@
   </div>
   <div class="form-group mb-4" data-controller="item-count-checker upload-item-preview">
       <%= f.label :images, Tier.human_attribute_name(:images), class: 'control-label d-block' %>
-      <%= f.file_field :images, accept: 'image/png,image/jpeg', class: 'form-control-file', multiple: true, direct_upload: true, id: 'image-upload', data: { item_count_checker_target: "file", upload_item_preview_target: "input", action: "change->item-count-checker#checkFileCount change->upload-item-preview#previewImage" } %>
+      <%= f.file_field :images, accept: 'image/png,image/jpeg,image/webp', class: 'form-control-file', multiple: true, direct_upload: true, id: 'image-upload', data: { item_count_checker_target: "file", upload_item_preview_target: "input", action: "change->item-count-checker#checkFileCount change->upload-item-preview#previewImage" } %>
       <div class="image-preview mt-3" data-upload-item-preview-target="preview"></div>
   </div>
   <div class="form-group mb-4">
