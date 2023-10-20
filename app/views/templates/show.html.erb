@@ -1,6 +1,6 @@
 <div class="container">
   <div id="tier-container" data-template-id="<%= @template.id %>">
-    <div class="category-row">d
+    <div class="category-row">
       <div class="label-holder"></div>
       <% @category_labels.each_with_index do |(category_name, category_id), categories_index| %>
         <div class="category-label" data-category-id="<%= category_id %>" style="background-color: <%= @template_colors[categories_index] %>;" ><%= category_name %></div>
