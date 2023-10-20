@@ -123,9 +123,6 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
             )
 
-            image_path = Rails.root.join("spec/fixtures/test_cover_image.png")
-            attach_file('tier[cover_image]', image_path)
-
             tier_image_names = ["アーロット", "アウラド", "アウルス"]
             tier_image_paths = tier_image_names.map do |name|
               Rails.root.join('spec', 'fixtures', "#{name}.png")
@@ -305,9 +302,6 @@ RSpec.describe "Tiers", type: :system do
             ranks: ["unranked", "E", "F", "G", "H", "I", "J", "K"],
             categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker", "Fighter", "Mage"]
           )
-
-          cover_image_path = Rails.root.join("spec/fixtures/update_cover_image.png")
-          attach_file('tier[cover_image]', cover_image_path)
 
           tier_image_names = ["アーロット", "アウラド", "アウルス"]
           tier_image_paths = tier_image_names.map do |name|
