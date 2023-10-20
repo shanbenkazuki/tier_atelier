@@ -73,7 +73,7 @@ class TemplatesController < ApplicationController
   end
 
   def template_params
-    params.require(:template).permit(:title, :description, :category_id)
+    params.require(:template).permit(:title, :description, :category_id, :template_cover_image)
   end
 
   def set_categories
