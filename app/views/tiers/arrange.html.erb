@@ -37,14 +37,15 @@
   </div>
 
   <div class="d-flex justify-content-center align-items-center mb-5 mx-4 px-4">
-    <%= button_tag '保存', type: 'button', class: 'btn btn-secondary btn-lg me-custom', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
+    <%= button_tag '保存', type: 'button', id:'display-modal', class: 'btn btn-secondary btn-lg me-custom', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
     <div id="trash-can" data-controller="item-drag" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
       <i class="fas fa-trash fa-2x"></i>
+    </div>
   </div>
 
   <div class="d-flex mb-5 mx-4">
-      <%= link_to '編集', edit_tier_path(@tier), class: 'btn btn-primary btn-lg w-50 me-2' %>
-      <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg w-50' %>
+      <%= link_to '編集', edit_tier_path(@tier), id: 'edit_tier', class: 'btn btn-primary btn-lg w-50 me-2' %>
+      <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg w-50' %>
   </div>
 
   <%= render 'save_image_modal', tier: @tier %>

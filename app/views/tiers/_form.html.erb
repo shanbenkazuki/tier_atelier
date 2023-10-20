@@ -1,7 +1,7 @@
 <%= form_with model: tier, local: true, html: { multipart: true } do |f| %>
   <div class="form-group mb-4">
     <%= f.label :category_id, Tier.human_attribute_name(:category_id), class: 'control-label' %>
-    <%= f.select :category_id, categories.collect { |c| [c.name, c.id] }, {}, { class: 'form-control' }, { prompt: 'カテゴリを選択してください' } %>
+    <%= f.select :category_id, categories.collect { |c| [c.name, c.id] }, { prompt: 'カテゴリを選択してください' }, { class: 'form-control' } %>
   </div>
   <div class="form-group mb-4">
       <%= f.label :title, Tier.human_attribute_name(:title), class: 'control-label' %>
