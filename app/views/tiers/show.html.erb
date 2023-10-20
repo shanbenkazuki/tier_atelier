@@ -31,6 +31,6 @@
   </div>
 
   <div class="d-flex justify-content-center mb-3 mx-4 px-4">
-      <%= link_to '削除', tier_path(@tier), data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg' %>
+      <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg' %>
   </div>
 </div>

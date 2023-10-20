@@ -90,6 +90,7 @@ RSpec.describe "Tiers", type: :system do
     def delete_tier_from_path(path)
       visit path
       accept_confirm do
+        hide_footer_and_scroll_to(find('#remove_tier'))
         click_link '削除'
       end
       expect(page).to have_selector('.alert.alert-success', text: 'Tierを削除しました')
@@ -286,6 +287,7 @@ RSpec.describe "Tiers", type: :system do
 
       before do
         visit arrange_tier_path(tier)
+        hide_footer_and_scroll_to(find('#edit_tier'))
         click_link '編集'
         select "スポーツ", from: "tier_category_id"
       end
@@ -456,6 +458,7 @@ RSpec.describe "Tiers", type: :system do
         it "tierの画像をダウンロードできる" do
           visit arrange_tier_path(tier)
 
+          hide_footer_and_scroll_to(find('#display-modal'))
           click_button '保存'
           click_button 'ダウンロード'
         end
