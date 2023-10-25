@@ -11,7 +11,7 @@
         <%= button_tag '反映する', 
           type: 'button', 
           class: 'btn btn-success me-3', 
-          data: { controller: "arrange-tier-modal", action: "click->arrange-tier-modal#updateItemsFromLocalStorage" } 
+          data: { controller: "arrange-tier-modal", action: "click->arrange-tier-modal#updateTierImage" } 
         %>
         <%= link_to 'テンプレートにする', new_tier_template_path(tier), class: 'btn btn-secondary me-3' %>
         <%= button_tag 'ダウンロード', 

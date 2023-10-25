@@ -60,6 +60,22 @@ class TiersController < ApplicationController
     end
   end
 
+  def update_tier_cover_image
+    @tier = Tier.find(params[:id])
+
+    if params[:image].present?
+      @tier.cover_image.attach(params[:image])
+
+      if @tier.save
+        render json: { message: "Cover image updated successfully." }, status: :ok
+      else
+        render json: { errors: @tier.errors.full_messages }, status: :unprocessable_entity
+      end
+    else
+      render json: { error: "Image not provided." }, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def tier_params
