@@ -8,7 +8,6 @@ export default class extends Controller {
 
     if (allImageData.length > 0) {
       this.updateBulkItems(allImageData, tierId);
-      this.updateTierCoverImage(tierId)
     } else {
       this.redirectToTierPage(tierId);
     }
@@ -59,6 +58,7 @@ export default class extends Controller {
     })
     .then(response => {
       if (response.ok) {
+        this.updateTierCoverImage(tierId)
         this.redirectToTierPage(tierId);
       } else {
         throw new Error('Network response was not ok');
@@ -70,7 +70,7 @@ export default class extends Controller {
   }
 
   redirectToTierPage(tierId) {
-    window.location.href = `http://localhost:3000/tiers/${tierId}`;
+    window.location.href = `/tiers/${tierId}`;
   }
 
   getCsrfToken() {
