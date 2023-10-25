@@ -1,12 +1,14 @@
 import { Controller } from "@hotwired/stimulus"
+import html2canvas from 'html2canvas';
 
 export default class extends Controller {
-  updateItemsFromLocalStorage() {
+  updateTierImage() {
     const allImageData = this.collectImageDataFromLocalStorage();
     const tierId = this.getAttributeFromElement(document, "#tier-container", "data-tier-id");
 
     if (allImageData.length > 0) {
-      this.postImageDataToServer(allImageData, tierId);
+      this.updateBulkItems(allImageData, tierId);
+      this.updateTierCoverImage(tierId)
     } else {
       this.redirectToTierPage(tierId);
     }
@@ -45,7 +47,7 @@ export default class extends Controller {
     }
   }
 
-  postImageDataToServer(imageData, tierId) {
+  updateBulkItems(imageData, tierId) {
     fetch(`/tiers/${tierId}/items/bulk_update_items`, {
       method: 'POST',
       headers: {
@@ -76,5 +78,43 @@ export default class extends Controller {
   }
   getAttributeFromElement(element, selector, attribute) {
     return element.querySelector(selector).getAttribute(attribute);
+  }
+
+  updateTierCoverImage(tierId) {
+    html2canvas(document.querySelector("#tier-container"), {
+      useCORS: true
+    }).then(canvas => {
+      const image = canvas.toDataURL("image/png");
+      const blob = this.dataURLtoBlob(image);
+
+      const formData = new FormData();
+      formData.append('image', blob);
+  
+      fetch(`/tiers/${tierId}/update_tier_cover_image`, {
+          method: 'POST',
+          headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRF-Token': this.getCsrfToken()
+          },
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          console.log(data);
+      })
+      .catch(error => {
+          console.error('Error uploading image:', error);
+      });
+      
+    });
+  }
+
+  dataURLtoBlob(dataURL) {
+    const binary = atob(dataURL.split(',')[1]);
+    const array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+    return new Blob([new Uint8Array(array)], { type: 'image/png' });
   }
 }

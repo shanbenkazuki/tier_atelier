@@ -4,7 +4,7 @@
   <h1>作成したTier</h1>
   <div class="row">
     <% @user.tiers.each do |tier| %>
-    <div class="col-md-3 scale-on-hover">
+    <div class="col-md-6 scale-on-hover">
       <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
         <% if tier.cover_image.attached? %>
             <%= image_tag tier.cover_image, alt: tier.title, class: 'img-fluid shadow' %>
@@ -22,7 +22,7 @@
   <h1>作成したTemplate</h1>
   <div class="row">
     <% @user.templates.each do |template| %>
-    <div class="col-md-3 scale-on-hover">
+    <div class="col-md-4 scale-on-hover">
       <%= link_to template_path(template), class: 'text-dark text-decoration-none' do %>
         <% if template.template_cover_image.attached? %>
             <%= image_tag template.template_cover_image, alt: template.title, class: 'img-fluid shadow' %>

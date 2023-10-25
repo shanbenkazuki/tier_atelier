@@ -8,6 +8,7 @@ Rails.application.routes.draw do
 
     member do
       get 'arrange', to: 'tiers#arrange'
+      post 'update_tier_cover_image', to: 'tiers#update_tier_cover_image'
     end
 
     resources :items, only: [:create, :update, :destroy] do
