@@ -10,7 +10,12 @@ Rails.application.routes.draw do
       get 'arrange', to: 'tiers#arrange'
     end
 
-    resources :items, only: [:create, :update, :destroy]
+    resources :items, only: [:create, :update, :destroy] do
+      collection do
+        post 'bulk_update_items'
+      end
+    end
+
     resources :templates, only: [:new, :create]
   end
 

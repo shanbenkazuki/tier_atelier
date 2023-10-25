@@ -19,7 +19,7 @@
           <span class="label"><%= rank_name %></span>
         </div>
         <% @category_labels.each_with_index do |(category, category_id), categories_index| %>
-          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>" data-controller="item-drag" data-item-drag-target="tier" data-action="dragover->item-drag#dragOver drop->item-drag#updateItem">
+          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>" data-controller="item-drag" data-item-drag-target="tier" data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
             <%= render 'tier_image', images: @images_map, rank_id: rank_id, category_id: category_id %>
           </div>
         <% end %>
@@ -32,7 +32,7 @@
      data-default-rank-id="<%= @unranked_tier_rank_id %>" 
      data-controller="item-drag" 
      data-item-drag-target="tier" 
-     data-action="dragover->item-drag#dragOver drop->item-drag#updateItem">
+     data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
     <%= render 'tier_image', images: @images_map, rank_id: "unranked", category_id: "uncategorized" %>
   </div>
 
