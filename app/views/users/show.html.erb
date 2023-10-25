@@ -4,13 +4,16 @@
     <div class="col-lg-8 my-5">
       <div class="d-flex align-items-center">
         <% if @user.avatar.attached? %>
-          <%= image_tag @user.avatar, alt: @user.name, class: 'rounded-circle me-2', style: 'width: 100px; height: 100px;' %>
+            <%= image_tag @user.avatar, alt: @user.name, class: 'rounded-circle me-2', style: 'width: 100px; height: 100px;' %>
         <% else %>
-          <%= image_tag 'no-image.png', alt: 'No image', class: 'rounded-circle me-2', style: 'width: 100px; height: 100px;' %>
+            <%= image_tag 'no-image.png', alt: 'No image', class: 'rounded-circle me-2', style: 'width: 100px; height: 100px;' %>
         <% end %>
         <div>
-          <h1 class="mb-3"><%= @user.name %></h1>
-          <%= link_to 'ログアウト', logout_path, data: { turbo_method: :post }, class: 'btn btn-secondary' %>
+            <h1 class="mb-3"><%= @user.name %></h1>
+            <% if current_user == @user %>
+              <%= link_to 'プロフィール編集', edit_user_path(@user), class: 'btn btn-primary me-2' %>
+              <%= link_to 'ログアウト', logout_path, data: { turbo_method: :post }, class: 'btn btn-secondary' %>
+            <% end %>
         </div>
       </div>
 
@@ -20,11 +23,11 @@
         <div class="col-md-6 scale-on-hover">
           <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
             <% if tier.cover_image.attached? %>
-                <%= image_tag tier.cover_image, alt: tier.title, class: 'img-fluid shadow' %>
+                <%= image_tag tier.cover_image, alt: tier.title, class: 'img-fluid shadowmb-5' %>
             <% else %>
                 <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
             <% end %>
-            <div class="text-center fw-bold mt-2">
+            <div class="text-center fw-bold mt-2 mb-1">
                 <%= tier.title %>
             </div>
           <% end %>

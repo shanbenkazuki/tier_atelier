@@ -12,10 +12,9 @@ export default class extends Controller {
     
       const link = document.createElement('a');
       link.href = url;
-      link.download = 'tier-container.png';
+      link.download = 'my-image.png';
       link.click();
     
-      // URLを解放
       window.URL.revokeObjectURL(url);
     });
   }

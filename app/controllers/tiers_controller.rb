@@ -1,7 +1,7 @@
 class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
-  before_action :set_tier, only: [:edit, :show, :destroy, :arrange]
+  before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
   before_action :require_login
 
   def index; end
@@ -61,8 +61,6 @@ class TiersController < ApplicationController
   end
 
   def update_tier_cover_image
-    @tier = Tier.find(params[:id])
-
     if params[:image].present?
       @tier.cover_image.attach(params[:image])
 
@@ -143,7 +141,7 @@ class TiersController < ApplicationController
     @images_map = {}
 
     @items.each do |item|
-      variant_url = url_for(item.image.variant(resize_to_limit: [60, nil]).processed.url)
+      variant_url = url_for(item.image.variant(resize_to_fill: [60, 60]).processed.url)
       rank_category_key = item.generate_rank_category_key(@unranked_tier_rank_id, @uncategorized_tier_category_id)
       @images_map[rank_category_key] ||= []
       @images_map[rank_category_key] << item.image_data(variant_url)

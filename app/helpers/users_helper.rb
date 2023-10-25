@@ -4,7 +4,7 @@ module UsersHelper
     when 'new', 'create'
       '登録'
     when 'edit', 'update'
-      'Update'
+      '更新'
     else
       raise 'unexpected action'
     end
