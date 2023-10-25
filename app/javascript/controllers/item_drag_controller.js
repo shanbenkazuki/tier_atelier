@@ -54,14 +54,13 @@ export default class extends Controller {
   }
   
 
-  updateItem(event) {
+  saveTierDataToLocalStorage(event) {
     event.preventDefault();
 
     const itemId = event.dataTransfer.getData("image-id");
     const draggedElem = document.querySelector('[data-image-id="' + itemId + '"]');
     event.currentTarget.appendChild(draggedElem);
 
-    const tierId = this.getAttributeFromElement(document, "#tier-container", "data-tier-id");
     let categoryId, rankId;
 
     if (event.currentTarget.id === 'default-area') {
@@ -72,7 +71,17 @@ export default class extends Controller {
       rankId = this.getAttributeFromElement(event.currentTarget.parentElement, ".label-holder", "data-rank-id");
     }
 
-    this.fetchUpdateItem(tierId, categoryId, rankId, itemId);
+    // this.fetchUpdateItem(tierId, categoryId, rankId, itemId);
+    this.saveDataToLocalStorage(categoryId, rankId, itemId);
+  }
+
+  saveDataToLocalStorage(categoryId, rankId, itemId) {
+    const data = {
+        tier_category_id: categoryId,
+        tier_rank_id: rankId
+    };
+
+    localStorage.setItem(`imageData-${itemId}`, JSON.stringify(data));
   }
 
   getAttributeFromElement(element, selector, attribute) {

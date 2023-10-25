@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import ArrangeTierModalController from "./arrange_tier_modal_controller"
+application.register("arrange-tier-modal", ArrangeTierModalController)
+
 import DeleteTierImageController from "./delete_tier_image_controller"
 application.register("delete-tier-image", DeleteTierImageController)
 

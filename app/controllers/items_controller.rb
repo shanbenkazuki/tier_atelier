@@ -24,9 +24,30 @@ class ItemsController < ApplicationController
     end
   end
 
+  def bulk_update_items
+    ActiveRecord::Base.transaction do
+      items_params.each do |item_param|
+        item = Item.find(item_param[:item_id])
+        item.update!(
+          tier_category_id: item_param[:tier_category_id],
+          tier_rank_id: item_param[:tier_rank_id]
+        )
+      end
+    end
+    render json: { message: "更新しました", redirect_url: tier_path(params[:tier_id]) }, status: :ok
+  rescue StandardError => e
+    render json: { message: "更新に失敗しました", error: e.message }, status: :unprocessable_entity
+  end
+
   private
 
   def set_item
     @item = Item.find(params[:id])
+  end
+
+  def items_params
+    params.require(:_json).map do |item_param|
+      item_param.permit(:tier_category_id, :tier_rank_id, :item_id)
+    end
   end
 end
