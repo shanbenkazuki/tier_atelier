@@ -1,40 +1,54 @@
 <% content_for :title, t('.title') %>
-
-<%= render layout: "layouts/custom_layout" do %>
-  <h1>作成したTier</h1>
-  <div class="row">
-    <% @user.tiers.each do |tier| %>
-    <div class="col-md-6 scale-on-hover">
-      <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
-        <% if tier.cover_image.attached? %>
-            <%= image_tag tier.cover_image, alt: tier.title, class: 'img-fluid shadow' %>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 my-5">
+      <div class="d-flex align-items-center">
+        <% if @user.avatar.attached? %>
+          <%= image_tag @user.avatar, alt: @user.name, class: 'rounded-circle me-2', style: 'width: 100px; height: 100px;' %>
         <% else %>
-            <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
+          <%= image_tag 'no-image.png', alt: 'No image', class: 'rounded-circle me-2', style: 'width: 100px; height: 100px;' %>
         <% end %>
-        <div class="text-center fw-bold mt-2">
-            <%= tier.title %>
+        <div>
+          <h1 class="mb-3"><%= @user.name %></h1>
+          <%= link_to 'ログアウト', logout_path, data: { turbo_method: :post }, class: 'btn btn-secondary' %>
         </div>
-      <% end %>
-    </div>
-    <% end %>
-  </div>
+      </div>
 
-  <h1>作成したTemplate</h1>
-  <div class="row">
-    <% @user.templates.each do |template| %>
-    <div class="col-md-4 scale-on-hover">
-      <%= link_to template_path(template), class: 'text-dark text-decoration-none' do %>
-        <% if template.template_cover_image.attached? %>
-            <%= image_tag template.template_cover_image, alt: template.title, class: 'img-fluid shadow' %>
-        <% else %>
-            <%= image_tag 'default_cover.webp', alt: template.title, class: 'img-fluid shadow' %>
+      <h1 class="mt-4">作成したTier</h1>
+      <div class="row">
+        <% @user.tiers.each do |tier| %>
+        <div class="col-md-6 scale-on-hover">
+          <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
+            <% if tier.cover_image.attached? %>
+                <%= image_tag tier.cover_image, alt: tier.title, class: 'img-fluid shadow' %>
+            <% else %>
+                <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
+            <% end %>
+            <div class="text-center fw-bold mt-2">
+                <%= tier.title %>
+            </div>
+          <% end %>
+        </div>
         <% end %>
-        <div class="text-center fw-bold mt-2">
-            <%= template.title %>
-        </div>
-      <% end %>
-    </div>
-    <% end %>
-  </div>
-<% end %>
+      </div>
 
+      <h1 class="mt-4">作成したTemplate</h1>
+      <div class="row">
+        <% @user.templates.each do |template| %>
+        <div class="col-md-4 scale-on-hover">
+          <%= link_to template_path(template), class: 'text-dark text-decoration-none' do %>
+            <% if template.template_cover_image.attached? %>
+                <%= image_tag template.template_cover_image, alt: template.title, class: 'img-fluid shadow' %>
+            <% else %>
+                <%= image_tag 'default_cover.webp', alt: template.title, class: 'img-fluid shadow' %>
+            <% end %>
+            <div class="text-center fw-bold mt-2">
+                <%= template.title %>
+            </div>
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>
