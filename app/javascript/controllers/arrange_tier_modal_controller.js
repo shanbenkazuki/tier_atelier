@@ -58,8 +58,7 @@ export default class extends Controller {
     })
     .then(response => {
       if (response.ok) {
-        this.updateTierCoverImage(tierId)
-        this.redirectToTierPage(tierId);
+        this.updateTierCoverImage(tierId);
       } else {
         throw new Error('Network response was not ok');
       }
@@ -83,7 +82,8 @@ export default class extends Controller {
   updateTierCoverImage(tierId) {
     html2canvas(document.querySelector("#tier-container"), {
       useCORS: true
-    }).then(canvas => {
+    })
+    .then(canvas => {
       const image = canvas.toDataURL("image/png");
       const blob = this.dataURLtoBlob(image);
 
@@ -91,16 +91,21 @@ export default class extends Controller {
       formData.append('image', blob);
   
       fetch(`/tiers/${tierId}/update_tier_cover_image`, {
-          method: 'POST',
-          headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'X-CSRF-Token': this.getCsrfToken()
-          },
-          body: formData
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest',
+          'X-CSRF-Token': this.getCsrfToken()
+        },
+        body: formData
       })
-      .then(response => response.json())
+      .then(response => {
+        if (response.ok) {
+          this.redirectToTierPage(tierId);
+        } else {
+          throw new Error('Network response was not ok');
+        }
+      })
       .then(data => {
-          console.log(data);
       })
       .catch(error => {
           console.error('Error uploading image:', error);
