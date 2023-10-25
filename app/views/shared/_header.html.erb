@@ -17,15 +17,8 @@
         <li class="nav-item">
           <%= link_to t('defaults.tier'), '#', class: 'nav-link text-light' %>
         </li>
-        <li class="nav-item dropdown">
-          <%= link_to '#', { class: 'nav-link dropdown-toggle text-light', 'data-bs-toggle' => 'dropdown', role: 'button', 'aria-expanded' => 'false' } do %>
-            <%= t('defaults.account') %>
-          <% end %>
-          <ul class="dropdown-menu">
-            <li><%= link_to 'プロフィール', user_path(current_user), class: 'dropdown-item' %></li>
-            <li><%= link_to '言語', '#', class: 'dropdown-item' %></li>
-            <li><%= link_to 'ログアウト', logout_path, class: 'dropdown-item', data: { turbo_method: :post }  %></li>
-          </ul>
+        <li class="nav-item">
+          <%= link_to t('defaults.account'), user_path(current_user), class: 'nav-link text-light' %>
         </li>
       </ul>
     </div>
