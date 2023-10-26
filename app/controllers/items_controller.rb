@@ -1,5 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:update, :destroy]
+  before_action :require_login
+  before_action :authorize_tier, only: [:update, :destroy]
 
   def update
     @item.tier_id = params[:tier_id]
@@ -49,5 +51,9 @@ class ItemsController < ApplicationController
     params.require(:_json).map do |item_param|
       item_param.permit(:tier_category_id, :tier_rank_id, :item_id)
     end
+  end
+
+  def authorize_tier
+    authorize @tier || Tier
   end
 end

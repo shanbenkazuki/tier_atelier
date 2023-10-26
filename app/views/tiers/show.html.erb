@@ -29,9 +29,10 @@
       </div>
     <% end %>
   </div>
-
-  <div class="d-flex justify-content-center mb-5">
-    <%= link_to '配置', arrange_tier_path(@tier), id: 'edit_tier', class: 'btn btn-primary btn-lg me-4' %>
-    <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg' %>
-  </div>
+  <% if current_user == @user %>
+    <div class="d-flex justify-content-center mb-5">
+      <%= link_to '配置', arrange_tier_path(@tier), id: 'edit_tier', class: 'btn btn-primary btn-lg me-4' %>
+      <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg' %>
+    </div>
+  <% end %>
 </div>
