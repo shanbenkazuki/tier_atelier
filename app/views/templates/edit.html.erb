@@ -1,10 +1,5 @@
-<h1>Editing template</h1>
+<% content_for :title, t('.title') %>
 
-<%= render "form", template: @template %>
-
-<br>
-
-<div>
-  <%= link_to "Show this template", @template %> |
-  <%= link_to "Back to templates", templates_path %>
-</div>
+<%= render layout: "layouts/custom_layout" do %>
+  <%= render "form", template: @template, categories: @categories %>
+<% end %>

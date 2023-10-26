@@ -1,6 +1,6 @@
 class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
-  before_action :set_categories, only: [:new]
+  before_action :set_categories, only: [:new, :edit]
   before_action :require_login
   before_action :authorize_template, only: [:create, :edit, :update, :destroy]
 
@@ -65,7 +65,7 @@ class TemplatesController < ApplicationController
 
   def destroy
     @template.destroy
-    redirect_to templates_url, notice: "テンプレートの削除に成功しました", status: :see_other
+    redirect_to user_path(current_user), notice: "テンプレートの削除に成功しました", status: :see_other
   end
 
   private
