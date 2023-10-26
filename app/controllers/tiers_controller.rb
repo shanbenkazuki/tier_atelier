@@ -5,7 +5,9 @@ class TiersController < ApplicationController
   before_action :require_login
   before_action :authorize_tier, only: [:create, :edit, :update, :destroy, :arrange, :update_tier_cover_image]
 
-  def index; end
+  def index
+    @tiers = Tier.all
+  end
 
   def show
     setup_tier
