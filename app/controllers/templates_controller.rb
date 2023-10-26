@@ -1,6 +1,6 @@
 class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
-  before_action :set_categories, only: [:new]
+  before_action :set_categories, only: [:new, :edit]
   before_action :require_login
   before_action :authorize_template, only: [:create, :edit, :update, :destroy]
 
@@ -56,16 +56,17 @@ class TemplatesController < ApplicationController
   end
 
   def update
-    if @template.update(template_params)
-      redirect_to @template, notice: "テンプレートの作成に失敗しました"
+    if @template.update(template_params.except(:tier_images))
+      @template.tier_images.attach(params[:template][:tier_images]) if params[:template][:tier_images].present?
+      redirect_to @template, notice: 'テンプレートを更新しました'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
   def destroy
     @template.destroy
-    redirect_to templates_url, notice: "テンプレートの削除に成功しました", status: :see_other
+    redirect_to user_path(current_user), notice: "テンプレートの削除に成功しました", status: :see_other
   end
 
   private
