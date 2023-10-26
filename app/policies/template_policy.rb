@@ -12,14 +12,20 @@ class TemplatePolicy < ApplicationPolicy
   end
 
   def edit?
-    user == record.user
+    is_user?
   end
 
   def update?
-    edit?
+    is_user?
   end
 
   def destroy?
-    edit?
+    is_user?
+  end
+
+  private
+
+  def is_user?
+    user == record.user
   end
 end
