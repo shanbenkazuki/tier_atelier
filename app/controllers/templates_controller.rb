@@ -2,7 +2,7 @@ class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
   before_action :set_categories, only: [:new]
   before_action :require_login
-  before_action :authorize_tier, only: [:create, :edit, :update, :destroy]
+  before_action :authorize_template, only: [:create, :edit, :update, :destroy]
 
   def index
     @templates = Template.all
@@ -100,5 +100,9 @@ class TemplatesController < ApplicationController
       @template_images_map["default_area"] ||= []
       @template_images_map["default_area"] << { url: variant_url, id: item.id }
     end
+  end
+
+  def authorize_template
+    authorize @template || Template
   end
 end
