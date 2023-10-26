@@ -1,17 +1,23 @@
 class UserPolicy < ApplicationPolicy
   def index?
-    user.admin?
+    true
   end
 
   def show?
-    user.admin? || record == user
+    is_user?
   end
 
   def update?
-    user.admin? || record == user
+    is_user?
   end
 
   def destroy?
-    user.admin?
+    is_user?
+  end
+
+  private
+
+  def is_user?
+    record == user
   end
 end
