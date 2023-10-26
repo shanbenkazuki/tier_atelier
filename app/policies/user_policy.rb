@@ -4,7 +4,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def show?
-    is_user?
+    true
   end
 
   def update?
