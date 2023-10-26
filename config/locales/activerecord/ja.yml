@@ -11,7 +11,13 @@ ja:
         password: 'パスワード'
       tier:
         category_id: 'カテゴリ'
-        images: '画像'
+        images: 'Tier画像'
+        cover_image: 'カバー画像'
+        title: 'タイトル'
+        description: '説明'
+      template:
+        category_id: 'カテゴリ'
+        images: 'Tier画像'
         cover_image: 'カバー画像'
         title: 'タイトル'
         description: '説明'

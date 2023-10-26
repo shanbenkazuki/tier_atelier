@@ -56,10 +56,11 @@ class TemplatesController < ApplicationController
   end
 
   def update
-    if @template.update(template_params)
-      redirect_to @template, notice: "テンプレートの作成に失敗しました"
+    if @template.update(template_params.except(:tier_images))
+      @template.tier_images.attach(params[:template][:tier_images]) if params[:template][:tier_images].present?
+      redirect_to @template, notice: 'テンプレートを更新しました'
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
