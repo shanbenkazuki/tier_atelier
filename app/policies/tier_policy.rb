@@ -30,8 +30,4 @@ class TierPolicy < ApplicationPolicy
   def update_tier_cover_image?
     edit?
   end
-
-  def create_from_template?
-    edit?
-  end
 end

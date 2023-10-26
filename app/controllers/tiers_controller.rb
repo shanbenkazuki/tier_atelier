@@ -3,7 +3,7 @@ class TiersController < ApplicationController
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
   before_action :require_login
-  before_action :authorize_tier, only: [:create, :edit, :update, :destroy, :arrange, :create_from_template, :update_tier_cover_image]
+  before_action :authorize_tier, only: [:create, :edit, :update, :destroy, :arrange, :update_tier_cover_image]
 
   def index; end
 
