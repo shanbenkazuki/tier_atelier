@@ -1,12 +1,24 @@
-<p style="color: green"><%= notice %></p>
-
-<h1>Templates</h1>
-
-<div id="templates">
-  <% @templates.each do |template| %>
-    <%= render template %>
-    <p>
-      <%= link_to "Show this template", template %>
-    </p>
-  <% end %>
+<% content_for :title, t('.title') %>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-8 my-5">
+      <h1 class="mt-4 text-center">テンプレート一覧</h1>
+      <div class="row">
+        <% @templates.each do |template| %>
+        <div class="col-md-6 scale-on-hover">
+          <%= link_to template_path(template), class: 'text-dark text-decoration-none' do %>
+            <% if template.template_cover_image.attached? %>
+                <%= image_tag template.template_cover_image.variant(resize_to_fill: [1000, 500]), alt: template.title, class: 'img-fluid shadow' %>
+            <% else %>
+                <%= image_tag 'default_cover.webp', alt: template.title, class: 'img-fluid shadow' %>
+            <% end %>
+            <div class="text-center fw-bold mt-2">
+                <%= template.title %>
+            </div>
+          <% end %>
+        </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>
