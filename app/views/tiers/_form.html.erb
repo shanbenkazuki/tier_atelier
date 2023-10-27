@@ -1,4 +1,14 @@
 <%= form_with model: tier, local: true, html: { multipart: true } do |f| %>
+  <% if tier.errors.any? %>
+    <div class="alert alert-danger">
+      <ul>
+        <% tier.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
   <div class="form-group mb-4">
     <%= f.label :category_id, Tier.human_attribute_name(:category_id), class: 'control-label' %>
     <%= f.select :category_id, categories.collect { |c| [c.name, c.id] }, { prompt: 'カテゴリを選択してください' }, { class: 'form-control' } %>

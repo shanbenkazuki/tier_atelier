@@ -116,14 +116,17 @@ class TiersController < ApplicationController
     end
     redirect_to arrange_tier_path(@tier), success: t('.success')
   rescue ActiveRecord::RecordInvalid => e
-    handle_tier_error("Validation Error: #{e.record.errors.full_messages.to_sentence}")
+    handle_tier_error(e.record.errors.full_messages)
   rescue StandardError => e
     handle_tier_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}")
   end
 
-  def handle_tier_error(error_message)
-    Rails.logger.error error_message
+  def handle_tier_error(error_messages)
+    Rails.logger.error error_messages
     @tier ||= Tier.new(tier_params)
+    error_messages.each do |msg|
+      @tier.errors.add(:base, msg)
+    end
     @categories ||= Category.all
     flash.now[:danger] = t('.fail')
     action_name = @tier.new_record? ? :new : :edit
