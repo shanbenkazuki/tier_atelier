@@ -1,7 +1,7 @@
 class ApplicationController < ActionController::Base
   add_flash_types :success, :info, :warning, :danger
   before_action :set_active_storage_url_options
-  include Pundit
+  include Pundit::Authorization
 
   private
 
