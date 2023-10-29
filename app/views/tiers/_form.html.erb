@@ -15,11 +15,11 @@
   </div>
   <div class="form-group mb-4">
       <%= f.label :title, Tier.human_attribute_name(:title), class: 'control-label' %>
-      <%= f.text_field :title, class: 'form-control', placeholder: 'タイトル' %>
+      <%= f.text_field :title, class: 'form-control', placeholder: 'タイトル', maxlength: 150 %>
   </div>
   <div class="form-group mb-4">
       <%= f.label :description, Tier.human_attribute_name(:description), class: 'control-label' %>
-      <%= f.text_area :description, class: 'form-control', placeholder: '説明文' %>
+      <%= f.text_area :description, class: 'form-control', placeholder: '説明文', maxlength: 300 %>
   </div>
   <div class="form-group mb-4" data-controller="item-count-checker upload-item-preview">
       <%= f.label :images, Tier.human_attribute_name(:images), class: 'control-label d-block' %>
@@ -34,7 +34,7 @@
         <%= rank_form.hidden_field :name, value: 'unranked' %>
         <%= rank_form.hidden_field :order, value: 0 %>
       <% else %>
-        <%= rank_form.text_field :name, class: 'form-control mt-2', placeholder: rank_placeholders[rank_form.index - 1] %>
+        <%= rank_form.text_field :name, class: 'form-control mt-2', placeholder: rank_placeholders[rank_form.index - 1], maxlength: 70 %>
         <%= rank_form.hidden_field :order, value: rank_form.index %>
       <% end %>
     <% end %>
@@ -48,7 +48,7 @@
         <%= category_form.hidden_field :name, value: 'uncategorized' %>
         <%= category_form.hidden_field :order, value: 0 %>
       <% else %>
-        <%= category_form.text_field :name, class: 'form-control mt-2', placeholder: category_placeholders[category_form.index - 1] %>
+        <%= category_form.text_field :name, class: 'form-control mt-2', placeholder: category_placeholders[category_form.index - 1], maxlength: 70 %>
         <%= category_form.hidden_field :order, value: category_form.index %>
       <% end %>
     <% end %>
