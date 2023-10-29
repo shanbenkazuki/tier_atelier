@@ -283,7 +283,7 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "編集・更新" do
-      let(:tier) { create(:tier, user:, category: categories[0]) }
+      let(:tier) { create(:tier, :with_images, :with_tier_ranks, :with_tier_categories, user:, category: categories[0]) }
 
       before do
         visit arrange_tier_path(tier)
@@ -400,7 +400,7 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "削除" do
-      let(:tier) { create(:tier, user:, category: categories[0]) }
+      let(:tier) { create(:tier, :with_images, :with_tier_ranks, :with_tier_categories, user:, category: categories[0]) }
 
       before do
         visit arrange_tier_path(tier)
@@ -418,7 +418,7 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "配置" do
-      let(:tier) { create(:tier, user:, category: categories[0]) }
+      let(:tier) { create(:tier, :with_images, :with_tier_ranks, :with_tier_categories, user:, category: categories[0]) }
 
       context "正常系" do
         it "画像をtierに配置できる" do
