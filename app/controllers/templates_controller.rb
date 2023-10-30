@@ -104,6 +104,10 @@ class TemplatesController < ApplicationController
   end
 
   def authorize_template
-    authorize @template || Template
+    if @template
+      authorize @template
+    else
+      raise "No tier instance available for authorization"
+    end
   end
 end
