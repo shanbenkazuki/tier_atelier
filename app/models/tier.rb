@@ -50,11 +50,6 @@ class Tier < ApplicationRecord
   def add_images(images)
     return if images.blank?
 
-    if images.count < 5
-      errors.add(:base, "画像は最低5枚追加してください")
-      raise ActiveRecord::RecordInvalid, self
-    end
-
     tier_category_id = tier_categories.find_by(order: 0).id
     tier_rank_id = tier_ranks.find_by(order: 0).id
 
