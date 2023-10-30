@@ -1,6 +1,6 @@
 class ItemPolicy < ApplicationPolicy
   def update?
-    user == record.user
+    user == record.tier.user
   end
 
   def destroy?
