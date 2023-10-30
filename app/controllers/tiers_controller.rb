@@ -3,7 +3,7 @@ class TiersController < ApplicationController
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
   before_action :require_login
-  before_action :authorize_tier, only: [:create, :edit, :update, :destroy, :arrange, :update_tier_cover_image]
+  before_action :authorize_tier, only: [:edit, :destroy, :arrange, :update_tier_cover_image]
 
   def index
     @tiers = Tier.all
@@ -114,6 +114,9 @@ class TiersController < ApplicationController
         @tier.update_with_images(tier_params, params[:tier][:images])
       end
     end
+
+    authorize @tier
+
     redirect_to arrange_tier_path(@tier), success: t('.success')
   rescue ActiveRecord::RecordInvalid => e
     handle_tier_error(e.record.errors.full_messages)
@@ -155,6 +158,10 @@ class TiersController < ApplicationController
   end
 
   def authorize_tier
-    authorize @tier || Tier
+    if @tier
+      authorize @tier
+    else
+      raise "No tier instance available for authorization"
+    end
   end
 end
