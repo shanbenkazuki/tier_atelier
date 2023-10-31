@@ -43,7 +43,7 @@ RSpec.describe Template, type: :model do
 
   describe "#category_with_order_zero" do
     let(:template) { build(:template) }
-    let!(:template_category) { create(:template_category, template: template, order: 0) }
+    let!(:template_category) { create(:template_category, template:, order: 0) }
 
     it "orderが0のtemplate_categoryを返すこと" do
       expect(template.category_with_order_zero).to eq(template_category)
@@ -52,7 +52,7 @@ RSpec.describe Template, type: :model do
 
   describe "#rank_with_order_zero" do
     let(:template) { build(:template) }
-    let!(:template_rank) { create(:template_rank, template: template, order: 0) }
+    let!(:template_rank) { create(:template_rank, template:, order: 0) }
 
     it "orderが0のtemplate_rankを返すこと" do
       expect(template.rank_with_order_zero).to eq(template_rank)
