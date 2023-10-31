@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :template_category do
-    template { nil }
+    association :template
     name { "MyString" }
     order { 1 }
   end

@@ -14,7 +14,7 @@ RSpec.describe 'Users', type: :system do
           fill_in 'パスワード確認', with: 'password'
           click_button '登録'
           expect(page).to have_content 'ユーザー登録が完了しました'
-          expect(page).to have_current_path(login_path)
+          expect(page).to have_current_path(root_path)
         end
       end
 
@@ -27,7 +27,7 @@ RSpec.describe 'Users', type: :system do
           fill_in 'パスワード確認', with: 'password'
           click_button '登録'
           expect(page).to have_content 'ユーザー登録に失敗しました'
-          expect(current_path).to eq new_user_path
+          expect(current_path).to eq users_path
         end
       end
 
@@ -40,7 +40,7 @@ RSpec.describe 'Users', type: :system do
           fill_in 'パスワード確認', with: ''
           click_button '登録'
           expect(page).to have_content 'ユーザー登録に失敗しました'
-          expect(current_path).to eq new_user_path
+          expect(current_path).to eq users_path
         end
       end
 
@@ -53,7 +53,7 @@ RSpec.describe 'Users', type: :system do
           fill_in 'パスワード確認', with: 'mismatch'
           click_button '登録'
           expect(page).to have_content 'ユーザー登録に失敗しました'
-          expect(current_path).to eq new_user_path
+          expect(current_path).to eq users_path
         end
       end
 
@@ -68,7 +68,7 @@ RSpec.describe 'Users', type: :system do
           fill_in 'パスワード確認', with: 'password'
           click_button '登録'
           expect(page).to have_content 'ユーザー登録に失敗しました'
-          expect(current_path).to eq new_user_path
+          expect(current_path).to eq users_path
         end
       end
     end

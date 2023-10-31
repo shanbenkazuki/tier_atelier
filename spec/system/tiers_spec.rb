@@ -108,7 +108,7 @@ RSpec.describe "Tiers", type: :system do
 
       context "正常系" do
         context "カテゴリとランクが10フィールドの場合" do
-          it "tierの新規登録が成功する" do
+          it "tierの新規登録が成功する", js: true do
             multi_click('#add-ranks', 1)
             multi_click('#remove-ranks', 1)
             multi_click('#add-ranks', 5)
@@ -124,7 +124,7 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
             )
 
-            tier_image_names = ["アーロット", "アウラド", "アウルス"]
+            tier_image_names = ["Arlot", "Aldous", "Aulus", "Estes", "Eudora", "Uranus"]
             tier_image_paths = tier_image_names.map do |name|
               Rails.root.join('spec', 'fixtures', "#{name}.png")
             end
@@ -142,7 +142,7 @@ RSpec.describe "Tiers", type: :system do
       end
 
       context "異常系" do
-        it "タイトルが空白の場合、新規登録が失敗する" do
+        it "タイトルが空白の場合、新規登録が失敗する", js: true do
           fill_form(
             title: "",
             description: "新規テストの説明",
@@ -168,7 +168,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "ランクに関するエラー" do
-          it "ランクに1つでも空白がある場合、新規登録が失敗する" do
+          it "ランクに1つでも空白がある場合、新規登録が失敗する", js: true do
             fill_form(
               title: "新規テストタイトル",
               description: "新規テストの説明",
@@ -193,7 +193,7 @@ RSpec.describe "Tiers", type: :system do
             check_category_fields((1..5), categories)
           end
 
-          it "ランクを追加して新規登録が失敗する" do
+          it "ランクを追加して新規登録が失敗する", js: true do
             multi_click('#add-ranks', 2)
 
             fill_form(
@@ -222,7 +222,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "カテゴリに関するエラー" do
-          it "カテゴリに1つでも空白がある場合、新規登録が失敗する" do
+          it "カテゴリに1つでも空白がある場合、新規登録が失敗する", js: true do
             fill_form(
               title: "新規テストタイトル",
               description: "新規テストの説明",
@@ -247,7 +247,7 @@ RSpec.describe "Tiers", type: :system do
             check_category_fields((1..5), categories)
           end
 
-          it "カテゴリを追加して新規登録が失敗する" do
+          it "カテゴリを追加して新規登録が失敗する", js: true do
             hide_footer_and_scroll_to(find('#add-categories'))
             multi_click('#add-categories', 2)
 
@@ -283,7 +283,7 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "編集・更新" do
-      let(:tier) { create(:tier, user:, category: categories[0]) }
+      let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
 
       before do
         visit arrange_tier_path(tier)
@@ -293,7 +293,7 @@ RSpec.describe "Tiers", type: :system do
       end
 
       context "正常系" do
-        it "tierの更新が成功する" do
+        it "tierの更新が成功する", js: true do
           multi_click('#add-ranks', 2)
           hide_footer_and_scroll_to(find('#add-categories'))
           multi_click('#add-categories', 2)
@@ -305,7 +305,7 @@ RSpec.describe "Tiers", type: :system do
             categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker", "Fighter", "Mage"]
           )
 
-          tier_image_names = ["アーロット", "アウラド", "アウルス"]
+          tier_image_names = ["Arlot", "Aldous", "Aulus"]
           tier_image_paths = tier_image_names.map do |name|
             Rails.root.join('spec', 'fixtures', "#{name}.png")
           end
@@ -323,7 +323,7 @@ RSpec.describe "Tiers", type: :system do
       end
 
       context "異常系" do
-        it "タイトルが空白の場合、更新が失敗する" do
+        it "タイトルが空白の場合、更新が失敗する", js: true do
           fill_form(
             title: "",
             description: "更新テストの説明",
@@ -348,7 +348,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "カテゴリに関するエラー" do
-          it "カテゴリに1つでも空白がある場合、更新が失敗する" do
+          it "カテゴリに1つでも空白がある場合、更新が失敗する", js: true do
             fill_form(
               title: "更新テストタイトル",
               description: "更新テストの説明",
@@ -374,7 +374,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "ランクに関するエラー" do
-          it "ランクに1つでも空白がある場合、更新が失敗する" do
+          it "ランクに1つでも空白がある場合、更新が失敗する", js: true do
             fill_form(
               title: "更新テストタイトル",
               description: "更新テストの説明",
@@ -400,28 +400,28 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "削除" do
-      let(:tier) { create(:tier, user:, category: categories[0]) }
+      let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
 
       before do
         visit arrange_tier_path(tier)
       end
 
       context "正常系" do
-        it "arrange画面からtierの削除が成功する" do
+        it "arrange画面からtierの削除が成功する", js: true do
           delete_tier_from_path(arrange_tier_path(tier))
         end
 
-        it "詳細画面からtierの削除が成功する" do
+        it "詳細画面からtierの削除が成功する", js: true do
           delete_tier_from_path(tier_path(tier))
         end
       end
     end
 
     describe "配置" do
-      let(:tier) { create(:tier, user:, category: categories[0]) }
+      let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
 
       context "正常系" do
-        it "画像をtierに配置できる" do
+        it "画像をtierに配置できる", js: true do
           visit arrange_tier_path(tier)
 
           uranus_image = find("img[src*='Uranus.png']")
@@ -444,7 +444,7 @@ RSpec.describe "Tiers", type: :system do
           expect(find("div[class='tier cell 1-4']")).to have_selector("img[src*='Estes.png']")
         end
 
-        it "画像の削除ができる" do
+        it "画像の削除ができる", js: true do
           visit arrange_tier_path(tier)
 
           uranus_image = find("img[src*='Uranus.png']")
@@ -455,7 +455,7 @@ RSpec.describe "Tiers", type: :system do
           expect(page).to have_no_selector("img[src*='Uranus.png']")
         end
 
-        it "tierの画像をダウンロードできる" do
+        it "tierの画像をダウンロードできる", js: true do
           visit arrange_tier_path(tier)
 
           hide_footer_and_scroll_to(find('#display-modal'))

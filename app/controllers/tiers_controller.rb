@@ -3,7 +3,7 @@ class TiersController < ApplicationController
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
   before_action :require_login
-  before_action :authorize_tier, only: [:create, :edit, :update, :destroy, :arrange, :update_tier_cover_image]
+  before_action :authorize_tier, only: [:edit, :destroy, :arrange, :update_tier_cover_image]
 
   def index
     @tiers = Tier.all
@@ -22,12 +22,12 @@ class TiersController < ApplicationController
   def edit; end
 
   def create
-    save_tier(:create!)
+    create_tier
   end
 
   def update
     set_tier_for_update
-    save_tier(:update!)
+    update_tier
   end
 
   def destroy
@@ -52,11 +52,11 @@ class TiersController < ApplicationController
   def search; end
 
   def create_from_template
-    template = Template.find(params[:template_id])
-    @tier = current_user.tiers.initialize_from_template(template)
+    template = Template.find(params[:id])
+    @tier = current_user.tiers.new_from_template(template)
 
     if @tier.save
-      @tier.add_items_from_template(template)
+      @tier.add_images_from_template(template.tier_images) if template.tier_images.present?
       redirect_to arrange_tier_path(@tier), success: t('.success')
     else
       redirect_to templates_path, alert: @tier.errors.full_messages.join(", ")
@@ -106,24 +106,55 @@ class TiersController < ApplicationController
     @tier = current_user.tiers.find(params[:id])
   end
 
-  def save_tier(method)
+  def create_tier
     ActiveRecord::Base.transaction do
-      if method == :create!
-        @tier = Tier.create_with_images(current_user, tier_params, params[:tier][:images])
-      else
-        @tier.update_with_images(tier_params, params[:tier][:images])
-      end
+      @tier = current_user.tiers.create!(tier_params)
+
+      authorize @tier
+
+      params[:tier][:images].compact_blank!
+
+      @tier.add_images(params[:tier][:images]) if params[:tier][:images].present?
     end
+
     redirect_to arrange_tier_path(@tier), success: t('.success')
+  rescue Pundit::NotAuthorizedError
+    redirect_to root_path, danger: "権限がありません"
   rescue ActiveRecord::RecordInvalid => e
-    handle_tier_error("Validation Error: #{e.record.errors.full_messages.to_sentence}")
+    handle_tier_error(e.record.errors.full_messages)
   rescue StandardError => e
-    handle_tier_error("ERROR: #{e.message}\n#{e.backtrace.join("\n")}")
+    handle_tier_error([e.message], e.backtrace.join("\n"))
   end
 
-  def handle_tier_error(error_message)
-    Rails.logger.error error_message
+  def update_tier
+    ActiveRecord::Base.transaction do
+      @tier.update!(tier_params)
+
+      authorize @tier
+
+      params[:tier][:images].compact_blank!
+
+      @tier.add_images(params[:tier][:images]) if params[:tier][:images].present?
+    end
+
+    redirect_to arrange_tier_path(@tier), success: t('.success')
+  rescue Pundit::NotAuthorizedError
+    redirect_to root_path, danger: "権限がありません"
+  rescue ActiveRecord::RecordInvalid => e
+    handle_tier_error(e.record.errors.full_messages)
+  rescue StandardError => e
+    handle_tier_error([e.message], e.backtrace.join("\n"))
+  end
+
+  def handle_tier_error(messages, backtrace = nil)
+    messages.each { |msg| Rails.logger.error msg }
+    Rails.logger.error backtrace if backtrace
+
     @tier ||= Tier.new(tier_params)
+    messages.each do |msg|
+      @tier.errors.add(:base, msg)
+    end
+
     @categories ||= Category.all
     flash.now[:danger] = t('.fail')
     action_name = @tier.new_record? ? :new : :edit
@@ -152,6 +183,6 @@ class TiersController < ApplicationController
   end
 
   def authorize_tier
-    authorize @tier || Tier
+    @tier
   end
 end

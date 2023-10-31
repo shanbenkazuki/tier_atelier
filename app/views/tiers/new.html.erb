@@ -1,5 +1,8 @@
 <% content_for :title, t('.title') %>
-
-<%= render layout: "layouts/custom_layout" do %>
-  <%= render 'form', tier: @tier, categories: @categories %>
-<% end %>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 my-5 align-items-center d-flex flex-column">
+      <%= render 'form', tier: @tier, categories: @categories %>
+    </div>
+  </div>
+</div>

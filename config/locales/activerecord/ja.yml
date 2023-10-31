@@ -2,6 +2,7 @@ ja:
   activerecord:
     attributes:
       user:
+        avatar: 'プロフィール画像'
         email: 'メールアドレス'
         password: 'パスワード'
         password_confirmation: 'パスワード確認'
@@ -15,6 +16,12 @@ ja:
         cover_image: 'カバー画像'
         title: 'タイトル'
         description: '説明'
+        ranks_name: 'Tierランク'
+        category: 'カテゴリ'
+      tier_ranks:
+        name: 'Tierランク'
+      tier_categories:
+        name: 'Tierカテゴリ'
       template:
         category_id: 'カテゴリ'
         images: 'Tier画像'

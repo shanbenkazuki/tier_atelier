@@ -3,12 +3,12 @@ Rails.application.routes.draw do
   resources :tiers do
     collection do
       get 'search', to: 'tiers#search'
-      post 'create_from_template', to: 'tiers#create_from_template'
     end
 
     member do
       get 'arrange', to: 'tiers#arrange'
       post 'update_tier_cover_image', to: 'tiers#update_tier_cover_image'
+      post 'create_from_template', to: 'tiers#create_from_template'
     end
 
     resources :items, only: [:create, :update, :destroy] do

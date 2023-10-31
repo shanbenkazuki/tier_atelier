@@ -1,7 +1,7 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:update, :destroy]
   before_action :require_login
-  before_action :authorize_tier, only: [:update, :destroy]
+  before_action :authorize_item, only: [:update, :destroy]
 
   def update
     @item.tier_id = params[:tier_id]
@@ -53,7 +53,11 @@ class ItemsController < ApplicationController
     end
   end
 
-  def authorize_tier
-    authorize @tier || Tier
+  def authorize_item
+    if @item
+      authorize @item
+    else
+      raise "No tier instance available for authorization"
+    end
   end
 end
