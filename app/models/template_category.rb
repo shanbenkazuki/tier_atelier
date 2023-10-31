@@ -1,6 +1,9 @@
 class TemplateCategory < ApplicationRecord
   belongs_to :template
 
+  validates :name, presence: true, length: { maximum: 70 }
+  validates :order, presence: true, numericality: { only_integer: true }
+
   default_scope { order(:order) }
 
   scope :non_zero, -> { where.not(order: 0) }

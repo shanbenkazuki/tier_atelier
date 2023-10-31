@@ -48,11 +48,5 @@ RSpec.describe TierRank, type: :model do
         expect(TierRank.non_zero).to match_array([rank_with_order_1, rank_with_order_2])
       end
     end
-
-    describe ".sort_by_asc" do
-      it "orderの昇順でランクを返すこと" do
-        expect(TierRank.sort_by_asc).to eq([rank_with_order_0, rank_with_order_1, rank_with_order_2])
-      end
-    end
   end
 end

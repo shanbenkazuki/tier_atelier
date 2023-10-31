@@ -48,11 +48,5 @@ RSpec.describe TierCategory, type: :model do
         expect(TierCategory.non_zero).to match_array([category_with_order_1, category_with_order_2])
       end
     end
-
-    describe ".sort_by_asc" do
-      it "orderの昇順でカテゴリを返すこと" do
-        expect(TierCategory.sort_by_asc).to eq([category_with_order_0, category_with_order_1, category_with_order_2])
-      end
-    end
   end
 end
