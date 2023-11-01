@@ -45,8 +45,8 @@ ja:
     form:
       select_category: 'カテゴリを選択'
       upload_images: '画像をアップロード'
-      rank: 'ランク'
-      category: 'カテゴリ'
+      rank: 'Tierランク'
+      category: 'Tierカテゴリ'
       add_column: '列を追加'
       remove_column: '列を削除'
       submit: '送信'
