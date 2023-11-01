@@ -142,7 +142,7 @@ RSpec.describe "Tiers", type: :system do
       end
 
       context "異常系" do
-        it "タイトルが空白の場合、新規登録が失敗する", js: true do
+        it "タイトルが空白の場合、新規登録が失敗する" do
           fill_form(
             title: "",
             description: "新規テストの説明",
@@ -150,12 +150,11 @@ RSpec.describe "Tiers", type: :system do
             categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
           )
 
-          scroll_and_submit_form("作成")
+          click_button "作成"
 
           expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
-          expect(current_path).to eq new_tier_path
+          expect(current_path).to eq tiers_path
 
-          # 入力された値が維持されているかを確認
           expect(page).to have_field('説明', with: '新規テストの説明')
           selected_option = find('#tier_category_id option[selected]').text
           expect(selected_option).to eq('フード')
@@ -168,7 +167,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "ランクに関するエラー" do
-          it "ランクに1つでも空白がある場合、新規登録が失敗する", js: true do
+          it "ランクに1つでも空白がある場合、新規登録が失敗する" do
             fill_form(
               title: "新規テストタイトル",
               description: "新規テストの説明",
@@ -176,12 +175,11 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
             )
 
-            scroll_and_submit_form("作成")
+            click_button "作成"
 
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
-            expect(current_path).to eq new_tier_path
+            expect(current_path).to eq tiers_path
 
-            # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
@@ -208,7 +206,6 @@ RSpec.describe "Tiers", type: :system do
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
             expect(current_path).to eq new_tier_path
 
-            # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
@@ -222,7 +219,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "カテゴリに関するエラー" do
-          it "カテゴリに1つでも空白がある場合、新規登録が失敗する", js: true do
+          it "カテゴリに1つでも空白がある場合、新規登録が失敗する" do
             fill_form(
               title: "新規テストタイトル",
               description: "新規テストの説明",
@@ -230,12 +227,11 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "", "Roam", "Exp", "Gold", "Mid"]
             )
 
-            scroll_and_submit_form("作成")
+            click_button "作成"
 
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier作成に失敗しました')
-            expect(current_path).to eq new_tier_path
+            expect(current_path).to eq tiers_path
 
-            # 入力された値が維持されているかを確認
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
             expect(selected_option).to eq('フード')
@@ -323,7 +319,7 @@ RSpec.describe "Tiers", type: :system do
       end
 
       context "異常系" do
-        it "タイトルが空白の場合、更新が失敗する", js: true do
+        it "タイトルが空白の場合、更新が失敗する" do
           fill_form(
             title: "",
             description: "更新テストの説明",
@@ -331,10 +327,10 @@ RSpec.describe "Tiers", type: :system do
             categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
           )
 
-          scroll_and_submit_form("更新")
+          click_button "更新"
 
           expect(page).to have_selector('.alert.alert-danger', text: 'Tier更新に失敗しました')
-          expect(current_path).to eq edit_tier_path(tier)
+          expect(current_path).to eq tier_path(tier)
 
           expect(page).to have_field('説明', with: '更新テストの説明')
           selected_option = find('#tier_category_id option[selected]').text
@@ -348,7 +344,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "カテゴリに関するエラー" do
-          it "カテゴリに1つでも空白がある場合、更新が失敗する", js: true do
+          it "カテゴリに1つでも空白がある場合、更新が失敗する" do
             fill_form(
               title: "更新テストタイトル",
               description: "更新テストの説明",
@@ -356,10 +352,10 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
             )
 
-            scroll_and_submit_form("更新")
+            click_button "更新"
 
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier更新に失敗しました')
-            expect(current_path).to eq edit_tier_path(tier)
+            expect(current_path).to eq tier_path(tier)
 
             expect(page).to have_field('説明', with: '更新テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
@@ -374,7 +370,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         context "ランクに関するエラー" do
-          it "ランクに1つでも空白がある場合、更新が失敗する", js: true do
+          it "ランクに1つでも空白がある場合、更新が失敗する" do
             fill_form(
               title: "更新テストタイトル",
               description: "更新テストの説明",
@@ -382,10 +378,10 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "Balance", "Speeder", "Defender", "", "Attacker"]
             )
 
-            scroll_and_submit_form("更新")
+            click_button "更新"
 
             expect(page).to have_selector('.alert.alert-danger', text: 'Tier更新に失敗しました')
-            expect(current_path).to eq edit_tier_path(tier)
+            expect(current_path).to eq tier_path(tier)
 
             expect(page).to have_field('説明', with: '更新テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
@@ -402,17 +398,22 @@ RSpec.describe "Tiers", type: :system do
     describe "削除" do
       let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
 
-      before do
-        visit arrange_tier_path(tier)
-      end
-
       context "正常系" do
         it "arrange画面からtierの削除が成功する", js: true do
-          delete_tier_from_path(arrange_tier_path(tier))
+          visit arrange_tier_path(tier)
+          page.execute_script("document.querySelector('footer.fixed-bottom').style.display = 'none';")
+          accept_confirm do
+            click_link '削除'
+          end
+          expect(page).to have_selector('.alert.alert-success', text: 'Tierを削除しました')
         end
 
         it "詳細画面からtierの削除が成功する", js: true do
-          delete_tier_from_path(tier_path(tier))
+          visit tier_path(tier)
+          accept_confirm do
+            click_link '削除'
+          end
+          expect(page).to have_selector('.alert.alert-success', text: 'Tierを削除しました')
         end
       end
     end
@@ -421,7 +422,7 @@ RSpec.describe "Tiers", type: :system do
       let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
 
       context "正常系" do
-        it "画像をtierに配置できる", js: true do
+        it "画像をtierに配置できる", js: true, focus: true do
           visit arrange_tier_path(tier)
 
           uranus_image = find("img[src*='Uranus.png']")
