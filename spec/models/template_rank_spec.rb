@@ -1,51 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe TemplateRank, type: :model do
-  let(:template_rank) { build(:template_rank) }
+  describe "associations" do
+    it { should belong_to(:template) }
+  end
 
-  describe "バリデーション" do
-    it "nameとorderが適切であれば有効であること" do
-      expect(template_rank).to be_valid
-    end
-
-    describe "nameのバリデーション" do
-      it "nameがなければ無効であること" do
-        template_rank.name = nil
-        expect(template_rank).to_not be_valid
-      end
-
-      it "nameの長さが70文字以内であれば有効であること" do
-        template_rank.name = "A" * 70
-        expect(template_rank).to be_valid
-      end
-
-      it "nameの長さが70文字を超えると無効であること" do
-        template_rank.name = "A" * 71
-        expect(template_rank).to_not be_valid
-      end
-    end
-
-    describe "orderのバリデーション" do
-      it "orderがなければ無効であること" do
-        template_rank.order = nil
-        expect(template_rank).to_not be_valid
-      end
-
-      it "orderが整数であれば有効であること" do
-        template_rank.order = 2
-        expect(template_rank).to be_valid
-      end
-
-      it "orderが整数でなければ無効であること" do
-        template_rank.order = 1.5
-        expect(template_rank).to_not be_valid
-      end
-
-      it "orderが文字列であれば無効であること" do
-        template_rank.order = "ABC"
-        expect(template_rank).to_not be_valid
-      end
-    end
+  describe "validations" do
+    it { should validate_presence_of(:name) }
+    it { should validate_length_of(:name).is_at_most(70) }
+    it { should validate_presence_of(:order) }
+    it { should validate_numericality_of(:order).only_integer }
   end
 
   describe "scopes" do

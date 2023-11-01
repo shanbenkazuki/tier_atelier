@@ -86,4 +86,5 @@ group :test do
   gem "capybara"
   gem "selenium-webdriver"
   gem "launchy"
+  gem "shoulda-matchers"
 end
