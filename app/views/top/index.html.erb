@@ -1,12 +1,14 @@
 <div class="container">
   <div class="row justify-content-center">
-    <div class="col-lg-6 my-5 align-items-center d-flex flex-column">
-      <div>
+    <div class="col-lg-6 my-5 d-flex flex-column align-items-center">
+      <div class="mb-4">
         <%= image_tag('top_logo.png') %>
-        <% unless current_user %>
-          <%= link_to "ログイン", login_path, class: "btn btn-primary btn-lg" %>
-        <% end %>
       </div>
+      <% unless current_user %>
+        <div>
+          <%= link_to "ログイン", login_path, class: "btn btn-primary btn-lg" %>
+        </div>
+      <% end %>
     </div>
   </div>
 </div>
