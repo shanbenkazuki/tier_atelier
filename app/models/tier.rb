@@ -6,14 +6,15 @@ class Tier < ApplicationRecord
   belongs_to :user
   belongs_to :category
 
+  has_one_attached :cover_image
+
   has_many :tier_ranks, dependent: :destroy
   has_many :tier_categories, dependent: :destroy
   has_many :items, dependent: :destroy
 
+  validate :file_size_validation, if: -> { cover_image.attached? }
   validates :title, presence: true, length: { maximum: 150 }
   validates :description, length: { maximum: 300 }
-
-  has_one_attached :cover_image
 
   accepts_nested_attributes_for :tier_ranks, reject_if: :all_blank, allow_destroy: true
   accepts_nested_attributes_for :tier_categories, reject_if: :all_blank, allow_destroy: true
@@ -57,5 +58,12 @@ class Tier < ApplicationRecord
     item = items.build(tier_category_id:, tier_rank_id:)
     item.image.attach(image_or_blob)
     item.save!
+  end
+
+  def file_size_validation
+    if cover_image.blob.byte_size > 1.megabyte
+      cover_image.purge
+      errors.add(:cover_image, 'は、1MB以下のサイズにしてください')
+    end
   end
 end

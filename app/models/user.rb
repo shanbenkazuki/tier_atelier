@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
 
-  validate :avatar_size_validation, if: -> { avatar.attached? }
+  validate :file_size_validation, if: -> { avatar.attached? }
   validates :name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :password, length: { minimum: 3, maximum: 16 }, format: { with: /\A[a-zA-Z0-9]+\z/, message: 'は英数字のみ設定してください' }, if: -> { new_record? || changes[:crypted_password] }
   validates :password, confirmation: true, if: -> { new_record? || changes[:crypted_password] }
@@ -15,7 +15,7 @@ class User < ApplicationRecord
 
   private
 
-  def avatar_size_validation
+  def file_size_validation
     if avatar.blob.byte_size > 1.megabyte
       avatar.purge
       errors.add(:avatar, 'は、1MB以下のサイズにしてください')
