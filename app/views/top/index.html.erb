@@ -1,6 +1,12 @@
-<div class="d-flex justify-content-center align-items-center flex-column" style="height:80vh;">
-  <%= image_tag('top_logo.png', class: 'mx-auto mb-3') %>
-  <% unless current_user %>
-    <%= link_to "ログイン", login_path, class: "btn btn-primary btn-lg" %>
-  <% end %>
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-lg-6 my-5 align-items-center d-flex flex-column">
+      <div>
+        <%= image_tag('top_logo.png') %>
+        <% unless current_user %>
+          <%= link_to "ログイン", login_path, class: "btn btn-primary btn-lg" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
 </div>

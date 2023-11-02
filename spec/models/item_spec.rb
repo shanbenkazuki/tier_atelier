@@ -5,22 +5,11 @@ RSpec.describe Item, type: :model do
   let(:rank_id_with_order_zero) { create(:tier_rank, order: 0).id }
   let(:category_id_with_order_zero) { create(:tier_category, order: 0).id }
 
-  describe "アソシエーション" do
-    it "tierと関連付けられていること" do
-      expect(item).to respond_to(:tier)
-    end
-
-    it "tier_rankと関連付けられていること" do
-      expect(item).to respond_to(:tier_rank)
-    end
-
-    it "tier_categoryと関連付けられていること" do
-      expect(item).to respond_to(:tier_category)
-    end
-
-    it "imageと関連付けられていること" do
-      expect(item).to respond_to(:image)
-    end
+  describe "associations" do
+    it { is_expected.to belong_to(:tier) }
+    it { is_expected.to belong_to(:tier_rank) }
+    it { is_expected.to belong_to(:tier_category) }
+    it { is_expected.to respond_to(:image) }
   end
 
   describe "#generate_rank_category_key" do

@@ -26,66 +26,28 @@ RSpec.describe User, type: :model do
     end
 
     describe "nameのバリデーション" do
-      it "名前がなければ無効であること" do
-        user.name = nil
-        expect(user).to_not be_valid
-      end
-
-      it "名前の長さが2文字未満であれば無効であること" do
-        user.name = "A"
-        expect(user).to_not be_valid
-      end
-
-      it "名前の長さが30文字を超えると無効であること" do
-        user.name = "A" * 31
-        expect(user).to_not be_valid
-      end
+      it { should validate_presence_of(:name) }
+      it { should validate_length_of(:name).is_at_least(2).is_at_most(30) }
     end
 
     describe "passwordのバリデーション" do
-      it "パスワードが3文字未満であれば無効であること" do
-        user.password = "AB"
-        expect(user).to_not be_valid
-      end
-
-      it "パスワードが17文字以上であれば無効であること" do
-        user.password = "A" * 17
-        expect(user).to_not be_valid
-      end
-
-      it "パスワードが英数字以外を含む場合無効であること" do
-        user.password = "password@"
-        expect(user).to_not be_valid
-      end
-
-      it "確認用パスワードがなければ無効であること" do
-        user.password_confirmation = nil
-        expect(user).to_not be_valid
-      end
-
-      it "パスワードと確認用パスワードが一致しなければ無効であること" do
-        user.password = "password123"
-        user.password_confirmation = "password124"
-        expect(user).to_not be_valid
+      it { should validate_length_of(:password).is_at_least(3).is_at_most(16) }
+      it { should validate_confirmation_of(:password) }
+      it { should validate_presence_of(:password_confirmation) }
+      it do
+        should allow_values('password1', 'PASSWORD', 'Pass123').for(:password)
+        should_not allow_values('パスワード', 'password!@#', '   ').for(:password).with_message('は英数字のみ設定してください')
       end
     end
 
     describe "emailのバリデーション" do
-      it "メールがなければ無効であること" do
-        user.email = nil
-        expect(user).to_not be_valid
-      end
-
-      it "メールが重複していれば無効であること" do
-        create(:user, email: "test@example.com")
-        user.email = "test@example.com"
-        expect(user).to_not be_valid
-      end
-
-      it "メールの形式が不正であれば無効であること" do
-        user.email = "invalid-email"
-        expect(user).to_not be_valid
-      end
+      subject { User.new(name: "Sample Name", email: "sample@example.com", password: "password", password_confirmation: "password") }
+      it { should validate_presence_of(:email) }
+      it { should validate_uniqueness_of(:email).case_insensitive }
+      it { should allow_value('test@example.com').for(:email) }
+      it { should_not allow_value('test').for(:email) }
+      it { should_not allow_value('test@').for(:email) }
+      it { should_not allow_value('@example.com').for(:email) }
     end
   end
 end

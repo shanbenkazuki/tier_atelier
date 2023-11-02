@@ -71,7 +71,6 @@ export default class extends Controller {
       rankId = this.getAttributeFromElement(event.currentTarget.parentElement, ".label-holder", "data-rank-id");
     }
 
-    // this.fetchUpdateItem(tierId, categoryId, rankId, itemId);
     this.saveDataToLocalStorage(categoryId, rankId, itemId);
   }
 

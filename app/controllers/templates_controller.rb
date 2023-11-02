@@ -2,7 +2,7 @@ class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
   before_action :set_categories, only: [:new, :edit]
   before_action :require_login
-  before_action :authorize_template, only: [:create, :edit, :update, :destroy]
+  before_action :authorize_template, only: [:edit, :update, :destroy]
 
   def index
     @templates = Template.all
@@ -22,6 +22,8 @@ class TemplatesController < ApplicationController
   def create
     tier = current_user.tiers.find_by(id: params[:tier_id])
     @template = current_user.templates.build(template_params)
+
+    authorize @template
 
     ActiveRecord::Base.transaction do
       @template.save!
@@ -49,7 +51,7 @@ class TemplatesController < ApplicationController
       end
     end
 
-    redirect_to @template, notice: "テンプレートの作成に成功しました"
+    redirect_to @template, success: t('.success')
   rescue ActiveRecord::RecordInvalid
     @categories = Category.all
     render :new, status: :unprocessable_entity

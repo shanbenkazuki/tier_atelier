@@ -5,6 +5,6 @@ module LoginMacros
     fill_in 'メールアドレス', with: user.email
     fill_in 'パスワード', with: 'password'
     click_button 'ログイン'
-    sleep 0.5
+    expect(page).to have_content "ログインに成功しました"
   end
 end

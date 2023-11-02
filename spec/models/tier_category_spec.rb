@@ -1,41 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe TierCategory, type: :model do
-  let(:tier_category) { build(:tier_category) }
+  subject { build(:tier_category) }
 
-  describe "バリデーション" do
-    it "nameとorderが適切であれば有効であること" do
-      expect(tier_category).to be_valid
-    end
+  describe "associations" do
+    it { is_expected.to belong_to(:tier) }
+    it { is_expected.to have_many(:items).dependent(:destroy) }
+  end
 
-    describe "nameのバリデーション" do
-      it "nameがなければ無効であること" do
-        tier_category.name = nil
-        expect(tier_category).to_not be_valid
-      end
+  describe "validations" do
+    it { is_expected.to validate_presence_of(:name) }
+    it { is_expected.to validate_length_of(:name).is_at_most(70) }
 
-      it "nameの長さが70文字を超えると無効であること" do
-        tier_category.name = "A" * 71
-        expect(tier_category).to_not be_valid
-      end
-    end
-
-    describe "orderのバリデーション" do
-      it "orderがなければ無効であること" do
-        tier_category.order = nil
-        expect(tier_category).to_not be_valid
-      end
-
-      it "orderが整数でなければ無効であること" do
-        tier_category.order = 1.5
-        expect(tier_category).to_not be_valid
-      end
-
-      it "orderが文字列であれば無効であること" do
-        tier_category.order = "ABC"
-        expect(tier_category).to_not be_valid
-      end
-    end
+    it { is_expected.to validate_presence_of(:order) }
+    it { is_expected.to validate_numericality_of(:order).only_integer }
   end
 
   describe "scopes" do
