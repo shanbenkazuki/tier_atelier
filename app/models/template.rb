@@ -8,6 +8,7 @@ class Template < ApplicationRecord
   has_many_attached :tier_images
   has_one_attached :template_cover_image
 
+  validate :file_size_validation, if: -> { template_cover_image.attached? }
   validates :title, presence: true, length: { maximum: 150 }
   validates :description, length: { maximum: 300 }
 
@@ -17,5 +18,14 @@ class Template < ApplicationRecord
 
   def rank_with_order_zero
     template_ranks.find_by(order: 0)
+  end
+
+  private
+
+  def file_size_validation
+    if template_cover_image.blob.byte_size > 3.megabyte
+      template_cover_image.purge
+      errors.add(:template_cover_image, 'は、3MB以下のサイズにしてください')
+    end
   end
 end

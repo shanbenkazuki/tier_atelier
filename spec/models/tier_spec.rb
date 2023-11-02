@@ -10,9 +10,26 @@ RSpec.describe Tier, type: :model do
   end
 
   describe "validations" do
+    let(:tier) { build(:tier) }
+
     it { should validate_presence_of(:title) }
     it { should validate_length_of(:title).is_at_most(150) }
     it { should validate_length_of(:description).is_at_most(300) }
+
+    it "カバー画像のサイズが1MBを超える場合、無効であること" do
+      oversized_file = StringIO.new("a" * 1.1.megabytes)
+      tier.cover_image.attach(io: oversized_file, filename: 'oversized_avatar.jpg', content_type: 'image/jpeg')
+
+      expect(tier).to_not be_valid
+      expect(tier.errors[:cover_image]).to include("は、1MB以下のサイズにしてください")
+    end
+
+    it "カバー画像のサイズが1MB以下である場合、有効であること" do
+      valid_size_file = StringIO.new("a" * 0.9.megabytes)
+      tier.cover_image.attach(io: valid_size_file, filename: 'valid_avatar.jpg', content_type: 'image/jpeg')
+
+      expect(tier).to be_valid
+    end
   end
 
   describe "#category_with_order_zero" do

@@ -11,9 +11,26 @@ RSpec.describe Template, type: :model do
   end
 
   describe "validations" do
+    let(:template) { build(:template) }
+
     it { should validate_presence_of(:title) }
     it { should validate_length_of(:title).is_at_most(150) }
     it { should validate_length_of(:description).is_at_most(300) }
+
+    it "カバー画像のサイズが3MBを超える場合、無効であること" do
+      oversized_file = StringIO.new("a" * 3.1.megabytes)
+      template.template_cover_image.attach(io: oversized_file, filename: 'oversized_avatar.jpg', content_type: 'image/jpeg')
+
+      expect(template).to_not be_valid
+      expect(template.errors[:template_cover_image]).to include("は、3MB以下のサイズにしてください")
+    end
+
+    it "カバー画像のサイズが3MB以下である場合、有効であること" do
+      valid_size_file = StringIO.new("a" * 2.9.megabytes)
+      template.template_cover_image.attach(io: valid_size_file, filename: 'valid_avatar.jpg', content_type: 'image/jpeg')
+
+      expect(template).to be_valid
+    end
   end
 
   describe "#category_with_order_zero" do
