@@ -1,5 +1,13 @@
 Rails.application.routes.draw do
   resources :users
+
+  resources :categories do
+    member do
+      get :show_tiers
+      get :show_templates
+    end
+  end
+
   resources :tiers do
     collection do
       get 'search', to: 'tiers#search'
