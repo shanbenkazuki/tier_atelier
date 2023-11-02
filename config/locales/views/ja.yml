@@ -53,3 +53,6 @@ ja:
     create_from_template:
       success: 'テンプレート作成に成功しました'
       fail: 'テンプレート作成に失敗しました'
+  templates:
+    create:
+      success: "テンプレート作成に成功しました"

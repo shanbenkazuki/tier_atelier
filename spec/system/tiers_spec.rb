@@ -42,7 +42,7 @@ RSpec.describe "Tiers", type: :system do
 
       context "正常系" do
         context "カテゴリとランクが10フィールドの場合" do
-          it "tierの新規登録が成功する", js: true, focus: true do
+          it "tierの新規登録が成功する", js: true do
             check_rank_and_category_remove_button
             extend_category_rank_fields_from_5_to_10
 
@@ -219,7 +219,24 @@ RSpec.describe "Tiers", type: :system do
     end
 
     describe "詳細表示" do
-      # ...
+      let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
+
+      before do
+        visit tier_path(tier)
+      end
+
+      it "tierの削除ができること", js: true do
+        accept_confirm do
+          click_link '削除'
+        end
+        verify_tier_or_template_not_displayed_on_user_page(user)
+      end
+
+      def verify_tier_or_template_not_displayed_on_user_page(user)
+        visit user_path(user)
+        expect(page).to have_no_content("テストタイトル")
+        expect(page).to have_no_selector("img[alt='テストタイトル']")
+      end
     end
 
     describe "編集・更新" do
@@ -363,10 +380,73 @@ RSpec.describe "Tiers", type: :system do
     describe "配置" do
       let(:tier) { create(:tier, :with_tier_ranks, :with_tier_categories, :with_images, user:, category: categories[0]) }
 
+      before do
+        visit tier_path(tier)
+        click_link "配置"
+      end
+
       context "正常系" do
         it "画像をtierに配置できる", js: true do
-          visit arrange_tier_path(tier)
+          verify_drag_and_drop_images
+        end
 
+        it "画像の削除ができる", js: true do
+          uranus_image = find("img[src*='Uranus.png']")
+          delete_image_area = find("#trash-can")
+
+          uranus_image.drag_to(delete_image_area)
+
+          expect(page).to have_no_selector("img[src*='Uranus.png']")
+        end
+
+        it "tierの画像をダウンロードできる" do
+          click_button '保存'
+          click_button 'ダウンロード'
+        end
+
+        scenario "Tierをテンプレート化できる" do
+          go_to_new_template
+
+          create_template("登録する")
+
+          verify_tier_or_template_displayed_on_user_page(user)
+        end
+
+        scenario "Tierを反映する", js: true do
+          verify_drag_and_drop_images
+          click_button '保存'
+          using_wait_time(10) do
+            expect(page).to have_selector('img[alt="Captured Tier Image"]')
+          end
+          click_button '反映する'
+          expect(page).to have_current_path(tier_path(tier))
+          expect(page).to have_content("テストタイトル")
+          verify_tier_or_template_displayed_on_user_page(user)
+        end
+
+        def go_to_new_template
+          click_button '保存'
+          click_link 'テンプレートにする'
+          expect(page).to have_selector('input[type="submit"][value="登録する"].btn.btn-primary')
+          expect(current_path).to eq new_tier_template_path(tier)
+        end
+
+        def create_template(name)
+          fill_in "タイトル", with: "テストタイトル"
+          fill_in "説明", with: "テストの説明"
+          select "ゲーム", from: "template_category_id"
+          attach_file('template[template_cover_image]', Rails.root.join("spec/fixtures/test_cover_image.png"))
+          click_button name
+          expect(page).to have_selector('.alert.alert-success', text: 'テンプレート作成に成功しました')
+        end
+
+        def verify_tier_or_template_displayed_on_user_page(user)
+          visit user_path(user)
+          expect(page).to have_content("テストタイトル")
+          expect(page).to have_selector("img[alt='テストタイトル']")
+        end
+
+        def verify_drag_and_drop_images
           uranus_image = find("img[src*='Uranus.png']")
           eudora_image = find("img[src*='Eudora.png']")
           estes_image = find("img[src*='Estes.png']")
@@ -385,25 +465,6 @@ RSpec.describe "Tiers", type: :system do
           expect(find("div[class='tier cell 3-3']")).to have_selector("img[src*='Eudora.png']")
           estes_image.drag_to(tier_cell_1_4)
           expect(find("div[class='tier cell 1-4']")).to have_selector("img[src*='Estes.png']")
-        end
-
-        it "画像の削除ができる", js: true do
-          visit arrange_tier_path(tier)
-
-          uranus_image = find("img[src*='Uranus.png']")
-          delete_image_area = find("#trash-can")
-
-          uranus_image.drag_to(delete_image_area)
-
-          expect(page).to have_no_selector("img[src*='Uranus.png']")
-        end
-
-        it "tierの画像をダウンロードできる", js: true do
-          visit arrange_tier_path(tier)
-
-          scroll_to(find('#display-modal'))
-          click_button '保存'
-          click_button 'ダウンロード'
         end
       end
     end
