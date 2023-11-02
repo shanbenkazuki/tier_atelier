@@ -30,7 +30,7 @@ Tier工房は、ユーザーが自身のゲームキャラクターランキン�
 * 英語版の作成
 
 ## 画面遷移図
-figma: https://www.figma.com/file/1mK6Yc0e5txhv8QiCCqfZ7/Tier%E5%B7%A5%E6%88%BF?type=design&node-id=0%3A1&mode=design&t=R3TrK2Z5FoPRtZ94-1
+figma: https://www.figma.com/file/FQLD6HH1iK1sOGjZzt5CNx/Tier%E5%B7%A5%E6%88%BF-(%E3%82%B3%E3%83%94%E3%83%BC)?type=design&node-id=0%3A1&mode=design&t=zOIXD84su6UY9PP1-1
 
 ## ER図
 ER図：https://dbdiagram.io/d/649c039c02bd1c4a5e304bc7
