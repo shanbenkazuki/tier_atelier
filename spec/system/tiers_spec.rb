@@ -404,7 +404,7 @@ RSpec.describe "Tiers", type: :system do
           click_button 'ダウンロード'
         end
 
-        scenario "Tierをテンプレート化できる" do
+        scenario "Tierをテンプレート化できる", focus: true do
           go_to_new_template
 
           create_template("登録する")
