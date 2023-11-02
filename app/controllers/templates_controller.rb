@@ -1,7 +1,7 @@
 class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
-  before_action :set_categories, only: [:new, :edit]
-  before_action :require_login
+  before_action :set_categories, only: [:index, :new, :edit]
+  before_action :require_login, except: [:index]
   before_action :authorize_template, only: [:edit, :update, :destroy]
 
   def index

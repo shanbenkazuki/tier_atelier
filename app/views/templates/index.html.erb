@@ -1,6 +1,24 @@
 <% content_for :title, t('.title') %>
 <div class="container">
   <div class="row justify-content-center">
+  <h1 class="mt-4 text-center my-5">カテゴリ</h1>
+    <div class="row">
+      <% @categories.each do |category| %>
+      <div class="col-md-4 scale-on-hover">
+        <%= link_to show_templates_category_path(category), class: 'text-dark text-decoration-none' do %>
+          <% if category.category_cover_image.attached? %>
+              <%= image_tag category.category_cover_image.variant(resize_to_fill: [1000, 500]), alt: category.name, class: 'img-fluid shadowmb-5' %>
+          <% else %>
+              <%= image_tag 'default_cover.webp', alt: category.name, class: 'img-fluid shadow' %>
+          <% end %>
+          <div class="text-center fw-bold mt-2 mb-1">
+              <%= category.name %>
+          </div>
+        <% end %>
+      </div>
+      <% end %>
+    </div>
+
     <h1 class="mt-4 text-center my-5">テンプレート一覧</h1>
     <div class="row">
       <% @templates.each do |template| %>
