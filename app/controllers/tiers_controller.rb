@@ -1,11 +1,12 @@
 class TiersController < ApplicationController
   include ApplicationHelper
-  before_action :set_categories, only: [:index, :new, :edit]
+  before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
   before_action :require_login, except: [:index]
   before_action :authorize_tier, only: [:edit, :destroy, :arrange, :update_tier_cover_image]
 
   def index
+    @categories = Category.includes(:category_cover_image_attachment).all
     @tiers = Tier.with_attached_cover_image.all
   end
 
@@ -95,7 +96,7 @@ class TiersController < ApplicationController
   end
 
   def set_categories
-    @categories = Category.includes(:category_cover_image_attachment).all
+    @categories = Category.all
   end
 
   def set_tier
