@@ -40,6 +40,10 @@ RSpec.configure do |config|
 
   config.include LoginMacros
 
+  config.after(:suite) do
+    FileUtils.rm_rf(ActiveStorage::Blob.service.root)
+  end
+
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

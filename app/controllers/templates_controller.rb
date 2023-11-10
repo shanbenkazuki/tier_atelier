@@ -5,7 +5,7 @@ class TemplatesController < ApplicationController
   before_action :authorize_template, only: [:edit, :update, :destroy]
 
   def index
-    @templates = Template.all
+    @templates = Template.with_attached_template_cover_image.all
   end
 
   def show
@@ -53,7 +53,7 @@ class TemplatesController < ApplicationController
 
     redirect_to @template, success: t('.success')
   rescue ActiveRecord::RecordInvalid
-    @categories = Category.all
+    @categories = Category.includes(:category_cover_image_attachment).all
     render :new, status: :unprocessable_entity
   end
 
@@ -74,7 +74,7 @@ class TemplatesController < ApplicationController
   private
 
   def set_template
-    @template = Template.find(params[:id])
+    @template = Template.with_attached_tier_images.find(params[:id])
   end
 
   def template_params
@@ -82,7 +82,7 @@ class TemplatesController < ApplicationController
   end
 
   def set_categories
-    @categories = Category.all
+    @categories = Category.includes(:category_cover_image_attachment).all
   end
 
   def setup_template

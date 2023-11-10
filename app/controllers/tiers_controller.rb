@@ -6,7 +6,7 @@ class TiersController < ApplicationController
   before_action :authorize_tier, only: [:edit, :destroy, :arrange, :update_tier_cover_image]
 
   def index
-    @tiers = Tier.all
+    @tiers = Tier.with_attached_cover_image.all
   end
 
   def show
@@ -95,7 +95,7 @@ class TiersController < ApplicationController
   end
 
   def set_categories
-    @categories = Category.all
+    @categories = Category.includes(:category_cover_image_attachment).all
   end
 
   def set_tier
@@ -155,7 +155,7 @@ class TiersController < ApplicationController
       @tier.errors.add(:base, msg)
     end
 
-    @categories ||= Category.all
+    @categories ||= Category.includes(:category_cover_image_attachment).all
     flash.now[:danger] = t('.fail')
     action_name = @tier.new_record? ? :new : :edit
     render action_name, status: :unprocessable_entity
@@ -168,7 +168,7 @@ class TiersController < ApplicationController
     @uncategorized_tier_category_id = @tier.category_with_order_zero&.id
     @unranked_tier_rank_id = @tier.rank_with_order_zero&.id
 
-    @items = @tier.items
+    @items = @tier.items.includes(image_attachment: :blob)
 
     @tier_colors = Rails.application.config.tier_colors
 

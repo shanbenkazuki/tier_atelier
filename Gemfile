@@ -55,8 +55,8 @@ gem 'sorcery'
 gem 'rails-i18n', '~> 7.0.0'
 gem "aws-sdk-s3", require: false
 gem "meta-tags"
-
 gem 'pundit'
+gem 'rack-mini-profiler'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
@@ -79,6 +79,7 @@ group :development do
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rspec', require: false
+  gem 'bullet'
 end
 
 group :test do

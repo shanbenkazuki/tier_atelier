@@ -6,6 +6,6 @@ class CategoriesController < ApplicationController
 
   def show_templates
     @category = Category.find(params[:id])
-    @templates = @category.templates
+    @templates = @category.templates.includes(:template_cover_image_attachment)
   end
 end
