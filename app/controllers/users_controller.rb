@@ -3,7 +3,10 @@ class UsersController < ApplicationController
   before_action :require_login, except: [:new, :create]
   before_action :authorize_user, except: [:new, :create]
 
-  def show; end
+  def show
+    @tiers = @user.tiers.with_attached_cover_image
+    @templates = @user.templates.with_attached_template_cover_image
+  end
 
   def new
     @user = User.new
