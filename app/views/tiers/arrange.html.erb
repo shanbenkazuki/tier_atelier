@@ -3,7 +3,7 @@
 
   <p class="mb-4"><%= @tier.description %></p>
 
-  <%= link_to "https://twitter.com/intent/tweet?text=Tierを作成しました&url=#{CGI.escape(request.original_url)}", target: "_blank", class: "btn btn-primary" do %>
+  <%= link_to "https://twitter.com/intent/tweet?text=#{@tweet_text}&url=#{@tweet_url}", target: "_blank", class: "btn btn-primary" do %>
     <i class="fab fa-twitter"></i> Tweet
   <% end %>
   <%= button_tag 'ダウンロード', type: 'button', id:'display-modal', class: 'btn btn-secondary', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>

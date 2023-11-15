@@ -40,6 +40,15 @@ class TiersController < ApplicationController
   end
 
   def arrange
+    @tweet_url = CGI.escape("#{request.base_url}/tiers/#{@tier.id}")
+    @tweet_text = CGI.escape("Tierを作成しました\n")
+    set_meta_tags title: @tier.title,
+                  og: {
+                    image: url_for(@tier.cover_image.blob&.url)
+                  },
+                  twitter: {
+                    image: url_for(@tier.cover_image.blob&.url)
+                  }
     setup_tier
   end
 
