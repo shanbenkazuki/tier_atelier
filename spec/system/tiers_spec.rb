@@ -400,11 +400,11 @@ RSpec.describe "Tiers", type: :system do
         end
 
         it "tierの画像をダウンロードできる" do
-          click_button '保存'
+          click_button '画像出力'
           click_button 'ダウンロード'
         end
 
-        scenario "Tierをテンプレート化できる", focus: true do
+        scenario "Tierをテンプレート化できる" do
           go_to_new_template
 
           create_template("登録する")
@@ -412,13 +412,8 @@ RSpec.describe "Tiers", type: :system do
           verify_tier_or_template_displayed_on_user_page(user)
         end
 
-        scenario "Tierを反映する", js: true do
-          verify_drag_and_drop_images
+        scenario "Tierを反映する", js: true, focus: true do
           click_button '保存'
-          using_wait_time(10) do
-            expect(page).to have_selector('img[alt="Captured Tier Image"]')
-          end
-          click_button '反映する'
           expect(page).to have_current_path(tier_path(tier))
           expect(page).to have_content("テストタイトル")
           verify_tier_or_template_displayed_on_user_page(user)

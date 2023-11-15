@@ -6,7 +6,7 @@
   <%= link_to "https://twitter.com/intent/tweet?text=#{@tweet_text}&url=#{@tweet_url}", target: "_blank", class: "btn btn-primary" do %>
     <i class="fab fa-twitter"></i> Tweet
   <% end %>
-  <%= button_tag 'ダウンロード', type: 'button', id:'display-modal', class: 'btn btn-secondary', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
+  <%= button_tag '画像出力', type: 'button', id:'display-modal', class: 'btn btn-secondary', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
   <div id="tier-container" data-tier-id="<%= @tier.id %>">
     <div class="category-row">
       <div class="label-holder"></div>

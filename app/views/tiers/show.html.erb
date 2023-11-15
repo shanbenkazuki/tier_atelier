@@ -22,7 +22,7 @@
         <% @category_labels.each_with_index do |(category, category_id), categories_index| %>
           <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>">
             <% (@images_map["#{rank_id}_#{category_id}"] || []).each do |image_data| %>
-              <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous",style: "pointer-events: none;" %>
+              <%= image_tag image_data[:url], id: image_data[:id], crossorigin: "anonymous", style: "pointer-events: none;", class: "img-in-table" %>
             <% end %>
           </div>
         <% end %>
