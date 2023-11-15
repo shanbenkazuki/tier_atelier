@@ -61,12 +61,16 @@ export default class extends Controller {
     const draggedElem = document.querySelector('[data-image-id="' + itemId + '"]');
     event.currentTarget.appendChild(draggedElem);
 
+    draggedElem.className = '';
+
     let categoryId, rankId;
 
     if (event.currentTarget.id === 'default-area') {
+      draggedElem.classList.add('default-area-img');
       categoryId = this.getAttributeFromElement(document, "#default-area", "data-default-category-id");
       rankId = this.getAttributeFromElement(document, "#default-area", "data-default-rank-id");
     } else {
+      draggedElem.classList.add('img-in-table');
       categoryId = this.getTierCategoryId(event.currentTarget);
       rankId = this.getAttributeFromElement(event.currentTarget.parentElement, ".label-holder", "data-rank-id");
     }

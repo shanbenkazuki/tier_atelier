@@ -33,7 +33,18 @@
      data-controller="item-drag" 
      data-item-drag-target="tier" 
      data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
-    <%= render 'tier_image', images: @images_map, rank_id: "unranked", category_id: "uncategorized" %>
+    <% (@images_map["unranked_uncategorized"] || []).each do |image_data| %>
+      <%= image_tag image_data[:url], 
+        data: { 
+          image_id: image_data[:id], 
+          action: "dragstart->delete-tier-image#dragStart",
+          controller: "delete-tier-image"
+        }, 
+        crossorigin: "anonymous", 
+        draggable: "true", 
+        class: "default-area-img"
+      %>
+    <% end %>
   </div>
 
   <div class="d-flex justify-content-center align-items-center mb-5 mx-4 px-4">
