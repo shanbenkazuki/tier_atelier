@@ -20,7 +20,7 @@
   </div>
   <% if template.persisted? %>
     <div class="form-group mb-4" data-controller="item-count-checker upload-item-preview">
-      <%= f.label :tier_images, "Tier画像", class: 'control-label d-block' %>
+      <%= f.label :tier_images, "Template画像", class: 'control-label d-block' %>
       <%= f.file_field :tier_images, accept: 'image/png,image/jpeg,image/webp', class: 'form-control-file', multiple: true, direct_upload: true, id: 'image-upload', data: { item_count_checker_target: "file", upload_item_preview_target: "input", action: "change->item-count-checker#checkFileCount change->upload-item-preview#previewImage" } %>
       <div class="image-preview mt-3" data-upload-item-preview-target="preview"></div>
     </div>

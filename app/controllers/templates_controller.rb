@@ -1,10 +1,11 @@
 class TemplatesController < ApplicationController
   before_action :set_template, only: %i[show edit update destroy]
-  before_action :set_categories, only: [:index, :new, :edit]
+  before_action :set_categories, only: [:new, :edit]
   before_action :require_login, except: [:index]
   before_action :authorize_template, only: [:edit, :update, :destroy]
 
   def index
+    @categories = Category.includes(:category_cover_image_attachment).all
     @templates = Template.with_attached_template_cover_image.all
   end
 
@@ -74,7 +75,7 @@ class TemplatesController < ApplicationController
   private
 
   def set_template
-    @template = Template.with_attached_tier_images.find(params[:id])
+    @template = Template.find(params[:id])
   end
 
   def template_params
@@ -82,7 +83,7 @@ class TemplatesController < ApplicationController
   end
 
   def set_categories
-    @categories = Category.includes(:category_cover_image_attachment).all
+    @categories = Category.all
   end
 
   def setup_template
