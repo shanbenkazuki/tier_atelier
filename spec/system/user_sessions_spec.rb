@@ -15,7 +15,7 @@ RSpec.describe 'Users', type: :system do
           fill_in 'パスワード', with: 'password'
           click_button 'ログイン'
           expect(page).to have_content 'ログインに成功しました'
-          expect(page).to have_current_path(tiers_path)
+          expect(page).to have_current_path(root_path)
         end
       end
 
