@@ -40,13 +40,6 @@ class TiersController < ApplicationController
   end
 
   def arrange
-    set_meta_tags title: @tier.title,
-                  og: {
-                    image: url_for(@tier.cover_image.blob&.url)
-                  },
-                  twitter: {
-                    image: url_for(@tier.cover_image.blob&.url)
-                  }
     setup_tier
   end
 
