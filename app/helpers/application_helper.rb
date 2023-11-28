@@ -1,6 +1,6 @@
 module ApplicationHelper
   def default_meta_tags
-    image_path = image_url('top_logo.png')
+    image_path = image_url('top_logo.webp')
     {
       site: 'Tier工房',
       title: 'Tierを作成しよう!',

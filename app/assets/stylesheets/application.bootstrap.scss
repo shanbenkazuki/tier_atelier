@@ -2,6 +2,15 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 @import 'direct_uploads';
 
+
+header, footer {
+  background-color: #eda368;
+}
+
+.logo_area {
+  width: 250px;
+}
+
 .flex-center {
   display: flex;
   align-items: center;
