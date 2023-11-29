@@ -1,7 +1,10 @@
-<footer class="bg-dark py-4">
-  <div class="footer-container d-flex justify-content-center gap-5">
-    <%= link_to t('defaults.terms_of_use'), terms_of_use_path, class: 'text-decoration-none text-light' %>
-    <%= link_to t('defaults.privacy_policy'), privacy_policy_path, class: 'text-decoration-none text-light' %>
-    <%= link_to t('defaults.contact'), 'https://forms.gle/FqWqtodT8itsdEBQ8', class: 'text-decoration-none text-light' %>
+<footer class="mt-4 footer-text text-light" style="font-size: 0.9rem;">
+  <div class="d-flex justify-content-center gap-5 pt-2">
+    <%= link_to t('defaults.terms_of_use'), terms_of_use_path, class: "text-decoration-none text-reset" %>
+    <%= link_to t('defaults.privacy_policy'), privacy_policy_path, class: "text-decoration-none text-reset" %>
+    <%= link_to t('defaults.contact'), 'https://forms.gle/FqWqtodT8itsdEBQ8', class: "text-decoration-none text-reset" %>
+  </div>
+  <div class="footer-copyright text-center">
+    &copy; Tierアトリエ
   </div>
 </footer>

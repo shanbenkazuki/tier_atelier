@@ -2,6 +2,15 @@
 @import 'bootstrap-icons/font/bootstrap-icons';
 @import 'direct_uploads';
 
+
+header, footer {
+  background-color: #eda368;
+}
+
+.logo_area {
+  width: 250px;
+}
+
 .flex-center {
   display: flex;
   align-items: center;
@@ -110,7 +119,6 @@
 }
 
 .container {
-  min-height: 100vh;
   max-width: 1700px;
 }
 
@@ -165,4 +173,9 @@
     width: 70px;
     height: auto;
   }
+}
+
+/* フッター */
+.footer-text a:hover {
+  color: #ffffff;
 }
