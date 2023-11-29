@@ -119,7 +119,6 @@ header, footer {
 }
 
 .container {
-  min-height: 100vh;
   max-width: 1700px;
 }
 
@@ -174,4 +173,9 @@ header, footer {
     width: 70px;
     height: auto;
   }
+}
+
+/* フッター */
+.footer-text a:hover {
+  color: #ffffff;
 }
