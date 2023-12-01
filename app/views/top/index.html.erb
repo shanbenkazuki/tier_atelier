@@ -13,7 +13,7 @@
   <div class="row justify-content-center mt-2">
     <%= render partial: "top_card", locals: { image: 'tier_find_logo.webp', title: 'Tierを見に行く', description: 'みんなが作成したTierを見に行けます。', path: tiers_path } %>
     <%= render partial: "top_card", locals: { image: 'template_find_logo.webp', title: 'テンプレートを見に行く', description: 'みんなが作成したテンプレートを見に行けます。', path: templates_path } %>
-    <%= render partial: "top_card", locals: { image: 'make_logo.webp', title: '作りに行く', description: '自分でTierを作成することができます。', path: search_tiers_path } %>
+    <%= render partial: "top_card", locals: { image: 'make_logo.webp', title: '作りに行く', description: '自分でTierを作成することができます。', path: new_tier_path } %>
     <%= render partial: "top_card", locals: { image: 'confirm_logo.webp', title: '確認しに行く', description: '自分が作成したTierやテンプレートを確認しに行けます。（ログインユーザのみ）', path: logged_in? ? user_path(current_user) : root_path } %>
   </div>
 </div>
