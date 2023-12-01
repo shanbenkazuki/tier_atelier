@@ -1,5 +1,5 @@
 <% content_for :title, t('.title') %>
-<div class="container-sm">
+<div class="container">
   <div class="row justify-content-center">
     <div class="d-flex align-items-center my-5">
       <% if @user.avatar.attached? %>
@@ -19,10 +19,10 @@
     <h1 class="mt-4">作成したTier</h1>
     <div class="row">
       <% @tiers.each do |tier| %>
-        <div class="col-md-6 scale-on-hover">
+        <div class="col-md-4 scale-on-hover">
           <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
             <% if tier.cover_image.attached? %>
-                <%= image_tag tier.cover_image.variant(resize_to_fill: [1000, 500], convert: "webp"), alt: tier.title, class: 'img-fluid shadowmb-5' %>
+                <%= image_tag tier.cover_image.variant(resize_to_fill: [1200, 675], convert: "webp"), alt: tier.title, class: 'img-fluid shadowmb-5' %>
             <% else %>
                 <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
             <% end %>
@@ -40,7 +40,7 @@
         <div class="col-md-4 scale-on-hover">
           <%= link_to template_path(template), class: 'text-dark text-decoration-none' do %>
             <% if template.template_cover_image.attached? %>
-                <%= image_tag template.template_cover_image.variant(resize_to_fill: [1000, 500]), alt: template.title, class: 'img-fluid shadow' %>
+                <%= image_tag template.template_cover_image.variant(resize_to_fill: [1200, 675]), alt: template.title, class: 'img-fluid shadow' %>
             <% else %>
                 <%= image_tag 'default_cover.webp', alt: template.title, class: 'img-fluid shadow' %>
             <% end %>

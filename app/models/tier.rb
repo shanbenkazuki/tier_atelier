@@ -37,12 +37,6 @@ class Tier < ApplicationRecord
     tier_ranks.find_by(order: 0)
   end
 
-  def add_images(images)
-    images.each do |image|
-      create_item_with_image(image)
-    end
-  end
-
   def add_images_from_template(images)
     images.each do |image|
       create_item_with_image(image.blob)
@@ -50,15 +44,6 @@ class Tier < ApplicationRecord
   end
 
   private
-
-  def create_item_with_image(image_or_blob)
-    tier_category_id = tier_categories.find_by(order: 0).id
-    tier_rank_id = tier_ranks.find_by(order: 0).id
-
-    item = items.build(tier_category_id:, tier_rank_id:)
-    item.image.attach(image_or_blob)
-    item.save!
-  end
 
   def file_size_validation
     if cover_image.blob.byte_size > 1.megabyte

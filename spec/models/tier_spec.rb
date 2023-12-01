@@ -50,30 +50,6 @@ RSpec.describe Tier, type: :model do
     end
   end
 
-  describe "#add_images" do
-    let(:tier) { build(:tier) }
-    let!(:tier_category) { create(:tier_category, tier:, order: 0) }
-    let!(:tier_rank) { create(:tier_rank, tier:, order: 0) }
-    let!(:images) { [fixture_file_upload('spec/fixtures/Aldous.png'), fixture_file_upload('spec/fixtures/Arlot.png')] }
-
-    it "提供された画像を持つアイテムをTierに追加する" do
-      expect do
-        tier.add_images(images)
-      end.to change(tier.items, :count).by(2)
-
-      added_items = tier.items.order(created_at: :desc).limit(2)
-
-      expect(added_items.first.image).to be_attached
-      expect(added_items.second.image).to be_attached
-
-      expect(added_items.first.tier_category_id).to eq(tier_category.id)
-      expect(added_items.first.tier_rank_id).to eq(tier_rank.id)
-
-      expect(added_items.second.tier_category_id).to eq(tier_category.id)
-      expect(added_items.second.tier_rank_id).to eq(tier_rank.id)
-    end
-  end
-
   describe "#add_images_from_template" do
     let(:tier) { build(:tier) }
     let!(:tier_category) { create(:tier_category, tier:, order: 0) }

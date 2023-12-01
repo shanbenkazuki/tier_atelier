@@ -1,5 +1,5 @@
 <% content_for :title, t('.title') %>
-<div class="container-sm">
+<div class="container">
   <div class="row justify-content-center">
     <h1 class="mt-4 text-center my-5">カテゴリ</h1>
     <div class="row">
@@ -7,7 +7,7 @@
       <div class="col-md-4 scale-on-hover">
         <%= link_to show_tiers_category_path(category), class: 'text-dark text-decoration-none' do %>
           <% if category.category_cover_image.attached? %>
-              <%= image_tag category.category_cover_image.variant(resize_to_fill: [1000, 500]), alt: category.name, class: 'img-fluid shadowmb-5' %>
+              <%= image_tag category.category_cover_image.variant(resize_to_fill: [1200, 675]), alt: category.name, class: 'img-fluid shadowmb-5' %>
           <% else %>
               <%= image_tag 'default_cover.webp', alt: category.name, class: 'img-fluid shadow' %>
           <% end %>
@@ -22,10 +22,10 @@
     <h1 class="mt-4 text-center my-5">新着Tier一覧</h1>
     <div class="row">
       <% @tiers.each do |tier| %>
-      <div class="col-md-6 scale-on-hover">
+      <div class="col-md-4 scale-on-hover mt-2">
         <%= link_to tier_path(tier), class: 'text-dark text-decoration-none' do %>
           <% if tier.cover_image.attached? %>
-              <%= image_tag tier.cover_image.variant(resize_to_fill: [1000, 500]), alt: tier.title, class: 'img-fluid shadowmb-5' %>
+              <%= image_tag tier.cover_image.variant(resize_to_fill: [1200, 675]), alt: tier.title, class: 'img-fluid shadowmb-5' %>
           <% else %>
               <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
           <% end %>

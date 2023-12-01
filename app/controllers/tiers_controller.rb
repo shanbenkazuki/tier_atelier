@@ -3,7 +3,7 @@ class TiersController < ApplicationController
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
   before_action :require_login, except: [:index]
-  before_action :authorize_tier, only: [:edit, :destroy, :arrange, :update_tier_cover_image]
+  before_action :authorize_tier, only: [:edit, :update, :destroy, :arrange, :update_tier_cover_image]
 
   def index
     @categories = Category.includes(:category_cover_image_attachment).all
@@ -23,7 +23,19 @@ class TiersController < ApplicationController
   def edit; end
 
   def create
-    create_tier
+    @tier = current_user.tiers.new(tier_params)
+
+    authorize @tier
+
+    @tier.save!
+
+    redirect_to arrange_tier_path(@tier), success: t('.success')
+  rescue Pundit::NotAuthorizedError
+    redirect_to root_path, danger: "権限がありません"
+  rescue ActiveRecord::RecordInvalid => e
+    handle_tier_error(e.record.errors.full_messages)
+  rescue StandardError => e
+    handle_tier_error([e.message], e.backtrace.join("\n"))
   end
 
   def update
@@ -109,36 +121,9 @@ class TiersController < ApplicationController
     @tier = current_user.tiers.find(params[:id])
   end
 
-  def create_tier
-    ActiveRecord::Base.transaction do
-      @tier = current_user.tiers.create!(tier_params)
-
-      authorize @tier
-
-      params[:tier][:images].compact_blank!
-
-      @tier.add_images(params[:tier][:images]) if params[:tier][:images].present?
-    end
-
-    redirect_to arrange_tier_path(@tier), success: t('.success')
-  rescue Pundit::NotAuthorizedError
-    redirect_to root_path, danger: "権限がありません"
-  rescue ActiveRecord::RecordInvalid => e
-    handle_tier_error(e.record.errors.full_messages)
-  rescue StandardError => e
-    handle_tier_error([e.message], e.backtrace.join("\n"))
-  end
-
   def update_tier
-    ActiveRecord::Base.transaction do
-      @tier.update!(tier_params)
-
-      authorize @tier
-
-      params[:tier][:images].compact_blank!
-
-      @tier.add_images(params[:tier][:images]) if params[:tier][:images].present?
-    end
+    authorize @tier
+    @tier.update!(tier_params)
 
     redirect_to arrange_tier_path(@tier), success: t('.success')
   rescue Pundit::NotAuthorizedError
