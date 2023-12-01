@@ -28,7 +28,7 @@ RSpec.describe "Tiers", type: :system do
   end
 
   describe "ログイン後" do
-    let!(:categories) { create_list(:category, 5) }
+    let!(:categories) { create_list(:category, 30) }
 
     before do
       login_as(user)
@@ -37,7 +37,7 @@ RSpec.describe "Tiers", type: :system do
     describe "新規登録" do
       before do
         visit new_tier_path
-        select "フード", from: "tier_category_id"
+        select "アクション", from: "tier_category_id"
       end
 
       context "正常系" do
@@ -92,7 +92,7 @@ RSpec.describe "Tiers", type: :system do
 
           expect(page).to have_field('説明', with: '新規テストの説明')
           selected_option = find('#tier_category_id option[selected]').text
-          expect(selected_option).to eq('フード')
+          expect(selected_option).to eq('アクション')
 
           ranks = ["unranked", "S", "A", "B", "C", "D"]
           categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
@@ -117,7 +117,7 @@ RSpec.describe "Tiers", type: :system do
 
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
-            expect(selected_option).to eq('フード')
+            expect(selected_option).to eq('アクション')
 
             ranks = ["unranked", "", "A", "B", "C", "D"]
             categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
@@ -143,7 +143,7 @@ RSpec.describe "Tiers", type: :system do
 
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
-            expect(selected_option).to eq('フード')
+            expect(selected_option).to eq('アクション')
 
             ranks = ["unranked", "S", "A", "B", "C", "D", "", "F"]
             categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
@@ -169,7 +169,7 @@ RSpec.describe "Tiers", type: :system do
 
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
-            expect(selected_option).to eq('フード')
+            expect(selected_option).to eq('アクション')
 
             ranks = ["unranked", "S", "A", "B", "C", "D"]
             categories = ["uncategorized", "", "Roam", "Exp", "Gold", "Mid"]
@@ -196,7 +196,7 @@ RSpec.describe "Tiers", type: :system do
 
             expect(page).to have_field('説明', with: '新規テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
-            expect(selected_option).to eq('フード')
+            expect(selected_option).to eq('アクション')
 
             ranks = ["unranked", "S", "A", "B", "C", "D"]
             categories = ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "", "Balance", "Speeder"]
@@ -235,7 +235,7 @@ RSpec.describe "Tiers", type: :system do
       before do
         visit arrange_tier_path(tier)
         click_link '編集'
-        select "スポーツ", from: "tier_category_id"
+        select "アドベンチャー", from: "tier_category_id"
       end
 
       context "正常系" do
@@ -278,7 +278,7 @@ RSpec.describe "Tiers", type: :system do
 
           expect(page).to have_field('説明', with: '更新テストの説明')
           selected_option = find('#tier_category_id option[selected]').text
-          expect(selected_option).to eq('スポーツ')
+          expect(selected_option).to eq('アドベンチャー')
 
           ranks = ["unranked", "E", "F", "G", "H", "I"]
           categories = ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
@@ -303,7 +303,7 @@ RSpec.describe "Tiers", type: :system do
 
             expect(page).to have_field('説明', with: '更新テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
-            expect(selected_option).to eq('スポーツ')
+            expect(selected_option).to eq('アドベンチャー')
 
             ranks = ["unranked", "E", "F", "G", "", "I"]
             categories = ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
@@ -329,7 +329,7 @@ RSpec.describe "Tiers", type: :system do
 
             expect(page).to have_field('説明', with: '更新テストの説明')
             selected_option = find('#tier_category_id option[selected]').text
-            expect(selected_option).to eq('スポーツ')
+            expect(selected_option).to eq('アドベンチャー')
 
             ranks = ["unranked", "E", "F", "G", "H", "I"]
 
@@ -414,7 +414,7 @@ RSpec.describe "Tiers", type: :system do
         def create_template(name)
           fill_in "タイトル", with: "テストタイトル"
           fill_in "説明", with: "テストの説明"
-          select "ゲーム", from: "template_category_id"
+          select "ストラテジー", from: "template_category_id"
           attach_file('template[template_cover_image]', Rails.root.join("spec/fixtures/test_cover_image.png"))
           click_button name
           expect(page).to have_selector('.alert.alert-success', text: 'テンプレート作成に成功しました')
