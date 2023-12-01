@@ -25,6 +25,12 @@ application.register("item-count-checker", ItemCountCheckerController)
 import ItemDragController from "./item_drag_controller"
 application.register("item-drag", ItemDragController)
 
+import TierImagesUploaderController from "./tier_images_uploader_controller"
+application.register("tier-images-uploader", TierImagesUploaderController)
+
+import TooltipController from "./tooltip_controller"
+application.register("tooltip", TooltipController)
+
 import UploadItemPreviewController from "./upload_item_preview_controller"
 application.register("upload-item-preview", UploadItemPreviewController)
 

@@ -53,8 +53,6 @@ RSpec.describe "Tiers", type: :system do
               categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid", "Balance", "Speeder", "Defender", "Supporter", "Attacker"]
             )
 
-            attach_tier_images
-
             click_button "作成"
 
             expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
@@ -74,14 +72,6 @@ RSpec.describe "Tiers", type: :system do
           def extend_category_rank_fields_from_5_to_10
             5.times { find('#add-ranks').click }
             5.times { find('#add-categories').click }
-          end
-
-          def attach_tier_images
-            tier_image_names = ["Arlot", "Aldous", "Aulus"]
-            tier_image_paths = tier_image_names.map do |name|
-              Rails.root.join('spec', 'fixtures', "#{name}.png")
-            end
-            attach_file('tier[images][]', tier_image_paths, make_visible: true)
           end
         end
       end
@@ -261,12 +251,6 @@ RSpec.describe "Tiers", type: :system do
             categories: ["uncategorized", "Balance", "Speeder", "Defender", "Supporter", "Attacker", "Fighter", "Mage"]
           )
 
-          tier_image_names = ["Arlot", "Aldous", "Aulus"]
-          tier_image_paths = tier_image_names.map do |name|
-            Rails.root.join('spec', 'fixtures', "#{name}.png")
-          end
-          attach_file('tier[images][]', tier_image_paths, make_visible: true)
-
           scroll_and_submit_form("更新")
 
           expect(page).to have_selector('.alert.alert-success', text: 'Tier更新に成功しました')
@@ -382,7 +366,7 @@ RSpec.describe "Tiers", type: :system do
 
       before do
         visit tier_path(tier)
-        click_link "配置"
+        click_link "作り直す"
       end
 
       context "正常系" do
@@ -400,7 +384,7 @@ RSpec.describe "Tiers", type: :system do
         end
 
         it "tierの画像をダウンロードできる" do
-          click_button '画像出力'
+          find('#display-modal').click
           click_button 'ダウンロード'
         end
 
@@ -412,15 +396,16 @@ RSpec.describe "Tiers", type: :system do
           verify_tier_or_template_displayed_on_user_page(user)
         end
 
-        scenario "Tierを反映する", js: true, focus: true do
-          click_button '保存'
+        scenario "Tierを反映する", js: true do
+          find('#display-modal').click
+          find('#save-tier-image').click
           expect(page).to have_current_path(tier_path(tier))
           expect(page).to have_content("テストタイトル")
           verify_tier_or_template_displayed_on_user_page(user)
         end
 
         def go_to_new_template
-          click_button '保存'
+          find('#display-modal').click
           click_link 'テンプレートにする'
           expect(page).to have_selector('input[type="submit"][value="登録する"].btn.btn-primary')
           expect(current_path).to eq new_tier_template_path(tier)

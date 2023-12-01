@@ -37,12 +37,6 @@ class Tier < ApplicationRecord
     tier_ranks.find_by(order: 0)
   end
 
-  def add_images(images)
-    images.each do |image|
-      create_item_with_image(image)
-    end
-  end
-
   def add_images_from_template(images)
     images.each do |image|
       create_item_with_image(image.blob)
