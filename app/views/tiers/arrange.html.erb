@@ -1,12 +1,6 @@
 <div class="container">
   <h1 class="mb-3"><%= @tier.title %></h1>
-
   <p class="mb-4"><%= @tier.description %></p>
-
-  <%= link_to "https://twitter.com/intent/tweet?text=#{@tweet_text}&url=#{@tweet_url}", target: "_blank", class: "btn btn-primary" do %>
-    <i class="fab fa-twitter"></i> Tweet
-  <% end %>
-  <%= button_tag '画像出力', type: 'button', id:'display-modal', class: 'btn btn-secondary', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
   <div id="tier-container" data-tier-id="<%= @tier.id %>">
     <div class="category-row">
       <div class="label-holder"></div>
@@ -27,42 +21,28 @@
       </div>
     <% end %>
   </div>
-  <div id="default-area" 
-     class="d-flex flex-wrap justify-content-center align-items-stretch gap-2 p-3 mb-5 border border-dark rounded" 
-     data-default-category-id="<%= @uncategorized_tier_category_id %>" 
-     data-default-rank-id="<%= @unranked_tier_rank_id %>" 
-     data-controller="item-drag" 
-     data-item-drag-target="tier" 
-     data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
-    <% (@images_map["unranked_uncategorized"] || []).each do |image_data| %>
-      <%= image_tag image_data[:url], 
-        data: { 
-          image_id: image_data[:id], 
-          action: "dragstart->delete-tier-image#dragStart",
-          controller: "delete-tier-image"
-        }, 
-        crossorigin: "anonymous", 
-        draggable: "true", 
-        class: "default-area-img"
-      %>
-    <% end %>
-  </div>
 
-  <div class="d-flex justify-content-center align-items-center mb-5 mx-4 px-4">
-    <%= button_tag '保存', 
-      type: 'button', 
-      class: 'btn btn-secondary btn-lg me-custom', 
-      data: { controller: "arrange-tier-modal", action: "click->arrange-tier-modal#updateTierImage" } 
-    %>
+  <%= render 'default_area', tier_images: @images_map, unranked_tier_rank_id: @unranked_tier_rank_id, uncategorized_tier_category_id: @uncategorized_tier_category_id %>
+
+  <div class="d-flex justify-content-center mb-4" data-controller="tier-images-uploader">
+    <%= turbo_frame_tag "tier_images_upload" do %>
+      <%= form_with model: Item.new, url: tier_items_path(@tier), local: true, data: { turbo_frame: "tier_images_upload" } do |form| %>
+        <div style="display:none;">
+          <%= form.file_field :tier_images, multiple: true, direct_upload: true, data: { action: "change->tier-images-uploader#submit" } %>
+        </div>
+        <i class="fa fa-plus fa-2x icon-hover p-2 border image-plus me-5" data-action="click->tier-images-uploader#uploadImages" data-controller="tooltip" data-tooltip="画像を追加"></i>
+      <% end %>
+    <% end %>
+
     <div id="trash-can" data-controller="item-drag" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
-      <i class="fas fa-trash fa-2x"></i>
+      <i class="fas fa-trash icon-hover fa-2x p-2 ms-5 border image-trush" data-controller="tooltip" data-tooltip="ドラッグして削除"></i>
     </div>
   </div>
 
-  <div class="d-flex justify-content-center align-items-center mb-5 mx-4">
-      <%= link_to '編集', edit_tier_path(@tier), id: 'edit_tier', class: 'btn btn-primary btn-lg w-25 me-2' %>
-      <%= link_to 'テンプレートにする', new_tier_template_path(@tier), data: { turbo_confirm: 'テンプレートとして保存しますか？' }, class: 'btn btn-success btn-lg w-25 me-2' %>
-      <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg w-25' %>
+  <div class="d-flex justify-content-center mb-5 mx-4 px-4">
+    <%= link_to '編集', edit_tier_path(@tier), id: 'edit_tier', class: 'btn btn-primary btn-lg ms-5 me-5 w-25' %>
+    <%= button_tag '保存', type: 'button', id:'display-modal', class: 'btn btn-secondary btn-lg ms-5 me-5 w-25', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
+    <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg ms-5 me-5 w-25' %>
   </div>
 
   <%= render 'save_image_modal', tier: @tier %>

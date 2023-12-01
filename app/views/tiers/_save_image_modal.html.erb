@@ -8,11 +8,9 @@
       <div class="modal-body">
       </div>
       <div class="modal-footer justify-content-center">
-        <%= button_tag 'ダウンロード', 
-            type: 'button', 
-            class: 'btn btn-primary', 
-            data: { controller: "download-tier", action: "click->download-tier#downloadImage" } 
-        %>
+        <%= button_tag 'ダウンロード', type: 'button', class: 'btn btn-primary  w-25', data: { controller: "download-tier", action: "click->download-tier#downloadImage" } %>
+        <%= button_tag '保存', type: 'button', class: 'btn btn-secondary  w-25', data: { controller: "arrange-tier-modal", action: "click->arrange-tier-modal#updateTierImage" } %>
+        <%= link_to 'テンプレートにする', new_tier_template_path(tier), data: { turbo_confirm: 'テンプレートとして保存しますか？' }, class: 'btn btn-success w-25' %>
       </div>
     </div>
   </div>

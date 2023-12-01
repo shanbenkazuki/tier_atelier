@@ -3,6 +3,30 @@ class ItemsController < ApplicationController
   before_action :require_login
   before_action :authorize_item, only: [:update, :destroy]
 
+  def create
+    tier_id = params[:tier_id]
+    uncategorized_tier_category_id = TierCategory.where(tier_id:, order: 0).pick(:id)
+    unranked_tier_rank_id = TierRank.where(tier_id:, order: 0).pick(:id)
+
+    tier_images = params[:item][:tier_images].compact_blank!
+
+    ActiveRecord::Base.transaction do
+      @items = tier_images.map do |image_data|
+        item = Item.new(item_params)
+        item.tier_id = tier_id
+        item.tier_category_id = uncategorized_tier_category_id
+        item.tier_rank_id = unranked_tier_rank_id
+        item.image.attach(image_data)
+        item.save!
+        item
+      end
+    end
+
+    redirect_to arrange_tier_path(tier_id)
+  rescue ActiveRecord::RecordInvalid
+    render json: { error: '保存に失敗しました。' }, status: :unprocessable_entity
+  end
+
   def update
     @item.tier_id = params[:tier_id]
     @item.tier_rank_id = params[:rank_id]
@@ -51,6 +75,10 @@ class ItemsController < ApplicationController
     params.require(:_json).map do |item_param|
       item_param.permit(:tier_category_id, :tier_rank_id, :item_id)
     end
+  end
+
+  def item_params
+    params.require(:item).permit(:tier_id, :tier_category_id, :tier_rank_id)
   end
 
   def authorize_item
