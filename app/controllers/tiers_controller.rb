@@ -7,7 +7,7 @@ class TiersController < ApplicationController
 
   def index
     @categories = Category.includes(:category_cover_image_attachment).all
-    @tiers = Tier.by_category(params[:category_id]).with_attached_cover_image
+    @tiers = Tier.by_category(params[:category_id]).with_attached_cover_image.order(created_at: :desc)
   end
 
   def show
