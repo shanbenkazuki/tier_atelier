@@ -1,0 +1,18 @@
+<%= turbo_frame_tag 'template_list' do %>
+  <div class="row">
+    <% templates.each do |template| %>
+      <div class="col-md-4 scale-on-hover mt-2">
+        <%= link_to template_path(template), class: 'text-dark text-decoration-none', data: { turbo: false } do %>
+          <% if template.template_cover_image.attached? %>
+              <%= image_tag template.template_cover_image.variant(resize_to_fill: [1200, 675]), alt: template.title, class: 'img-fluid shadow' %>
+          <% else %>
+              <%= image_tag 'default_cover.webp', alt: template.title, class: 'img-fluid shadow' %>
+          <% end %>
+          <div class="text-center fw-bold mt-2">
+              <%= template.title %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+<% end %>
