@@ -2,7 +2,7 @@ class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
-  before_action :require_login, except: [:index]
+  before_action :require_login, except: [:index, :new]
   before_action :authorize_tier, only: [:edit, :update, :destroy, :arrange, :update_tier_cover_image]
 
   def index
