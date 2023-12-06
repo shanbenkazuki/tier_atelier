@@ -2,7 +2,7 @@ class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
   before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
-  before_action :require_login, except: [:index, :new]
+  before_action :require_login, only: [:edit, :update, :destroy, :arrange, :create_from_template, :update_tier_cover_image]
   before_action :authorize_tier, only: [:edit, :update, :destroy, :arrange, :update_tier_cover_image]
 
   def index
@@ -23,9 +23,7 @@ class TiersController < ApplicationController
   def edit; end
 
   def create
-    @tier = current_user.tiers.new(tier_params)
-
-    authorize @tier
+    @tier = current_user ? current_user.tiers.new(tier_params) : Tier.new(tier_params)
 
     @tier.save!
 
@@ -63,8 +61,6 @@ class TiersController < ApplicationController
                   }
     setup_tier
   end
-
-  def search; end
 
   def create_from_template
     template = Template.find(params[:id])
