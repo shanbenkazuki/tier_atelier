@@ -1,0 +1,18 @@
+<%= turbo_frame_tag 'tier_list' do %>
+  <div class="row">
+    <% tiers.each do |tier| %>
+    <div class="col-md-4 scale-on-hover mt-2">
+      <%= link_to tier_path(tier), class: 'text-dark text-decoration-none', data: { turbo: false } do %>
+        <% if tier.cover_image.attached? %>
+            <%= image_tag tier.cover_image.variant(resize_to_fill: [1200, 675]), alt: tier.title, class: 'img-fluid shadowmb-5' %>
+        <% else %>
+            <%= image_tag 'default_cover.webp', alt: tier.title, class: 'img-fluid shadow' %>
+        <% end %>
+        <div class="text-center fw-bold mt-2 mb-1">
+            <%= tier.title %>
+        </div>
+      <% end %>
+    </div>
+    <% end %>
+  </div>
+<% end %>
