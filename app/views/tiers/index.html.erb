@@ -9,7 +9,7 @@
             <%= form.collection_select :category_id, Category.all, :id, :name, { prompt: "カテゴリを選択" }, { class: "form-select" } %>
           </div>
           <div class="col-auto">
-            <%= form.submit "絞り込む", class: "btn btn-warning text-light" %>
+            <%= form.submit "絞り込む", class: "btn btn-primary" %>
           </div>
         </div>
       <% end %>

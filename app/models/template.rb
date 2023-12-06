@@ -12,6 +12,8 @@ class Template < ApplicationRecord
   validates :title, presence: true, length: { maximum: 150 }
   validates :description, length: { maximum: 300 }
 
+  scope :by_category, ->(category_id) { where(category_id:) if category_id.present? }
+
   def category_with_order_zero
     template_categories.find_by(order: 0)
   end
