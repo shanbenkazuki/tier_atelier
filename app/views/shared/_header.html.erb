@@ -1,7 +1,7 @@
 <div class="sticky-top shadow-sm" style="background-color: #eda368;">
   <div class="container">
     <header>
-      <nav class="navbar navbar-expand-lg">
+      <nav class="navbar navbar-expand">
         <div class="logo_area">
           <%= link_to root_path, class: 'navbar-brand' do %>
             <%= image_tag 'header_logo.webp', class: "img-fluid", height: '50px' %>
@@ -19,7 +19,11 @@
               <%= link_to t('defaults.tier'), tiers_path, class: 'nav-link text-light' %>
             </li>
             <li class="nav-item">
-              <%= link_to t('defaults.account'), user_path(current_user), class: 'nav-link text-light' %>
+              <% if current_user %>
+                <%= link_to t('defaults.account'), user_path(current_user), class: 'nav-link text-light' %>
+              <% else %>
+                <%= link_to t('defaults.login'), login_path, id: 'login', class: 'btn btn-warning btn-sm text-light mt-1' %>
+              <% end %>
             </li>
           </ul>
         </div>
