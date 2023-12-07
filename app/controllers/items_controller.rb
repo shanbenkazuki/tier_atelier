@@ -1,6 +1,5 @@
 class ItemsController < ApplicationController
   before_action :set_item, only: [:update, :destroy]
-  before_action :require_login
   before_action :authorize_item, only: [:update, :destroy]
 
   def create

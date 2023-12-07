@@ -2,25 +2,56 @@ require 'rails_helper'
 
 RSpec.describe "Tiers", type: :system do
   let(:user) { create(:user) }
+  let!(:categories) { create_list(:category, 30) }
 
   describe "ログイン前" do
-    context "アクセス制限" do
-      it "新規ページにアクセスするとエラーとなる" do
+    context "正常系" do
+      it "一覧画面にアクセスできる" do
+        visit tiers_path
+        expect(current_path).to eq tiers_path
+      end
+
+      it "新規作成画面にアクセスできる" do
         visit new_tier_path
-        expect(page).to have_content('ログインしてください')
-        expect(current_path).to eq login_path
+        expect(current_path).to eq new_tier_path
       end
 
-      it "編集ページにアクセスするとエラーとなる" do
-        tier = create(:tier)
-        visit edit_tier_path(tier)
-        expect(page).to have_content('ログインしてください')
-        expect(current_path).to eq login_path
-      end
-
-      it "詳細ページにアクセスするとエラーとなる" do
+      it "詳細画面にアクセスできる" do
         tier = create(:tier)
         visit tier_path(tier)
+        expect(current_path).to eq tier_path(tier)
+      end
+
+      it "配置画面にアクセスできる" do
+        tier = create(:tier)
+        visit arrange_tier_path(tier)
+        expect(current_path).to eq arrange_tier_path(tier)
+      end
+
+      it "tierの新規登録が成功する" do
+        visit new_tier_path
+        select "アクション", from: "tier_category_id"
+        fill_form(
+          title: "新規テストタイトル",
+          description: "新規テストの説明",
+          ranks: ["unranked", "S", "A", "B", "C", "D"],
+          categories: ["uncategorized", "Jungle", "Roam", "Exp", "Gold", "Mid"]
+        )
+
+        click_button "作成"
+
+        expect(page).to have_selector('.alert.alert-success', text: 'Tier作成に成功しました')
+        check_labels(
+          expected_category_labels: ["Jungle", "Roam", "Exp", "Gold", "Mid"],
+          expected_rank_labels: ["S", "A", "B", "C", "D"]
+        )
+      end
+    end
+
+    context "異常系" do
+      it "編集ページにアクセスするとリダイレクトされる" do
+        tier = create(:tier)
+        visit edit_tier_path(tier)
         expect(page).to have_content('ログインしてください')
         expect(current_path).to eq login_path
       end
@@ -28,8 +59,6 @@ RSpec.describe "Tiers", type: :system do
   end
 
   describe "ログイン後" do
-    let!(:categories) { create_list(:category, 30) }
-
     before do
       login_as(user)
     end

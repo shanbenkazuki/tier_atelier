@@ -1,9 +1,9 @@
 class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
-  before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
-  before_action :require_login, only: [:edit, :update, :destroy, :arrange, :create_from_template, :update_tier_cover_image]
-  before_action :authorize_tier, only: [:edit, :update, :destroy, :arrange, :update_tier_cover_image]
+  before_action :set_tier, only: [:edit, :show, :edit, :destroy, :arrange, :update_tier_cover_image]
+  before_action :require_login, only: [:update_tier_cover_image]
+  before_action :authorize_tier, only: [:edit, :destroy, :update_tier_cover_image]
 
   def index
     @categories = Category.includes(:category_cover_image_attachment).all
@@ -38,6 +38,7 @@ class TiersController < ApplicationController
 
   def update
     set_tier_for_update
+    authorize @tier
     update_tier
   end
 
@@ -114,11 +115,10 @@ class TiersController < ApplicationController
   end
 
   def set_tier_for_update
-    @tier = current_user.tiers.find(params[:id])
+    @tier = Tier.find(params[:id])
   end
 
   def update_tier
-    authorize @tier
     @tier.update!(tier_params)
 
     redirect_to arrange_tier_path(@tier), success: t('.success')
@@ -167,6 +167,6 @@ class TiersController < ApplicationController
   end
 
   def authorize_tier
-    @tier
+    authorize @tier
   end
 end
