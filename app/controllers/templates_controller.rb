@@ -6,7 +6,7 @@ class TemplatesController < ApplicationController
 
   def index
     @categories = Category.includes(:category_cover_image_attachment).all
-    @templates = Template.by_category(params[:category_id]).with_attached_template_cover_image
+    @templates = Template.by_category(params[:category_id]).with_attached_template_cover_image.order(created_at: :desc)
   end
 
   def show

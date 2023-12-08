@@ -1,9 +1,15 @@
 class ItemPolicy < ApplicationPolicy
   def update?
-    user == record.tier.user
+    is_owner?
   end
 
   def destroy?
-    update?
+    is_owner?
+  end
+
+  private
+
+  def is_owner?
+    user == record.tier.user
   end
 end

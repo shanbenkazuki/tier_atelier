@@ -1,13 +1,13 @@
 class TiersController < ApplicationController
   include ApplicationHelper
   before_action :set_categories, only: [:new, :edit]
-  before_action :set_tier, only: [:edit, :show, :destroy, :arrange, :update_tier_cover_image]
-  before_action :require_login, except: [:index]
-  before_action :authorize_tier, only: [:edit, :update, :destroy, :arrange, :update_tier_cover_image]
+  before_action :set_tier, only: [:edit, :show, :edit, :destroy, :arrange, :update_tier_cover_image]
+  before_action :require_login, only: [:update_tier_cover_image]
+  before_action :authorize_tier, only: [:edit, :destroy, :update_tier_cover_image]
 
   def index
     @categories = Category.includes(:category_cover_image_attachment).all
-    @tiers = Tier.by_category(params[:category_id]).with_attached_cover_image
+    @tiers = Tier.by_category(params[:category_id]).with_attached_cover_image.order(created_at: :desc)
   end
 
   def show
@@ -23,9 +23,7 @@ class TiersController < ApplicationController
   def edit; end
 
   def create
-    @tier = current_user.tiers.new(tier_params)
-
-    authorize @tier
+    @tier = current_user ? current_user.tiers.new(tier_params) : Tier.new(tier_params)
 
     @tier.save!
 
@@ -40,6 +38,7 @@ class TiersController < ApplicationController
 
   def update
     set_tier_for_update
+    authorize @tier
     update_tier
   end
 
@@ -63,8 +62,6 @@ class TiersController < ApplicationController
                   }
     setup_tier
   end
-
-  def search; end
 
   def create_from_template
     template = Template.find(params[:id])
@@ -118,11 +115,10 @@ class TiersController < ApplicationController
   end
 
   def set_tier_for_update
-    @tier = current_user.tiers.find(params[:id])
+    @tier = Tier.find(params[:id])
   end
 
   def update_tier
-    authorize @tier
     @tier.update!(tier_params)
 
     redirect_to arrange_tier_path(@tier), success: t('.success')
@@ -171,6 +167,6 @@ class TiersController < ApplicationController
   end
 
   def authorize_tier
-    @tier
+    authorize @tier
   end
 end

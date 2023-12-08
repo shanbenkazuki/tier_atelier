@@ -3,7 +3,7 @@ class Tier < ApplicationRecord
 
   DEFAULT_FIELD_NUM = 6
 
-  belongs_to :user
+  belongs_to :user, optional: true
   belongs_to :category
 
   has_one_attached :cover_image
