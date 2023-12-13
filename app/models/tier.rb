@@ -20,6 +20,7 @@ class Tier < ApplicationRecord
   accepts_nested_attributes_for :tier_categories, reject_if: :all_blank, allow_destroy: true
 
   scope :by_category, ->(category_id) { where(category_id:) if category_id.present? }
+  scope :by_user, ->(user_id) { where(user_id:) if user_id.present? }
 
   def self.new_from_template(template)
     new(
