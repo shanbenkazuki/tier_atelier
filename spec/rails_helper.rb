@@ -39,6 +39,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   config.include LoginMacros
+  config.include FillInSupport
 
   config.after(:suite) do
     FileUtils.rm_rf(ActiveStorage::Blob.service.root)

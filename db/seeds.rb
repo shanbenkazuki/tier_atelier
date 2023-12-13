@@ -1,34 +1,34 @@
 categories = [
-  "アクション", 
-  "インディーズ",  # Indie
-  "アドベンチャー",  # Adventure
-  "RPG",  # RPG (Role Playing Game)
-  "ストラテジー",  # Strategy
-  "シューティング",  # Shooter
-  "カジュアル",  # Casual
-  "シミュレーション",  # Simulation
-  "パズル",  # Puzzle
-  "アーケード",  # Arcade
-  "プラットフォーマー",  # Platformer
-  "大規模マルチプレイヤー",  # Massively Multiplayer
-  "レーシング",  # Racing
-  "スポーツ",  # Sports
-  "格闘",  # Fighting
-  "ファミリー",  # Family
-  "ボードゲーム",  # Board Games
-  "教育",  # Educational
-  "カード",  # Card
-  "ポイントアンドクリック",  # Point-and-click
-  "音楽",  # Music
-  "RTS",  # Real Time Strategy (RTS)
-  "TBS",  # Turn-based strategy (TBS)
-  "タクティカル",  # Tactical
-  "クイズ",  # Quiz/Trivia
-  "ハクスラ",  # Hack and slash/Beat 'em up
-  "ピンボール",  # Pinball
-  "ビジュアルノベル",  # Visual Novel
-  "カード＆ボード",  # Card & Board Game
-  "MOBA",  # MOBA
+  "アクション",
+  "インディーズ",
+  "アドベンチャー",
+  "RPG",
+  "ストラテジー",
+  "シューティング",
+  "カジュアル",
+  "シミュレーション",
+  "パズル",
+  "アーケード",
+  "プラットフォーマー",
+  "大規模マルチプレイヤー",
+  "レーシング",
+  "スポーツ",
+  "格闘",
+  "ファミリー",
+  "ボードゲーム",
+  "教育",
+  "カード",
+  "ポイントアンドクリック",
+  "音楽",
+  "RTS",
+  "TBS",
+  "タクティカル",
+  "クイズ",
+  "ハクスラ",
+  "ピンボール",
+  "ビジュアルノベル",
+  "カード＆ボード",
+  "MOBA",
   "その他"
 ]
 

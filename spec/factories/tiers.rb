@@ -5,6 +5,10 @@ FactoryBot.define do
     description { "テストの説明" }
     association :category
 
+    trait :tier_by_unauthenticated_user do
+      user { nil }
+    end
+
     trait :with_tier_ranks do
       after(:create) do |tier|
         ["unranked", "S", "A", "B", "C", "D"].each_with_index do |name, index|
