@@ -11,10 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
-  # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
-
-  create_table "active_storage_attachments", force: :cascade do |t|
+  create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "record_type", null: false
     t.bigint "record_id", null: false
@@ -24,7 +21,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", force: :cascade do |t|
+  create_table "active_storage_blobs", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "key", null: false
     t.string "filename", null: false
     t.string "content_type"
@@ -36,19 +33,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
-  create_table "active_storage_variant_records", force: :cascade do |t|
+  create_table "active_storage_variant_records", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "blob_id", null: false
     t.string "variation_digest", null: false
     t.index ["blob_id", "variation_digest"], name: "index_active_storage_variant_records_uniqueness", unique: true
   end
 
-  create_table "categories", force: :cascade do |t|
+  create_table "categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "comments", force: :cascade do |t|
+  create_table "comments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "tier_list_id", null: false
     t.text "body"
@@ -58,7 +55,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
-  create_table "items", force: :cascade do |t|
+  create_table "items", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "tier_id", null: false
     t.bigint "tier_rank_id", null: false
     t.bigint "tier_category_id", null: false
@@ -69,7 +66,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["tier_rank_id"], name: "index_items_on_tier_rank_id"
   end
 
-  create_table "likes", force: :cascade do |t|
+  create_table "likes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "tier_list_id", null: false
     t.datetime "created_at", null: false
@@ -78,7 +75,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["user_id"], name: "index_likes_on_user_id"
   end
 
-  create_table "relationships", force: :cascade do |t|
+  create_table "relationships", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "follower_id"
     t.integer "followed_id"
     t.datetime "created_at", null: false
@@ -88,7 +85,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["follower_id"], name: "index_relationships_on_follower_id"
   end
 
-  create_table "template_categories", force: :cascade do |t|
+  create_table "template_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "template_id", null: false
     t.string "name"
     t.integer "order"
@@ -97,7 +94,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["template_id"], name: "index_template_categories_on_template_id"
   end
 
-  create_table "template_ranks", force: :cascade do |t|
+  create_table "template_ranks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "template_id", null: false
     t.string "name"
     t.integer "order"
@@ -106,7 +103,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["template_id"], name: "index_template_ranks_on_template_id"
   end
 
-  create_table "templates", force: :cascade do |t|
+  create_table "templates", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
     t.text "description"
@@ -117,7 +114,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["user_id"], name: "index_templates_on_user_id"
   end
 
-  create_table "tier_categories", force: :cascade do |t|
+  create_table "tier_categories", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "tier_id", null: false
     t.string "name", null: false
     t.integer "order", null: false
@@ -126,7 +123,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["tier_id"], name: "index_tier_categories_on_tier_id"
   end
 
-  create_table "tier_ranks", force: :cascade do |t|
+  create_table "tier_ranks", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "tier_id", null: false
     t.string "name", null: false
     t.integer "order", null: false
@@ -135,7 +132,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["tier_id"], name: "index_tier_ranks_on_tier_id"
   end
 
-  create_table "tiers", force: :cascade do |t|
+  create_table "tiers", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title", null: false
     t.text "description"
@@ -146,7 +143,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_13_134321) do
     t.index ["user_id"], name: "index_tiers_on_user_id"
   end
 
-  create_table "users", force: :cascade do |t|
+  create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.string "email", null: false
     t.string "crypted_password"
