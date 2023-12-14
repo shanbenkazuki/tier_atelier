@@ -82,6 +82,4 @@ test:
 #
 production:
   <<: *default
-  database: tier_atelier_production
-  username: tier_atelier
-  password: <%= ENV["TIER_ATELIER_DATABASE_PASSWORD"] %>
+  url: <%= ENV['JAWSDB_URL'] %>
