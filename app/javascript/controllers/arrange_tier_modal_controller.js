@@ -6,11 +6,7 @@ export default class extends Controller {
     const allImageData = this.collectImageDataFromLocalStorage();
     const tierId = this.getAttributeFromElement(document, "#tier-container", "data-tier-id");
 
-    if (allImageData.length > 0) {
-      this.updateBulkItems(allImageData, tierId);
-    } else {
-      this.redirectToTierPage(tierId);
-    }
+    this.updateBulkItems(allImageData, tierId);
   }
 
   collectImageDataFromLocalStorage() {
@@ -58,7 +54,7 @@ export default class extends Controller {
     })
     .then(response => {
       if (response.ok) {
-        this.updateTierCoverImage(tierId);
+        this.redirectToTierPage(tierId);
       } else {
         throw new Error('Network response was not ok');
       }
@@ -79,40 +75,41 @@ export default class extends Controller {
     return element.querySelector(selector).getAttribute(attribute);
   }
 
-  updateTierCoverImage(tierId) {
-    html2canvas(document.querySelector("#tier-container"), {
-      useCORS: true
-    })
-    .then(canvas => {
-      const image = canvas.toDataURL("image/png");
-      const blob = this.dataURLtoBlob(image);
+  // TODO: 本リリース後のアップデートで実装
+  // updateTierCoverImage(tierId) {
+  //   html2canvas(document.querySelector("#tier-container"), {
+  //     useCORS: true
+  //   })
+  //   .then(canvas => {
+  //     const image = canvas.toDataURL("image/png");
+  //     const blob = this.dataURLtoBlob(image);
 
-      const formData = new FormData();
-      formData.append('image', blob);
+  //     const formData = new FormData();
+  //     formData.append('image', blob);
   
-      fetch(`/tiers/${tierId}/update_tier_cover_image`, {
-        method: 'POST',
-        headers: {
-          'X-Requested-With': 'XMLHttpRequest',
-          'X-CSRF-Token': this.getCsrfToken()
-        },
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          this.redirectToTierPage(tierId);
-        } else {
-          throw new Error('Network response was not ok');
-        }
-      })
-      .then(data => {
-      })
-      .catch(error => {
-          console.error('Error uploading image:', error);
-      });
+  //     fetch(`/tiers/${tierId}/update_tier_cover_image`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'X-Requested-With': 'XMLHttpRequest',
+  //         'X-CSRF-Token': this.getCsrfToken()
+  //       },
+  //       body: formData
+  //     })
+  //     .then(response => {
+  //       if (response.ok) {
+  //         this.redirectToTierPage(tierId);
+  //       } else {
+  //         throw new Error('Network response was not ok');
+  //       }
+  //     })
+  //     .then(data => {
+  //     })
+  //     .catch(error => {
+  //         console.error('Error uploading image:', error);
+  //     });
       
-    });
-  }
+  //   });
+  // }
 
   dataURLtoBlob(dataURL) {
     const binary = atob(dataURL.split(',')[1]);

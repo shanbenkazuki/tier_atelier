@@ -1,10 +1,16 @@
-<% flash_keys = [:success, :danger, :info, :warning] %>
-
-<% flash_keys.each do |type| %>
-  <% if flash[type] %>
-    <div class="alert alert-<%= type %> alert-dismissible fade show" role="alert">
-      <%= flash[type] %>
-      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div id="toast-container" data-controller="toast">
+  <% flash.each do |message_type, message| %>
+    <div class="mb-2 toast border-<%= message_type %>" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-header text-<%= message_type %>">
+        <% if message_type.to_s == "success" %>
+          <i class="fas fa-check-circle me-1"></i>
+        <% else %>
+          <i class="fas fa-exclamation-circle me-1"></i>
+        <% end %>
+        <strong class="me-auto"><%= message_type.to_s.capitalize %></strong>
+        <button class="btn-close" data-bs-dismiss="toast"></button>
+      </div>
+      <div class="toast-body"><%= message %></div>
     </div>
   <% end %>
-<% end %>
+</div>

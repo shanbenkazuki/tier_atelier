@@ -65,7 +65,7 @@ class TiersController < ApplicationController
 
   def create_from_template
     template = Template.find(params[:id])
-    @tier = current_user.tiers.new_from_template(template)
+    @tier = current_user ? current_user.tiers.new_from_template(template) : Tier.new_from_template(template)
 
     if @tier.save
       @tier.add_images_from_template(template.tier_images) if template.tier_images.present?

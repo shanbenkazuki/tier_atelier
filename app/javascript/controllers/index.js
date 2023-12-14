@@ -28,6 +28,9 @@ application.register("item-drag", ItemDragController)
 import TierImagesUploaderController from "./tier_images_uploader_controller"
 application.register("tier-images-uploader", TierImagesUploaderController)
 
+import ToastController from "./toast_controller"
+application.register("toast", ToastController)
+
 import TooltipController from "./tooltip_controller"
 application.register("tooltip", TooltipController)
 

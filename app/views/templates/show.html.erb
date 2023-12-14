@@ -24,8 +24,10 @@
 
   <div class="d-flex justify-content-center mb-3 mx-4 px-4">
     <% if current_user == @template.user %>
-      <%= link_to 'このテンプレートを使う', create_from_template_tier_path(@template), data: { turbo_method: :post, turbo_confirm: 'このテンプレートからTierを作成しますか？' }, class: 'btn btn-success w-25 me-2' %>
       <%= link_to '編集', edit_template_path(@template), class: 'btn btn-primary w-25 me-2' %>
+    <% end %>
+    <%= link_to 'このテンプレートを使う', create_from_template_tier_path(@template), data: { turbo_method: :post, turbo_confirm: 'このテンプレートからTierを作成しますか？' }, class: 'btn btn-success w-25 me-2' %>
+    <% if current_user == @template.user %>
       <%= link_to '削除', template_path(@template), data: { turbo_method: :delete, turbo_confirm: 'このテンプレートを削除しますか？' }, class: 'btn btn-danger w-25 me-2' %>
     <% end %>
   </div>
