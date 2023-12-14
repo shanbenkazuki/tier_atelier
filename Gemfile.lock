@@ -165,6 +165,7 @@ GEM
     minitest (5.19.0)
     msgpack (1.7.2)
     multi_xml (0.6.0)
+    mysql2 (0.5.5)
     net-imap (0.3.7)
       date
       net-protocol
@@ -199,7 +200,6 @@ GEM
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
-    pg (1.5.3)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -368,7 +368,7 @@ DEPENDENCIES
   jsbundling-rails
   launchy
   meta-tags
-  pg (~> 1.1)
+  mysql2 (~> 0.5)
   pry-byebug
   puma (~> 5.0)
   pundit
