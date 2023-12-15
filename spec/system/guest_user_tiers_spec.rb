@@ -24,12 +24,4 @@ RSpec.describe "Tiers", type: :system do
       expect(page).to have_current_path(arrange_tier_path(Tier.last))
     end
   end
-
-  context "tierの一覧表示" do
-
-  end
-
-  context "テンプレートの一覧表示" do
-    
-  end
 end
