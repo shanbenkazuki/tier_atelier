@@ -51,18 +51,19 @@ class ItemsController < ApplicationController
   end
 
   def bulk_update_items
+    items_position_data = JSON.parse(params[:item][:items_data])
     ActiveRecord::Base.transaction do
-      items_params.each do |item_param|
-        item = Item.find(item_param[:item_id])
+      items_position_data.each do |item_id, item_position|
+        item = Item.find(item_id)
         item.update!(
-          tier_category_id: item_param[:tier_category_id],
-          tier_rank_id: item_param[:tier_rank_id]
+          tier_category_id: item_position["category_id"],
+          tier_rank_id: item_position["rank_id"]
         )
       end
     end
-    render json: { message: "更新しました", redirect_url: tier_path(params[:tier_id]) }, status: :ok
+    redirect_to tier_path(params[:tier_id]), success: "更新しました"
   rescue StandardError => e
-    render json: { message: "更新に失敗しました", error: e.message }, status: :unprocessable_entity
+    redirect_to arrange_tier_path(params[:tier_id]), alert: e.message
   end
 
   private

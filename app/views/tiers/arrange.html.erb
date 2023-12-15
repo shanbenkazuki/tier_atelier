@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" data-controller="item-drag">
   <h1 class="mb-3"><%= @tier.title %></h1>
   <p class="mb-4"><%= @tier.description %></p>
   <div id="tier-container" data-tier-id="<%= @tier.id %>">
@@ -14,7 +14,7 @@
           <span class="label"><%= rank_name %></span>
         </div>
         <% @category_labels.each_with_index do |(category, category_id), categories_index| %>
-          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>" data-controller="item-drag" data-item-drag-target="tier" data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
+          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>" data-item-drag-target="tier" data-action="dragover->item-drag#dragOver drop->item-drag#saveItemPosition">
             <%= render 'tier_image', images: @images_map, rank_id: rank_id, category_id: category_id %>
           </div>
         <% end %>
@@ -34,7 +34,7 @@
       <% end %>
     <% end %>
 
-    <div id="trash-can" data-controller="item-drag" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
+    <div id="trash-can" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
       <i class="fas fa-trash icon-hover fa-2x p-2 ms-5 border image-trush" data-controller="tooltip" data-tooltip="ドラッグして削除"></i>
     </div>
   </div>
@@ -45,5 +45,24 @@
     <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg ms-5 me-5 w-25' %>
   </div>
 
-  <%= render 'save_image_modal', tier: @tier %>
+  <div class="modal fade" id="save-image-modal" tabindex="-1" aria-labelledby="saveImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveImageModalLabel">Tierのイメージ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer justify-content-center">
+          <%= button_tag 'ダウンロード', type: 'button', class: 'btn btn-primary w-25', data: { controller: "download-tier", action: "click->download-tier#downloadImage" } %>
+          <%= form_with model: Item.new, url: bulk_update_items_tier_items_path(@tier), method: :post, local: true do |form| %>
+            <%= form.hidden_field :items_data, id: 'items_data' %>
+            <%= button_tag '保存', type: 'submit', id: 'display-modal', class: 'btn btn-secondary btn-lg ms-5 me-5 w-25', data: { action: "click->item-drag#prepareFormData" } %>
+          <% end %>
+          <%= link_to 'テンプレートにする', new_tier_template_path(@tier), data: { turbo_confirm: 'テンプレートとして保存しますか？' }, class: 'btn btn-success w-25' %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

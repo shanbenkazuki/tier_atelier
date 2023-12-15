@@ -1,6 +1,10 @@
 import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
+  constructor() {
+    super();
+    this.itemsData = {};
+  }
 
   dragStart(event) {
     const imageId = event.currentTarget.dataset.imageId;
@@ -52,9 +56,8 @@ export default class extends Controller {
       console.error(`Error in deleteItem: ${error.message}`);
     });
   }
-  
 
-  saveTierDataToLocalStorage(event) {
+  saveItemPosition(event) {
     event.preventDefault();
 
     const itemId = event.dataTransfer.getData("image-id");
@@ -75,16 +78,12 @@ export default class extends Controller {
       rankId = this.getAttributeFromElement(event.currentTarget.parentElement, ".label-holder", "data-rank-id");
     }
 
-    this.saveDataToLocalStorage(categoryId, rankId, itemId);
+    this.itemsData[itemId] = { 'category_id': categoryId, 'rank_id': rankId };
   }
 
-  saveDataToLocalStorage(categoryId, rankId, itemId) {
-    const data = {
-        tier_category_id: categoryId,
-        tier_rank_id: rankId
-    };
-
-    localStorage.setItem(`imageData-${itemId}`, JSON.stringify(data));
+  prepareFormData() {
+    const jsonData = JSON.stringify(this.itemsData);
+    document.getElementById('items_data').value = jsonData;
   }
 
   getAttributeFromElement(element, selector, attribute) {
