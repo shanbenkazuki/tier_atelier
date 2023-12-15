@@ -1,7 +1,7 @@
 ja:
   defaults:
     template: 'テンプレート'
-    tier: 'Tier'
+    tier: 'Tier一覧'
     login: 'ログイン'
     register: '登録'
     create_tier: 'Tierを作成'
