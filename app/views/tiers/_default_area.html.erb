@@ -3,9 +3,8 @@
     class="d-flex flex-wrap justify-content-center align-items-stretch p-3 mb-5 border border-dark rounded" 
     data-default-category-id="<%= uncategorized_tier_category_id %>" 
     data-default-rank-id="<%= unranked_tier_rank_id %>" 
-    data-controller="item-drag" 
     data-item-drag-target="tier" 
-    data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
+    data-action="dragover->item-drag#dragOver drop->item-drag#saveItemPosition">
     <% (tier_images["unranked_uncategorized"] || []).each do |tier_image| %>
       <%= image_tag tier_image[:url], 
         data: { 

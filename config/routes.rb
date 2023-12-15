@@ -17,11 +17,9 @@ Rails.application.routes.draw do
         post 'bulk_update_items'
       end
     end
-
-    resources :templates, only: [:new, :create]
   end
 
-  resources :templates, except: [:new, :create]
+  resources :templates
 
   root 'top#index'
   get 'privacy_policy', to: 'top#privacy_policy'

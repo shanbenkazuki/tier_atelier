@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" data-controller="item-drag">
   <h1 class="mb-3"><%= @tier.title %></h1>
   <p class="mb-4"><%= @tier.description %></p>
   <div id="tier-container" data-tier-id="<%= @tier.id %>">
@@ -14,7 +14,7 @@
           <span class="label"><%= rank_name %></span>
         </div>
         <% @category_labels.each_with_index do |(category, category_id), categories_index| %>
-          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>" data-controller="item-drag" data-item-drag-target="tier" data-action="dragover->item-drag#dragOver drop->item-drag#saveTierDataToLocalStorage">
+          <div class="tier cell <%= "#{ranks_index}-#{categories_index}" %>" data-item-drag-target="tier" data-action="dragover->item-drag#dragOver drop->item-drag#saveItemPosition">
             <%= render 'tier_image', images: @images_map, rank_id: rank_id, category_id: category_id %>
           </div>
         <% end %>
@@ -24,26 +24,53 @@
 
   <%= render 'default_area', tier_images: @images_map, unranked_tier_rank_id: @unranked_tier_rank_id, uncategorized_tier_category_id: @uncategorized_tier_category_id %>
 
-  <div class="d-flex justify-content-center mb-4" data-controller="tier-images-uploader">
-    <%= turbo_frame_tag "tier_images_upload" do %>
-      <%= form_with model: Item.new, url: tier_items_path(@tier), local: true, data: { turbo_frame: "tier_images_upload" } do |form| %>
-        <div style="display:none;">
-          <%= form.file_field :tier_images, multiple: true, direct_upload: true, data: { action: "change->tier-images-uploader#submit" } %>
-        </div>
-        <i class="fa fa-plus fa-2x icon-hover p-2 border image-plus me-5" data-action="click->tier-images-uploader#uploadImages" data-controller="tooltip" data-tooltip="画像を追加"></i>
+  <% if current_user.present? %>
+    <div id="add-image" class="d-flex justify-content-center mb-4" data-controller="tier-images-uploader">
+      <%= turbo_frame_tag "tier_images_upload" do %>
+        <%= form_with model: Item.new, url: tier_items_path(@tier), local: true, data: { turbo_frame: "tier_images_upload" } do |form| %>
+          <div style="display:none;">
+            <%= form.file_field :tier_images, multiple: true, direct_upload: true, data: { action: "change->tier-images-uploader#submit" } %>
+          </div>
+          <i class="fa fa-plus fa-2x icon-hover p-2 border image-plus me-5" data-action="click->tier-images-uploader#uploadImages" data-controller="tooltip" data-tooltip="画像を追加"></i>
+        <% end %>
       <% end %>
-    <% end %>
 
-    <div id="trash-can" data-controller="item-drag" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
-      <i class="fas fa-trash icon-hover fa-2x p-2 ms-5 border image-trush" data-controller="tooltip" data-tooltip="ドラッグして削除"></i>
+      <div id="trash-can" data-action="dragover->item-drag#dragOver drop->item-drag#deleteItem">
+        <i class="fas fa-trash icon-hover fa-2x p-2 ms-5 border image-trush" data-controller="tooltip" data-tooltip="ドラッグして削除"></i>
+      </div>
     </div>
-  </div>
+  <% end %>
 
   <div class="d-flex justify-content-center mb-5 mx-4 px-4">
-    <%= link_to '編集', edit_tier_path(@tier), id: 'edit_tier', class: 'btn btn-primary btn-lg ms-5 me-5 w-25' %>
+    <% if current_user.present? && current_user == @tier.user %>
+      <%= link_to '編集', edit_tier_path(@tier), id: 'edit-tier', class: 'btn btn-primary btn-lg ms-5 me-5 w-25' %>
+    <% end %>
     <%= button_tag '保存', type: 'button', id:'display-modal', class: 'btn btn-secondary btn-lg ms-5 me-5 w-25', data: { bs_toggle: 'modal', bs_target: '#save-image-modal', controller: 'display-modal-tier-image', action: 'click->display-modal-tier-image#displayTierImage' } %>
-    <%= link_to '削除', tier_path(@tier), id: 'remove_tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg ms-5 me-5 w-25' %>
+    <% if current_user.present? && current_user == @tier.user %>
+      <%= link_to '削除', tier_path(@tier), id: 'remove-tier', data: { turbo_method: :delete, turbo_confirm: '本当に削除しますか？' }, class: 'btn btn-danger btn-lg ms-5 me-5 w-25' %>
+    <% end %>
   </div>
 
-  <%= render 'save_image_modal', tier: @tier %>
+  <div class="modal fade" id="save-image-modal" tabindex="-1" aria-labelledby="saveImageModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="saveImageModalLabel">Tierのイメージ</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+        </div>
+        <div class="modal-footer justify-content-center">
+          <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary w-25', data: { controller: "download-tier", action: "click->download-tier#downloadImage" }, id: 'tier-download' %>
+          <%= form_with model: Item.new, url: bulk_update_items_tier_items_path(@tier), method: :post, local: true do |form| %>
+            <%= form.hidden_field :items_data, id: 'items_data' %>
+            <%= button_tag '保存', type: 'submit', id: 'save-tier-image', class: 'btn btn-secondary btn-lg ms-5 me-5 w-25', data: { action: "click->item-drag#prepareFormData" } %>
+          <% end %>
+          <% if current_user.present? %>
+            <%= link_to 'テンプレートにする', new_tier_template_path(@tier), data: { turbo_confirm: 'テンプレートとして保存しますか？' }, class: 'btn btn-success w-25', id: 'make-template' %>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
