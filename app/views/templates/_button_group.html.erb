@@ -1,0 +1,15 @@
+<div data-controller="template-dynamic-field">
+    <%= button_tag '追加', 
+      type: 'button', 
+      id: "add-#{type}", 
+      class: 'btn btn-secondary mt-2', 
+      data: { action: "click->dynamic-field#addField", dynamic_field_target: "addField", field_type: type } 
+    %>
+
+    <%= button_tag '削除', 
+      type: 'button', 
+      id: "remove-#{type}", 
+      class: 'btn btn-danger mt-2', 
+      data: { action: "click->dynamic-field#removeField", dynamic_field_target: "removeField", field_type: type } 
+    %>
+</div>

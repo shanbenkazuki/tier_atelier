@@ -25,6 +25,12 @@ application.register("item-count-checker", ItemCountCheckerController)
 import ItemDragController from "./item_drag_controller"
 application.register("item-drag", ItemDragController)
 
+import RemoveHiddenInputController from "./remove_hidden_input_controller"
+application.register("remove-hidden-input", RemoveHiddenInputController)
+
+import TemplateDynamicFieldController from "./template_dynamic_field_controller"
+application.register("template-dynamic-field", TemplateDynamicFieldController)
+
 import TierImagesUploaderController from "./tier_images_uploader_controller"
 application.register("tier-images-uploader", TierImagesUploaderController)
 

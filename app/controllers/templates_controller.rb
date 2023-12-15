@@ -16,46 +16,21 @@ class TemplatesController < ApplicationController
   def new
     @tier = Tier.find_by(id: params[:tier_id])
     @template = Template.new
+    Template::DEFAULT_FIELD_NUM.times { @template.template_categories.build }
+    Template::DEFAULT_FIELD_NUM.times { @template.template_ranks.build }
   end
 
   def edit; end
 
   def create
-    tier = current_user.tiers.find_by(id: params[:tier_id])
-    @template = current_user.templates.build(template_params)
+    @template = current_user.templates.new(template_params)
 
-    authorize @template
-
-    ActiveRecord::Base.transaction do
-      @template.save!
-
-      tier.items.each do |item|
-        if item.image.attached?
-          @template.tier_images.attach(item.image.blob)
-        else
-          raise ActiveRecord::Rollback
-        end
-      end
-
-      tier.tier_categories.each do |tier_category|
-        @template.template_categories.create!(
-          name: tier_category.name,
-          order: tier_category.order
-        )
-      end
-
-      tier.tier_ranks.each do |tier_rank|
-        @template.template_ranks.create!(
-          name: tier_rank.name,
-          order: tier_rank.order
-        )
-      end
+    if @template.save
+      redirect_to template_path(@template), success: t('.success')
+    else
+      @categories = Category.all
+      render :new, status: :unprocessable_entity
     end
-
-    redirect_to @template, success: t('.success')
-  rescue ActiveRecord::RecordInvalid
-    @categories = Category.includes(:category_cover_image_attachment).all
-    render :new, status: :unprocessable_entity
   end
 
   def update
@@ -78,8 +53,19 @@ class TemplatesController < ApplicationController
     @template = Template.find(params[:id])
   end
 
+  # def template_params
+  #   params.require(:template).permit(:title, :description, :category_id, :template_cover_image)
+  # end
+
   def template_params
-    params.require(:template).permit(:title, :description, :category_id, :template_cover_image)
+    params.require(:template).permit(
+      :category_id,
+      :title,
+      :description,
+      :template_cover_image,
+      template_ranks_attributes: [:id, :name, :order, :_destroy],
+      template_categories_attributes: [:id, :name, :order, :_destroy]
+    )
   end
 
   def set_categories
