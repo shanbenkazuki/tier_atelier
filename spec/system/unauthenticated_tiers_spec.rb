@@ -4,8 +4,7 @@ RSpec.describe "Tiers", type: :system do
   include FillInSupport
 
   let(:user) { create(:user) }
-  let(:tier_by_unauthenticated_user) { create(:tier, :tier_by_unauthenticated_user) }
-  let(:category_names) { ["アクション", "インディーズ", "アドベンチャー"] }
+  # let(:tier_by_unauthenticated_user) { create(:tier, :tier_by_unauthenticated_user) }
 
   # before do
   #   categories = [
