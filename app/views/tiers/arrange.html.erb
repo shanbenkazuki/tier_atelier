@@ -61,13 +61,10 @@
         <div class="modal-body">
         </div>
         <div class="modal-footer justify-content-center">
-          <%= button_tag '画像として保存', type: 'button', class: 'btn btn-primary w-25', data: { controller: "download-tier", action: "click->download-tier#downloadImage" }, id: 'tier-download' %>
+          <%= button_tag 'ダウンロード', type: 'button', class: 'btn btn-primary', data: { controller: "download-tier", action: "click->download-tier#downloadImage" }, id: 'tier-download' %>
           <%= form_with model: Item.new, url: bulk_update_items_tier_items_path(@tier), method: :post, local: true do |form| %>
             <%= form.hidden_field :items_data, id: 'items_data' %>
-            <%= button_tag '保存', type: 'submit', id: 'save-tier-image', class: 'btn btn-secondary btn-lg ms-5 me-5 w-25', data: { action: "click->item-drag#prepareFormData" } %>
-          <% end %>
-          <% if current_user.present? %>
-            <%= link_to 'テンプレートにする', new_tier_template_path(@tier), data: { turbo_confirm: 'テンプレートとして保存しますか？' }, class: 'btn btn-success w-25', id: 'make-template' %>
+            <%= button_tag '保存', type: 'submit', id: 'save-tier-image', class: 'btn btn-secondary', data: { action: "click->item-drag#prepareFormData" } %>
           <% end %>
         </div>
       </div>

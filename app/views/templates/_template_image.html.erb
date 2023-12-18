@@ -1,8 +1,10 @@
-<% (template_images["default_area"] || []).each do |image_data| %>
-  <%= image_tag image_data[:url], 
-    data: { 
-      image_id: image_data[:id]
-    }, 
-    crossorigin: "anonymous"
-  %>
+<%= turbo_frame_tag "template_images_upload" do %>
+  <% (template_images["default_area"] || []).each do |image_data| %>
+    <%= image_tag image_data[:url], 
+      data: { 
+        image_id: image_data[:id]
+      }, 
+      crossorigin: "anonymous"
+    %>
+  <% end %>
 <% end %>

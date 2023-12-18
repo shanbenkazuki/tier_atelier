@@ -1,0 +1,6 @@
+<%= turbo_frame_tag template do %>
+  <%= form_with model: template, local: true, method: :put do |form| %>
+    <%= form.file_field :tier_images, multiple: true, direct_upload: true %>
+    <%= form.submit "画像を追加", class: "btn btn-secondary" %>
+  <% end %>
+<% end %>

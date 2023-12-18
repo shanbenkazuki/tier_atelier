@@ -36,7 +36,17 @@ class TemplatesController < ApplicationController
   def update
     if @template.update(template_params.except(:tier_images))
       @template.tier_images.attach(params[:template][:tier_images]) if params[:template][:tier_images].present?
-      redirect_to @template, notice: 'テンプレートを更新しました'
+      @items = @template.tier_images
+
+      @template_colors = Rails.application.config.tier_colors
+      @template_images = {}
+      @items.each do |item|
+        variant_url = url_for(item.variant(resize_to_limit: [60, nil]).processed.url)
+        @template_images["default_area"] ||= []
+        @template_images["default_area"] << { url: variant_url, id: item.id }
+      end
+      flash.now[:success] = 'テンプレートを更新しました'
+      # redirect_to @template, notice: 'テンプレートを更新しました'
     else
       render :edit
     end
@@ -83,12 +93,12 @@ class TemplatesController < ApplicationController
 
     @template_colors = Rails.application.config.tier_colors
 
-    @template_images_map = {}
+    @template_images = {}
 
     @items.each do |item|
       variant_url = url_for(item.variant(resize_to_limit: [60, nil]).processed.url)
-      @template_images_map["default_area"] ||= []
-      @template_images_map["default_area"] << { url: variant_url, id: item.id }
+      @template_images["default_area"] ||= []
+      @template_images["default_area"] << { url: variant_url, id: item.id }
     end
   end
 

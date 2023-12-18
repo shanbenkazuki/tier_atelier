@@ -22,8 +22,14 @@
     <% end %>
   </div>
     <div id="default-area" class="d-flex flex-wrap justify-content-center align-items-stretch p-3 mb-3 border border-dark rounded">
-    <%= render 'template_image', template_images: @template_images_map %>
+    <%= render 'template_image', template_images: @template_images %>
   </div>
+
+  <% if current_user.present? %>
+    <div id="add-template-images" class="d-flex justify-content-center mb-4">
+      <%= render 'image_upload_form', template: @template %>
+    </div>
+  <% end %>
 
   <div class="d-flex justify-content-center mb-3 mx-4 px-4">
     <% if current_user == @template.user %>
