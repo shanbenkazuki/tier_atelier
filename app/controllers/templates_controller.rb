@@ -41,7 +41,7 @@ class TemplatesController < ApplicationController
       @template_colors = Rails.application.config.tier_colors
       @template_images = {}
       @items.each do |item|
-        variant_url = url_for(item.variant(resize_to_limit: [60, nil]).processed.url)
+        variant_url = url_for(item.variant(resize_to_fill: [80, nil]).processed.url)
         @template_images["default_area"] ||= []
         @template_images["default_area"] << { url: variant_url, id: item.id }
       end
@@ -96,7 +96,7 @@ class TemplatesController < ApplicationController
     @template_images = {}
 
     @items.each do |item|
-      variant_url = url_for(item.variant(resize_to_limit: [60, nil]).processed.url)
+      variant_url = url_for(item.variant(resize_to_fill: [80, nil]).processed.url)
       @template_images["default_area"] ||= []
       @template_images["default_area"] << { url: variant_url, id: item.id }
     end
