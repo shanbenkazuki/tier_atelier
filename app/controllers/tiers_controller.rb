@@ -159,7 +159,7 @@ class TiersController < ApplicationController
     @images_map = {}
 
     @items.each do |item|
-      variant_url = url_for(item.image.variant(resize_to_fill: [60, 60], convert: "webp").processed.url)
+      variant_url = url_for(item.image.variant(resize_to_fill: [80, nil], convert: "webp").processed.url)
       rank_category_key = item.generate_rank_category_key(@unranked_tier_rank_id, @uncategorized_tier_category_id)
       @images_map[rank_category_key] ||= []
       @images_map[rank_category_key] << item.image_data(variant_url)
