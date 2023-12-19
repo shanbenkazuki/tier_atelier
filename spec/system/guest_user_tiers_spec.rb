@@ -66,7 +66,7 @@ RSpec.describe "Tiers", type: :system do
       expect(page).to have_current_path(tiers_path)
     end
 
-    scenario "tierのカテゴリ検索ができる", js: true, focus: true do
+    scenario "tierのカテゴリ検索ができる", js: true do
       # カテゴリを追加で2つ作成
       music_category = create(:category, name: "音楽")
       game_category = create(:category, name: "ゲーム")

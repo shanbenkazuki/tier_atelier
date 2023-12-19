@@ -54,6 +54,10 @@ class TemplatesController < ApplicationController
         @template_images["default_area"] << { url: variant_url, id: item.id }
       end
       flash.now[:success] = 'テンプレートを更新しました'
+      respond_to do |format|
+        format.html { redirect_to @template, notice: "テンプレートを更新しました" }
+        format.turbo_stream
+      end
       # redirect_to @template, notice: 'テンプレートを更新しました'
     else
       render :edit
