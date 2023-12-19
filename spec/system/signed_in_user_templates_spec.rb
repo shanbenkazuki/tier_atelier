@@ -70,5 +70,63 @@ RSpec.describe "Templates", type: :system do
         expected_rank_labels: ['S', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I']
       )
     end
+
+    scenario "カテゴリなしでtemplateを作成できる", js: true do
+      visit root_path
+      click_link('作りに行く')
+      # テンプレート一覧画面に遷移する
+      expect(page).to have_current_path(templates_path)
+      # 新たにテンプレートを作成する
+      click_link 'テンプレートを新しく作る'
+      # テンプレート作成画面に遷移する
+      expect(page).to have_current_path(new_template_path)
+      # カテゴリを選択する
+      select '食事', from: 'template[category_id]'
+      # テンプレートのタイトルを入力する
+      fill_in 'template[title]', with: 'テストタイトル'
+      fill_in 'template[description]', with: 'テスト説明文'
+      # spec/fixtures/test_cover_image.pngをアップロードする
+      attach_file 'template[template_cover_image]', Rails.root.join("spec/fixtures/test_cover_image.png").to_s
+
+      fill_template_form(
+        title: 'テストタイトル',
+        description: 'テスト説明文',
+        ranks: ['unranked', 'S', 'A', 'B', 'C', 'D'],
+        categories: ['uncategorized']
+      )
+
+      # 登録する
+      click_button '登録する'
+
+      # テンプレート詳細画面に遷移する
+      expect(page).to have_selector('.toast-body', text: 'テンプレート作成に成功しました')
+      expect(page).to have_current_path(template_path(Template.last))
+      # テンプレートのタイトルが表示されている
+      expect(page).to have_content('テストタイトル')
+      expect(page).to have_content('テスト説明文')
+      # 入力したランクとカテゴリが表示されている
+      check_labels(
+        expected_category_labels: [],
+        expected_rank_labels: ['S', 'A', 'B', 'C', 'D']
+      )
+    end
+  end
+
+  context "templateの詳細画面" do
+    # scenario "templateの詳細画面に遷移できる" do
+
+    # end
+
+    # scenario "画像を追加できる" do
+
+    # end
+
+    # scenario "編集画面に遷移できる" do
+
+    # end
+
+    # scenario "templateを削除できる" do
+
+    # end
   end
 end
