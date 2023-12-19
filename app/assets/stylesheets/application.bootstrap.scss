@@ -147,33 +147,33 @@ header, footer {
   height: auto;
 }
 
-@media (max-width: 768px) {
-  .default-area-img {
-    width: 40px;
-    height: auto;
-  }
-}
+// @media (max-width: 768px) {
+//   .default-area-img {
+//     width: 40px;
+//     height: auto;
+//   }
+// }
 
-@media (min-width: 769px) and (max-width: 992px) {
-  .default-area-img{
-    width: 50px;
-    height: auto;
-  }
-}
+// @media (min-width: 769px) and (max-width: 992px) {
+//   .default-area-img{
+//     width: 50px;
+//     height: auto;
+//   }
+// }
 
-@media (min-width: 993px) and (max-width: 1200px) {
-  .default-area-img {
-    width: 60px;
-    height: auto;
-  }
-}
+// @media (min-width: 993px) and (max-width: 1200px) {
+//   .default-area-img {
+//     width: 60px;
+//     height: auto;
+//   }
+// }
 
-@media (min-width: 1201px) {
-  .default-area-img {
-    width: 70px;
-    height: auto;
-  }
-}
+// @media (min-width: 1201px) {
+//   .default-area-img {
+//     width: 70px;
+//     height: auto;
+//   }
+// }
 
 /* フッター */
 .footer-text a:hover {
