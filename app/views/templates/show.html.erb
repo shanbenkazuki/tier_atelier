@@ -3,12 +3,14 @@
 
   <p class="mb-4"><%= @template.description %></p>
   <div id="tier-container" data-template-id="<%= @template.id %>">
-    <div class="category-row">
-      <div class="label-holder"></div>
-      <% @category_labels.each_with_index do |(category_name, category_id), categories_index| %>
-        <div class="category-label" data-category-id="<%= category_id %>" style="background-color: <%= @template_colors[categories_index] %>;" ><%= category_name %></div>
-      <% end %>
-    </div>
+    <% unless @category_labels.size <= 1 %>
+      <div class="category-row">
+        <div class="label-holder"></div>
+          <% @category_labels.each_with_index do |(category_name, category_id), categories_index| %>
+            <div class="category-label" data-category-id="<%= category_id %>" style="background-color: <%= @template_colors[categories_index] %>;" ><%= category_name %></div>
+          <% end %>
+      </div>
+    <% end %>
     <% @rank_labels.each_with_index do |(rank_name, rank_id), ranks_index| %>
       <div class="tier-row">
         <div class="label-holder" style="background-color: <%= @template_colors[ranks_index] %>;" data-rank-id="<%= rank_id %>">

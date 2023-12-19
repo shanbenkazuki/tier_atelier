@@ -36,7 +36,7 @@ header, footer {
 }
 
 .tier-row {
-  min-height: 150px;
+  min-height: 80px;
   border-bottom: solid 1px #000;
 }
 
@@ -46,8 +46,10 @@ header, footer {
 
 .label-holder {
   width: 100px;
-  min-height: 80px;
   min-width: 100px;
+  height: 80px;
+  // min-height: 80px;
+  // min-width: 100px;
   background-color: inherit;
 }
 
@@ -109,7 +111,7 @@ header, footer {
 }
 
 .category-label {
-  width: 20%;
+  width: 100%;
   border-left: solid 1px #000;
   border-bottom: solid 1px #000;
 }
@@ -142,10 +144,10 @@ header, footer {
   transform: scale(1.05);
 }
 
-.img-in-table {
-  width: 23%;
-  height: auto;
-}
+// .img-in-table {
+//   width: 23%;
+//   height: auto;
+// }
 
 // @media (max-width: 768px) {
 //   .default-area-img {

@@ -23,7 +23,15 @@ class TemplatesController < ApplicationController
   def edit; end
 
   def create
-    @template = current_user.templates.new(template_params)
+    template_parameters = template_params
+
+    # template_categories_attributesにキー"0"のみが存在するか確認
+    if template_parameters[:template_categories_attributes].keys == ["0"]
+      # キー"1"を追加
+      template_parameters[:template_categories_attributes]["1"] = { "name" => "default", "order" => "1" }
+    end
+    @template = current_user.templates.new(template_parameters)
+    # binding.pry
 
     if @template.save
       redirect_to template_path(@template), success: t('.success')
