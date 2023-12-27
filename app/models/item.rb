@@ -17,9 +17,10 @@ class Item < ApplicationRecord
     end
   end
 
-  def image_data(variant_url)
+  def image_data(variant_url, filename)
     {
       url: variant_url,
+      filename:,
       id:
     }
   end
