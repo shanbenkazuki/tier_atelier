@@ -1,0 +1,8 @@
+<%= turbo_frame_tag "drop_template_image" do %>
+  <%= form_with model: template, url: drop_image_template_path(template), local: true, method: :post do |form| %>
+    <div style="display:none;">
+      <%= form.hidden_field :drop_image, id: 'drop_image' %>
+    </div>
+    <i class="fas fa-trash icon-hover fa-2x p-2 border image-trush" data-controller="tooltip" data-tooltip="ドラッグして削除"></i>
+  <% end %>
+<% end %>

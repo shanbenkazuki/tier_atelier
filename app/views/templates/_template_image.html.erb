@@ -2,7 +2,8 @@
   <% (template_images["default_area"] || []).each do |image_data| %>
     <%= image_tag image_data[:url], 
       data: { 
-        image_id: image_data[:id]
+        image_id: image_data[:id],
+        action: "dragstart->drop-template-image#dragStart"
       }, 
       crossorigin: "anonymous"
     %>

@@ -31,7 +31,6 @@ class TemplatesController < ApplicationController
       template_parameters[:template_categories_attributes]["1"] = { "name" => "default", "order" => "1" }
     end
     @template = current_user.templates.new(template_parameters)
-    # binding.pry
 
     if @template.save
       redirect_to template_path(@template), success: t('.success')
@@ -67,6 +66,20 @@ class TemplatesController < ApplicationController
   def destroy
     @template.destroy
     redirect_to user_path(current_user), notice: "テンプレートの削除に成功しました", status: :see_other
+  end
+
+  def drop_image
+    @template = Template.find(params[:id])
+    drop_image_id = params[:template][:drop_image]
+    target_image = @template.tier_images.find(drop_image_id)
+    target_image.purge
+    @template_images = {}
+    @items = @template.tier_images
+    @items.each do |item|
+      variant_url = url_for(item.variant(resize_to_fill: [80, nil]).processed.url)
+      @template_images["default_area"] ||= []
+      @template_images["default_area"] << { url: variant_url, id: item.id }
+    end
   end
 
   private
