@@ -16,6 +16,9 @@ application.register("display-modal-tier-image", DisplayModalTierImageController
 import DownloadTierController from "./download_tier_controller"
 application.register("download-tier", DownloadTierController)
 
+import DropTemplateImageController from "./drop_template_image_controller"
+application.register("drop-template-image", DropTemplateImageController)
+
 import DynamicFieldController from "./dynamic_field_controller"
 application.register("dynamic-field", DynamicFieldController)
 

@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container" data-controller="drop-template-image">
     <h1 class="mb-3"><%= @template.title %></h1>
 
   <p class="mb-4"><%= @template.description %></p>
@@ -23,11 +23,14 @@
       </div>
     <% end %>
   </div>
-    <div id="default-area" class="d-flex flex-wrap justify-content-center align-items-stretch p-3 mb-3 border border-dark rounded">
+  <div id="default-area" class="d-flex flex-wrap justify-content-center align-items-stretch p-3 mb-3 border border-dark rounded">
     <%= render 'template_image', template_images: @template_images %>
   </div>
 
   <% if current_user.present? %>
+    <div id="trash-can" data-action="dragover->drop-template-image#dragOver drop->drop-template-image#dropTemplateImage" class="d-flex justify-content-center mb-4">
+      <%= render 'drop_image_form', template: @template %>
+    </div>
     <div id="add-template-images" class="d-flex justify-content-center mb-4">
       <%= render 'image_upload_form', template: @template %>
     </div>

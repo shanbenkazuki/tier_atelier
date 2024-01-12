@@ -1,0 +1,2 @@
+<%= turbo_stream.replace 'template_images_upload', partial: 'templates/template_image', locals: { template_images: @template_images } %>
+<%= turbo_stream.replace 'drop_template_image', partial: 'drop_image_form', locals: { template: @template } %>

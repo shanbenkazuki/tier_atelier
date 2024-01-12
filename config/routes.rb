@@ -19,7 +19,11 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :templates
+  resources :templates do
+    member do
+      post 'drop_image', to: 'templates#drop_image'
+    end
+  end
 
   root 'top#index'
   get 'privacy_policy', to: 'top#privacy_policy'
