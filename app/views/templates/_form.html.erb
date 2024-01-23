@@ -32,7 +32,8 @@
         <%= rank_form.hidden_field :name, value: 'unranked' %>
         <%= rank_form.hidden_field :order, value: 0 %>
       <% else %>
-        <%= rank_form.text_field :name, class: 'form-control mt-2', maxlength: 70 %>
+        <% initial_values = ['S', 'A', 'B', 'C', 'D'] %>
+        <%= rank_form.text_field :name, class: 'form-control mt-2', maxlength: 70, value: initial_values[rank_form.index - 1] %>
         <%= rank_form.hidden_field :order, value: rank_form.index %>
       <% end %>
     <% end %>
