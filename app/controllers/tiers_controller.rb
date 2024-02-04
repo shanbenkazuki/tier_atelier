@@ -6,7 +6,7 @@ class TiersController < ApplicationController
   before_action :authorize_tier, only: [:edit, :destroy, :update_tier_cover_image]
 
   def index
-    @categories = Category.includes(:category_cover_image_attachment).all
+    @categories = Category.joins(:tiers).includes(:category_cover_image_attachment).distinct
     @tiers = Tier.by_category(params[:category_id]).with_attached_cover_image.order(created_at: :desc)
   end
 
