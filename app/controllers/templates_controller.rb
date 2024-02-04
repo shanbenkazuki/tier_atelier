@@ -5,7 +5,7 @@ class TemplatesController < ApplicationController
   before_action :authorize_template, only: [:edit, :update, :destroy]
 
   def index
-    @categories = Category.includes(:category_cover_image_attachment).all
+    @categories = Category.joins(:templates).includes(:category_cover_image_attachment).distinct
     @templates = Template.by_category(params[:category_id]).with_attached_template_cover_image.order(created_at: :desc)
   end
 

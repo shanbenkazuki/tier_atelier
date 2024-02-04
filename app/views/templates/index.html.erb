@@ -6,7 +6,7 @@
       <%= form_with url: templates_path, local: true, method: :get, data: { turbo_frame: "template_list" }, class: "d-flex justify-content-center my-3" do |form| %>
         <div class="row g-3 align-items-center">
           <div class="col-auto">
-            <%= form.collection_select :category_id, Category.all, :id, :name, { prompt: "カテゴリを選択" }, { class: "form-select" } %>
+            <%= form.collection_select :category_id, @categories, :id, :name, { prompt: "カテゴリを選択" }, { class: "form-select" } %>
           </div>
           <div class="col-auto">
             <%= form.submit "絞り込む", class: "btn btn-primary" %>
